@@ -1,3 +1,29 @@
 {
-  "extends": "next/core-web-vitals"
+  "plugins": ["tailwindcss"],
+  "extends": [
+    "hardcore",
+    "hardcore/react",
+    "hardcore/react-testing-library",
+    "hardcore/jest",
+    "hardcore/fp",
+    "hardcore/ts",
+    "plugin:tailwindcss/recommended",
+    "next/core-web-vitals",
+    "prettier"
+  ],
+  "rules": {
+    // override default options
+    "func-style": "off",
+    "import/no-unused-modules": "off",
+    "react/function-component-definition": "off",
+    "tailwindcss/no-custom-classname": "off",
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "@typescript-eslint/explicit-function-return-type": "off"
+  },
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  },
+  "env": {
+    "browser": true
+  }
 }

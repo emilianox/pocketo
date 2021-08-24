@@ -1,4 +1,18 @@
 /** @type {import('next').NextConfig} */
-module.exports = {
+// module.exports = {
+//   reactStrictMode: true,
+//   images: {
+//     domains: ['picsum.photos'],
+//   },
+// }
+
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true',
+})
+module.exports = withBundleAnalyzer({
+
   reactStrictMode: true,
-}
+  images: {
+    domains: ['picsum.photos'],
+  },
+})
