@@ -3,13 +3,13 @@ import { isString } from "@tool-belt/type-predicates";
 import Image from "next/image";
 import type { DeepReadonly } from "ts-essentials/dist/types";
 
-import type { BookType } from "./services/books";
+import type { BookType } from "./services/useBooks";
 
 interface BookProps {
   bookData: BookType;
 }
 
-function book({ bookData }: DeepReadonly<BookProps>): JSX.Element {
+function Book({ bookData }: DeepReadonly<BookProps>) {
   return (
     <div className="card bordered">
       <figure>
@@ -34,4 +34,4 @@ function book({ bookData }: DeepReadonly<BookProps>): JSX.Element {
   );
 }
 
-export default book;
+export default Book;

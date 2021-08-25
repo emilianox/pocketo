@@ -1,9 +1,8 @@
 import Head from "next/head";
 
-import useBooks from "../components/services/books";
-import Book from "../components/book";
+import useBooks from "../components/services/useBooks";
+import Book from "../components/Book";
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type, @typescript-eslint/explicit-module-boundary-types
 function List() {
   const { isLoading, data } = useBooks();
 

@@ -1,3 +1,4 @@
 tailwind.config.js
 pages/api/hello.ts
 next.config.js
+postcss.config.js
