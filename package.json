@@ -5,10 +5,14 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "build-profile": "next build --profile",
     "start": "next start",
     "lint": "next lint",
     "tailwind-config-viewer": "tailwind-config-viewer -o",
-    "size": "ANALYZE=true npm run build"
+    "size": "ANALYZE=true npm run build",
+    "dependencies-square": "depcruise -v --ts-config tsconfig.json --include-only '^src' -T html -f dependencyGraph.html ./src",
+    "dependencies": "depcruise -v --ts-config tsconfig.json --include-only '^src' --output-type dot . | dot -T svg > dependencygraph.svg",
+    "dependencies-with-nodeModules": "depcruise -v --ts-config tsconfig.json --include-only '^(node_modules|src)' --output-type dot . | dot -T svg > dependencygraph.svg"
   },
   "dependencies": {
     "@tool-belt/type-predicates": "^1.1.0",
@@ -17,17 +21,20 @@
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-query": "^3.21.0",
+    "react-simple-oauth2-login": "^0.5.1",
     "tailwindcss": "^2.2.7"
   },
   "devDependencies": {
+    "@next/bundle-analyzer": "^11.1.0",
     "@types/eslint": "7.28.0",
     "@types/react": "17.0.19",
     "@types/react-dom": "17.0.2",
-    "@next/bundle-analyzer": "^11.1.0",
     "autoprefixer": "^10.2.6",
+    "dependency-cruiser": "^10.1.1",
     "eslint": "7.32.0",
     "eslint-config-hardcore": "^20.3.0",
     "eslint-config-next": "11.1.0",
+    "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-tailwindcss": "^1.14.3",
     "postcss": "^8.3.5",
     "sharp": "^0.29.0",

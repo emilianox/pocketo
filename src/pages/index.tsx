@@ -3,7 +3,7 @@ import Head from "next/head";
 // eslint-disable-next-line @typescript-eslint/no-shadow
 import Image from "next/image";
 
-import styles from "../styles/Home.module.css";
+import styles from "styles/Home.module.css";
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 const Home: NextPage = () => (

@@ -1,7 +1,7 @@
 import Head from "next/head";
 
-import useBooks from "../components/services/useBooks";
-import Book from "../components/Book";
+import useBooks from "services/useBooks";
+import Book from "components/Book";
 
 function List() {
   const { isLoading, data } = useBooks();
