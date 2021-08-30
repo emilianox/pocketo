@@ -99,13 +99,13 @@ interface ResponseGetPocketApi {
 }
 
 const getPocketArticles = async (offset: number, count: number) =>
-  await fetch(`/api/items?count=${count}&offset=${offset}`, {
+  await fetch(`/api/items/get?count=${count}&offset=${offset}`, {
     method: "GET",
   }).then(async (response) => {
     return (await response.json()) as ResponseGetPocketApi;
   });
 
-export default function useGetPocket(offset = 0, count = 10) {
+export default function useItemsGet(offset = 0, count = 10) {
   return useQuery<ResponseGetPocketApi, Error>(
     ["pocketArticles", offset, count],
     async () => await getPocketArticles(offset, count),

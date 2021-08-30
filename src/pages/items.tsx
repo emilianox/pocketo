@@ -7,10 +7,15 @@ import { useVirtual } from "react-virtual";
 import { MdStarBorder, MdArchive } from "react-icons/md";
 import { AiOutlineTags } from "react-icons/ai";
 import { FaTrash } from "react-icons/fa";
+import type { DeepReadonly } from "ts-essentials/dist/types";
+
+import type { PocketArticle } from "services/useItemsGet";
+import useItems from "services/useItemsGet";
+import useItemsMutation, {
+  toggleFavoriteAction,
+} from "services/useItemsMutation";
 
 // import { ReactQueryDevtools } from "react-query/devtools";
-
-import useItems from "services/useItems";
 
 function Items() {
   const pageSize = 10;
@@ -18,6 +23,8 @@ function Items() {
   const [offset, setOffset] = useState(0);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { status, data, error, isFetching, isPreviousData } = useItems(offset);
+
+  const mutation = useItemsMutation();
 
   const dataItems = data ? Object.values(data.list) : [];
 
@@ -27,6 +34,12 @@ function Items() {
     size: dataItems.length,
     parentRef: parentReference,
   });
+
+  function toggleFavorite(dataItem: DeepReadonly<PocketArticle>) {
+    return () => {
+      mutation.mutate([toggleFavoriteAction(dataItem)]);
+    };
+  }
 
   if (status === "loading") {
     return "Loading...";
@@ -115,6 +128,7 @@ function Items() {
                     <div className="btn-group">
                       <button
                         className="text-gray-400 btn btn-outline btn-sm"
+                        onClick={toggleFavorite(dataItem)}
                         type="button"
                       >
                         <MdStarBorder size="1.5em" />
