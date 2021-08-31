@@ -54,13 +54,17 @@ type Images = Record<string, Image>;
 
 type Tags = Record<string, Tag>;
 
+/** 0 if false 1 if true */
+type pocketBoolean = "0" | "1";
+
 interface PocketArticle {
   item_id: string;
   resolved_id: string;
   given_url: string;
   given_title: string;
-  favorite: string;
-  status: string;
+  favorite: pocketBoolean;
+  /** 1 if the item is archived - 2 if the item should be deleted */
+  status: "0" | "1" | "2";
   time_added: string;
   time_updated: string;
   time_read: string;
@@ -69,10 +73,12 @@ interface PocketArticle {
   resolved_title: string;
   resolved_url: string;
   excerpt: string;
-  is_article: string;
+  is_article: pocketBoolean;
   is_index: string;
-  has_video: string;
-  has_image: string;
+  /** if the item has videos in it - 2 if the item is a video  */
+  has_video: "0" | "1" | "2";
+  /** 1 if the item has images in it - 2 if the item is an image */
+  has_image: "0" | "1" | "2";
   word_count: string;
   lang: string;
   top_image_url: string;
