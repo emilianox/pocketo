@@ -4,18 +4,16 @@
 import Head from "next/head";
 import { useRef, useState } from "react";
 import { useVirtual } from "react-virtual";
-import { MdStarBorder, MdArchive } from "react-icons/md";
+import { MdStarBorder, MdArchive, MdStar } from "react-icons/md";
 import { AiOutlineTags } from "react-icons/ai";
 import { FaTrash } from "react-icons/fa";
 import type { DeepReadonly } from "ts-essentials/dist/types";
+// import { ReactQueryDevtools } from "react-query/devtools";
 
-import type { PocketArticle } from "services/useItemsGet";
 import useItems from "services/useItemsGet";
 import useItemsMutation, {
   toggleFavoriteAction,
 } from "services/useItemsMutation";
-
-// import { ReactQueryDevtools } from "react-query/devtools";
 
 function Items() {
   const pageSize = 10;
@@ -35,9 +33,11 @@ function Items() {
     parentRef: parentReference,
   });
 
-  function toggleFavorite(dataItem: DeepReadonly<PocketArticle>) {
+  function toggleFavorite(
+    ...parameters: DeepReadonly<Parameters<typeof toggleFavoriteAction>>
+  ) {
     return () => {
-      mutation.mutate([toggleFavoriteAction(dataItem)]);
+      mutation.mutate([toggleFavoriteAction(...parameters)]);
     };
   }
 
@@ -128,10 +128,17 @@ function Items() {
                     <div className="btn-group">
                       <button
                         className="text-gray-400 btn btn-outline btn-sm"
-                        onClick={toggleFavorite(dataItem)}
+                        onClick={toggleFavorite(
+                          dataItem.favorite,
+                          dataItem.item_id
+                        )}
                         type="button"
                       >
-                        <MdStarBorder size="1.5em" />
+                        {dataItem.favorite === "0" ? (
+                          <MdStarBorder size="1.5em" />
+                        ) : (
+                          <MdStar size="1.5em" />
+                        )}
                       </button>
                       <button
                         className="text-gray-400 btn btn-outline btn-sm"
