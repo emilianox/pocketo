@@ -1,5 +1,5 @@
 {
-  "plugins": ["tailwindcss", "prettier"],
+  "plugins": ["tailwindcss"],
   "extends": [
     "hardcore",
     "hardcore/react",
@@ -12,7 +12,6 @@
     "plugin:prettier/recommended"
   ],
   "rules": {
-    "prettier/prettier": "error",
     // override default options
     "func-style": "off",
     "import/no-unused-modules": "off",
