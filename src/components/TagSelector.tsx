@@ -31,8 +31,6 @@ const TagSelector = ({
     setTags(tags.filter((tag, index) => index !== index_));
   };
 
-  console.log("aaa");
-
   const handleAddition = (tag: tagItem) => {
     setTags([...tags, tag]);
   };
@@ -47,6 +45,7 @@ const TagSelector = ({
     setTags(newTags);
   };
 
+  // eslint-disable-next-line unicorn/consistent-function-scoping
   const handleTagClick = (index: number) => {
     // eslint-disable-next-line no-console
     console.log(`The tag at index ${index} was clicked`);
