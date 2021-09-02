@@ -1,6 +1,4 @@
 /* eslint-disable react/jsx-no-bind */
-/* eslint-disable unicorn/consistent-function-scoping */
-/* eslint-disable no-console */
 /* eslint-disable fp/no-mutating-methods */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable @typescript-eslint/prefer-readonly-parameter-types */
@@ -33,6 +31,8 @@ const TagSelector = ({
     setTags(tags.filter((tag, index) => index !== index_));
   };
 
+  console.log("aaa");
+
   const handleAddition = (tag: tagItem) => {
     setTags([...tags, tag]);
   };
@@ -48,6 +48,7 @@ const TagSelector = ({
   };
 
   const handleTagClick = (index: number) => {
+    // eslint-disable-next-line no-console
     console.log(`The tag at index ${index} was clicked`);
   };
 

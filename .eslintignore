@@ -2,3 +2,4 @@ tailwind.config.js
 next.config.js
 postcss.config.js
 .dependency-cruiser.js
+lint-staged.config.js
