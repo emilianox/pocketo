@@ -1,6 +1,6 @@
+/* eslint-disable react-perf/jsx-no-new-function-as-prop */
+/* eslint-disable react/jsx-no-bind */
 /* eslint-disable max-statements */
-/* eslint-disable react-perf/jsx-no-new-object-as-prop */
-// import clsx from "clsx";
 import Head from "next/head";
 import { useRef, useState } from "react";
 import { useVirtual } from "react-virtual";
@@ -10,22 +10,28 @@ import { FaTrash } from "react-icons/fa";
 import type { DeepReadonly } from "ts-essentials/dist/types";
 // import { ReactQueryDevtools } from "react-query/devtools";
 
+import type { PocketArticle } from "services/useItemsGet";
 import useItems from "services/useItemsGet";
+import TagModal from "components/TagModal";
 import useItemsMutation from "services/useItemsMutation";
 import {
   createArchiveAction,
   createDeleteAction,
   createFavoriteAction,
+  createTagReplaceAction,
 } from "services/sendActions";
 
 function Items() {
   const pageSize = 10;
 
   const [offset, setOffset] = useState(0);
+
+  const [selectedItem, setselectedItem] = useState<PocketArticle>();
+
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { status, data, error, isFetching, isPreviousData } = useItems(offset);
 
-  const mutation = useItemsMutation();
+  const itemsMutation = useItemsMutation();
 
   const dataItems = data ? Object.values(data.list) : [];
 
@@ -40,7 +46,7 @@ function Items() {
     ...parameters: DeepReadonly<Parameters<typeof createFavoriteAction>>
   ) => {
     return () => {
-      mutation.mutate([createFavoriteAction(...parameters)]);
+      itemsMutation.mutate([createFavoriteAction(...parameters)]);
     };
   };
 
@@ -48,14 +54,22 @@ function Items() {
     ...parameter: DeepReadonly<Parameters<typeof createArchiveAction>>
   ) => {
     return () => {
-      mutation.mutate([createArchiveAction(...parameter)]);
+      itemsMutation.mutate([createArchiveAction(...parameter)]);
     };
   };
   const deleteMutation = (
     ...parameter: DeepReadonly<Parameters<typeof createDeleteAction>>
   ) => {
     return () => {
-      mutation.mutate([createDeleteAction(...parameter)]);
+      itemsMutation.mutate([createDeleteAction(...parameter)]);
+    };
+  };
+
+  const tagReplaceMutation = (
+    ...parameter: DeepReadonly<Parameters<typeof createTagReplaceAction>>
+  ) => {
+    return () => {
+      itemsMutation.mutate([createTagReplaceAction(...parameter)]);
     };
   };
 
@@ -83,6 +97,7 @@ function Items() {
             </tr>
           </thead>
           <tbody
+            // eslint-disable-next-line react-perf/jsx-no-new-object-as-prop
             style={{
               height: `${rowVirtualizer.totalSize}px`,
               width: "100%",
@@ -93,6 +108,7 @@ function Items() {
               const dataItem = dataItems[index];
 
               return (
+                // eslint-disable-next-line react-perf/jsx-no-new-object-as-prop
                 <tr key={index} style={{ height: `${size}px` }}>
                   <td>
                     <div className="flex items-center space-x-2">
@@ -109,6 +125,7 @@ function Items() {
                           )}
                         </div>
                       </div>
+                      {/* eslint-disable-next-line react-perf/jsx-no-new-object-as-prop */}
                       <div style={{ width: `50rem` }}>
                         <div
                           className="overflow-hidden font-bold overflow-ellipsis whitespace-nowrap"
@@ -167,6 +184,9 @@ function Items() {
                       </button>
                       <button
                         className="text-gray-400 btn btn-outline btn-sm"
+                        onClick={() => {
+                          setselectedItem(dataItem);
+                        }}
                         type="button"
                       >
                         <AiOutlineTags size="1.5em" />
@@ -189,7 +209,6 @@ function Items() {
           <button
             className="btn"
             disabled={offset === 0}
-            // eslint-disable-next-line react/jsx-no-bind, react-perf/jsx-no-new-function-as-prop
             onClick={() => {
               setOffset(offset - pageSize);
             }}
@@ -199,7 +218,6 @@ function Items() {
           </button>
           <button
             className="btn"
-            // eslint-disable-next-line react/jsx-no-bind, react-perf/jsx-no-new-function-as-prop
             onClick={() => {
               setOffset(offset + pageSize);
             }}
@@ -217,23 +235,17 @@ function Items() {
         }{" "}
       </div>
       {/* <ReactQueryDevtools initialIsOpen /> */}
-      <div className="modal modal-open">
-        <div className="modal-box">
-          <p>
-            Enim dolorem dolorum omnis atque necessitatibus. Consequatur aut
-            adipisci qui iusto illo eaque. Consequatur repudiandae et. Nulla ea
-            quasi eligendi. Saepe velit autem minima.
-          </p>
-          <div className="modal-action">
-            <label className="btn btn-primary" htmlFor="my-modal-2">
-              Save
-            </label>
-            <label className="btn" htmlFor="my-modal-2">
-              Cancel
-            </label>
-          </div>
-        </div>
-      </div>
+      <TagModal
+        onCancel={() => {
+          setselectedItem(undefined);
+        }}
+        // eslint-disable-next-line @typescript-eslint/naming-convention, camelcase
+        onSave={(item_id, tags) => {
+          setselectedItem(undefined);
+          tagReplaceMutation(item_id, tags.join(","))();
+        }}
+        selectedItem={selectedItem}
+      />
     </>
   );
 }

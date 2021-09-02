@@ -121,7 +121,21 @@ const createDeleteAction = (
   item_id,
 });
 
-export { createFavoriteAction, createArchiveAction, createDeleteAction };
+const createTagReplaceAction = (
+  item_id: PocketArticle["item_id"],
+  tags: string
+): Action_tags_replace => ({
+  action: "tags_replace",
+  item_id,
+  tags,
+});
+
+export {
+  createFavoriteAction,
+  createArchiveAction,
+  createDeleteAction,
+  createTagReplaceAction,
+};
 
 export type {
   Actions,
