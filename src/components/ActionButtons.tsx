@@ -1,8 +1,10 @@
 import { MdStarBorder, MdArchive, MdStar } from "react-icons/md";
 import { AiOutlineTags } from "react-icons/ai";
-import { FaTrash } from "react-icons/fa";
+import { FaLink, FaTelegram, FaTrash, FaWhatsapp } from "react-icons/fa";
 import type { DeepReadonly } from "ts-essentials/dist/types";
 import React from "react";
+import copy from "copy-text-to-clipboard";
+import { TelegramShareButton, WhatsappShareButton } from "react-share";
 
 interface ActionButtonsProps {
   archive: () => void;
@@ -10,6 +12,7 @@ interface ActionButtonsProps {
   favorite: "0" | "1";
   selectItem: () => void;
   toggleFavorite: () => void;
+  url: string;
 }
 
 function ActionButtons({
@@ -18,6 +21,7 @@ function ActionButtons({
   favorite,
   selectItem,
   toggleFavorite,
+  url,
 }: DeepReadonly<ActionButtonsProps>): JSX.Element {
   return (
     <div className="btn-group">
@@ -53,6 +57,34 @@ function ActionButtons({
       >
         <FaTrash size="1.5em" />
       </button>
+
+      <button
+        className="text-gray-400 btn btn-outline btn-sm"
+        onClick={React.useCallback(() => copy(url), [url])}
+        type="button"
+      >
+        <FaLink size="1.5em" />
+      </button>
+      <WhatsappShareButton
+        // eslint-disable-next-line react/forbid-component-props
+        className="text-gray-400 btn btn-outline btn-sm"
+        resetButtonStyle={false}
+        // title={title}
+        separator=":: "
+        url={url}
+      >
+        <FaWhatsapp size="1.5em" />
+      </WhatsappShareButton>
+      <TelegramShareButton
+        // eslint-disable-next-line react/forbid-component-props
+        className="text-gray-400 btn btn-outline btn-sm"
+        resetButtonStyle={false}
+        // title={title}
+        // separator=":: "
+        url={url}
+      >
+        <FaTelegram size="1.5em" />
+      </TelegramShareButton>
     </div>
   );
 }

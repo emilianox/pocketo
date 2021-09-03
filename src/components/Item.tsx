@@ -97,6 +97,7 @@ function Item({
           favorite={dataItem.favorite}
           selectItem={selectItem}
           toggleFavorite={toggleFavorite}
+          url={dataItem.resolved_url}
         />
       </th>
     </tr>
