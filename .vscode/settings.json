@@ -1,9 +1,5 @@
 {
   "editor.formatOnSave": true,
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "[javascript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true
   },
@@ -23,5 +19,6 @@
     "titleBar.inactiveBackground": "#15041d99",
     "titleBar.inactiveForeground": "#e7e7e799"
   },
-  "peacock.color": "#15041d"
+  "peacock.color": "#15041d",
+  "editor.tabSize": 2
 }
