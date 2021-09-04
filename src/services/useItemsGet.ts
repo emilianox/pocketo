@@ -1,7 +1,11 @@
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
-
+/** 0 if false 1 if true */
+/** 1 if the item is archived - 2 if the item should be deleted */
+/** if the item has videos in it - 2 if the item is a video  */
+/** 1 if the item has images in it - 2 if the item is an image */
 import { useQuery } from "react-query";
+import type { DeepReadonly } from "ts-essentials/dist/types";
 
 interface Searchmeta {
   search_type: string;
@@ -54,7 +58,6 @@ type Images = Record<string, Image>;
 
 type Tags = Record<string, Tag>;
 
-/** 0 if false 1 if true */
 type pocketBoolean = "0" | "1";
 
 interface PocketArticle {
@@ -63,7 +66,6 @@ interface PocketArticle {
   given_url: string;
   given_title: string;
   favorite: pocketBoolean;
-  /** 1 if the item is archived - 2 if the item should be deleted */
   status: "0" | "1" | "2";
   time_added: string;
   time_updated: string;
@@ -75,9 +77,7 @@ interface PocketArticle {
   excerpt: string;
   is_article: pocketBoolean;
   is_index: string;
-  /** if the item has videos in it - 2 if the item is a video  */
   has_video: "0" | "1" | "2";
-  /** 1 if the item has images in it - 2 if the item is an image */
   has_image: "0" | "1" | "2";
   word_count: string;
   lang: string;
@@ -104,18 +104,56 @@ interface ResponseGetPocketApi {
   since: number;
 }
 
-const getPocketArticles = async (offset: number, count: number) =>
-  await fetch(`/api/items/get?count=${count}&offset=${offset}`, {
-    method: "GET",
-  }).then(async (response) => {
+interface SearchParametersBase {
+  state?: "all" | "archive" | "unread";
+  tag?: string | "_untagged_";
+  contentType?: "article" | "image" | "video";
+  sort?: "newest" | "oldest" | "site" | "title";
+  domain?: string;
+  since?: string;
+  count?: string;
+  offset?: string;
+}
+
+interface SearchParametersFavorite extends SearchParametersBase {
+  favorite?: "0" | "1";
+}
+
+interface SearchParametersSearch extends SearchParametersBase {
+  search?: string;
+}
+
+type SearchParameters = SearchParametersFavorite | SearchParametersSearch;
+
+const getPocketArticles = async (
+  searchParameters: DeepReadonly<SearchParameters>
+) =>
+  await fetch(
+    `/api/items/get?${new URLSearchParams(searchParameters).toString()}`,
+    {
+      method: "GET",
+    }
+  ).then(async (response) => {
     return (await response.json()) as ResponseGetPocketApi;
   });
 
-export default function useItemsGet(offset = 0, count = 10) {
+export default function useItemsGet(
+  searchParameters: DeepReadonly<SearchParameters>
+) {
   return useQuery<ResponseGetPocketApi, Error>(
-    ["pocketArticles", offset, count],
-    async () => await getPocketArticles(offset, count),
-    { keepPreviousData: true, staleTime: 5000 }
+    ["pocketArticles", searchParameters],
+    async () => await getPocketArticles(searchParameters),
+    {
+      keepPreviousData: true,
+      staleTime: 5000,
+    }
   );
 }
-export type { PocketArticle, ResponseGetPocketApi };
+
+export type {
+  PocketArticle,
+  ResponseGetPocketApi,
+  SearchParameters,
+  SearchParametersFavorite,
+  SearchParametersSearch,
+};

@@ -4,10 +4,12 @@ import { useCallback, useMemo, useRef, useState } from "react";
 import { useVirtual } from "react-virtual";
 import type { DeepReadonly } from "ts-essentials/dist/types";
 // import { ReactQueryDevtools } from "react-query/devtools";
+import { identity, pickBy } from "ramda";
 
 import type { PocketArticle } from "services/useItemsGet";
 import useItems from "services/useItemsGet";
 import TagModal from "components/TagModal";
+import SearchForm from "components/SearchForm";
 import Item from "components/Item";
 import useItemsMutation from "services/useItemsMutation";
 import {
@@ -24,9 +26,19 @@ function Items() {
 
   const [offset, setOffset] = useState(0);
 
+  const [formSearchResult, setFormSearchResult] = useState({});
+
   const [selectedItem, setselectedItem] = useState<PocketArticle>();
 
-  const { status, data, error, isFetching } = useItems(offset);
+  const { status, data, error, isFetching } = useItems(
+    pickBy(identity, {
+      offset: offset.toString(),
+      count: pageSize.toString(),
+      ...formSearchResult,
+      // search: debouncedSearchText,
+      // state:
+    })
+  );
 
   const itemsMutation = useItemsMutation();
 
@@ -100,6 +112,13 @@ function Items() {
       <Head>
         <title>Pocketo</title>
       </Head>
+      <SearchForm onSubmit={setFormSearchResult} />
+      {
+        // Since the last page's data potentially sticks around between page requests,
+        // we can use `isFetching` to show a background loading
+        // indicator since our `status === 'loading'` state won't be triggered
+        isFetching ? <span> Loading...</span> : undefined
+      }{" "}
       {/* @ts-expect-error ref  */}
       <div className="overflow-x-auto" ref={parentReference}>
         <table className="table w-full">
@@ -141,12 +160,6 @@ function Items() {
             »
           </button>
         </div>
-        {
-          // Since the last page's data potentially sticks around between page requests,
-          // we can use `isFetching` to show a background loading
-          // indicator since our `status === 'loading'` state won't be triggered
-          isFetching ? <span> Loading...</span> : undefined
-        }{" "}
       </div>
       {/* <ReactQueryDevtools initialIsOpen /> */}
       <TagModal
