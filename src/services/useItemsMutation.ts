@@ -107,7 +107,7 @@ const getArticleQueryKey = (
   queryClient: DeepReadonly<QueryClient>,
   item_id: string
 ) => {
-  const relatedCacheData = getRelatedCacheData(queryClient, "pocketArticles");
+  const relatedCacheData = getRelatedCacheData(queryClient, "items");
 
   return relatedCacheData.reduce<QueryKey>(
     (previous, current) =>

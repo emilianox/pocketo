@@ -1,12 +1,11 @@
 /* eslint-disable max-statements */
 import Head from "next/head";
-import { useCallback, useMemo, useRef, useState } from "react";
-import { useVirtual } from "react-virtual";
+import { useCallback, useMemo, useState } from "react";
 import type { DeepReadonly } from "ts-essentials/dist/types";
 // import { ReactQueryDevtools } from "react-query/devtools";
-import { identity, pickBy } from "ramda";
+import { Virtuoso } from "react-virtuoso";
 
-import type { PocketArticle } from "services/useItemsGet";
+import type { PocketArticle, SearchParameters } from "services/useItemsGet";
 import useItems from "services/useItemsGet";
 import TagModal from "components/TagModal";
 import SearchForm from "components/SearchForm";
@@ -22,34 +21,27 @@ import {
 type MakeMutation = (dataItem: DeepReadonly<PocketArticle>) => void;
 
 function Items() {
-  const pageSize = 10;
-
-  const [offset, setOffset] = useState(0);
-
-  const [formSearchResult, setFormSearchResult] = useState({});
+  const [formSearchResult, setFormSearchResult] = useState<SearchParameters>(
+    {} as SearchParameters
+  );
 
   const [selectedItem, setselectedItem] = useState<PocketArticle>();
 
-  const { status, data, error, isFetching } = useItems(
-    pickBy(identity, {
-      offset: offset.toString(),
-      count: pageSize.toString(),
-      ...formSearchResult,
-      // search: debouncedSearchText,
-      // state:
-    })
-  );
+  // console.log("formSearchResult", formSearchResult);
+
+  const { data, error, fetchNextPage, isFetching } = useItems(formSearchResult);
 
   const itemsMutation = useItemsMutation();
 
-  const dataItems = data ? Object.values(data.list) : [];
+  // const dataItems = data ? Object.values(data.list) : [];
+  const dataItems: PocketArticle[] = data
+    ? data.pages.reduce<PocketArticle[]>(
+        (previous, current) => [...previous, ...Object.values(current.list)],
+        []
+      )
+    : [];
 
-  const parentReference = useRef();
-
-  const rowVirtualizer = useVirtual({
-    size: dataItems.length,
-    parentRef: parentReference,
-  });
+  // console.log("dataItems", dataItems);
 
   /* eslint-disable react-hooks/exhaustive-deps */
   const mutationArchive: MakeMutation = useCallback((dataItem) => {
@@ -77,32 +69,18 @@ function Items() {
     setselectedItem(undefined);
     tagReplaceMutation(itemId, tags.join(","));
   }, []);
-
   /* eslint-enable react-hooks/exhaustive-deps */
 
   const onCancelModal = useCallback(() => {
     setselectedItem(undefined);
   }, []);
 
-  const clickPrevious = useCallback(() => {
-    setOffset(offset - pageSize);
-  }, [offset]);
-
-  const clickNext = useCallback(() => {
-    setOffset(offset + pageSize);
-  }, [offset]);
-
-  const listTableStyle = useMemo(
-    () => ({
-      height: `${rowVirtualizer.totalSize}px`,
-    }),
-    [rowVirtualizer]
+  const nextPage = useCallback(
+    async () => await fetchNextPage(),
+    [fetchNextPage]
   );
 
-  if (status === "loading") {
-    return "Loading...";
-  }
-
+  // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
   if (error) {
     return "Error...";
   }
@@ -119,48 +97,43 @@ function Items() {
         // indicator since our `status === 'loading'` state won't be triggered
         isFetching ? <span> Loading...</span> : undefined
       }{" "}
-      {/* @ts-expect-error ref  */}
-      <div className="overflow-x-auto" ref={parentReference}>
-        <table className="table w-full">
-          <thead>
-            <tr>
-              <th>Title</th>
-              <th>Tags</th>
-              <th />
-            </tr>
-          </thead>
-          <tbody className="relative w-full" style={listTableStyle}>
-            {rowVirtualizer.virtualItems.map(({ index, size }) => {
-              const dataItem = dataItems[index];
-
-              return (
-                <Item
-                  dataItem={dataItem}
-                  key={index}
-                  mutationArchive={mutationArchive}
-                  mutationDelete={mutationDelete}
-                  mutationtoggleFavorite={mutationtoggleFavorite}
-                  setselectedItem={setselectedItem}
-                  size={size}
-                />
-              );
-            })}
-          </tbody>
-        </table>
-        <div className="btn-group">
-          <button
-            className="btn"
-            disabled={offset === 0}
-            onClick={clickPrevious}
-            type="button"
-          >
-            «
-          </button>
-          <button className="btn" onClick={clickNext} type="button">
-            »
-          </button>
-        </div>
-      </div>
+      <Virtuoso
+        // eslint-disable-next-line react-perf/jsx-no-new-object-as-prop
+        components={{
+          // eslint-disable-next-line react/no-unstable-nested-components, react/display-name, react/no-multi-comp, @typescript-eslint/naming-convention
+          Footer: () => {
+            return (
+              <div
+                style={useMemo(
+                  () => ({
+                    padding: "2rem",
+                    display: "flex",
+                    justifyContent: "center",
+                  }),
+                  []
+                )}
+              >
+                Loading...
+              </div>
+            );
+          },
+        }}
+        data={dataItems}
+        endReached={nextPage}
+        // eslint-disable-next-line react/jsx-no-bind, react-perf/jsx-no-new-function-as-prop, react/no-unstable-nested-components
+        itemContent={(index, dataItem) => (
+          <Item
+            dataItem={dataItem}
+            key={index}
+            mutationArchive={mutationArchive}
+            mutationDelete={mutationDelete}
+            mutationtoggleFavorite={mutationtoggleFavorite}
+            setselectedItem={setselectedItem}
+          />
+        )}
+        // eslint-disable-next-line react/forbid-component-props, react-perf/jsx-no-new-object-as-prop
+        style={{ height: 800 }}
+      />
       {/* <ReactQueryDevtools initialIsOpen /> */}
       <TagModal
         onCancel={onCancelModal}

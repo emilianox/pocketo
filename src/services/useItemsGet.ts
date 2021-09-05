@@ -4,8 +4,9 @@
 /** 1 if the item is archived - 2 if the item should be deleted */
 /** if the item has videos in it - 2 if the item is a video  */
 /** 1 if the item has images in it - 2 if the item is an image */
-import { useQuery } from "react-query";
+import { useInfiniteQuery } from "react-query";
 import type { DeepReadonly } from "ts-essentials/dist/types";
+import { identity, pickBy } from "ramda";
 
 interface Searchmeta {
   search_type: string;
@@ -111,8 +112,8 @@ interface SearchParametersBase {
   sort?: "newest" | "oldest" | "site" | "title";
   domain?: string;
   since?: string;
-  count?: string;
-  offset?: string;
+  count: number;
+  offset: number;
 }
 
 interface SearchParametersFavorite extends SearchParametersBase {
@@ -127,29 +128,55 @@ type SearchParameters = SearchParametersFavorite | SearchParametersSearch;
 
 const getPocketArticles = async (
   searchParameters: DeepReadonly<SearchParameters>
-) =>
-  await fetch(
-    `/api/items/get?${new URLSearchParams(searchParameters).toString()}`,
+) => {
+  const parsed = pickBy<Record<string, string>, Record<string, string>>(
+    identity,
+    {
+      ...searchParameters,
+      count: searchParameters.count.toString(),
+      offset: searchParameters.offset.toString(),
+    }
+  );
+
+  return await fetch(
+    `/api/items/get?${new URLSearchParams(parsed).toString()}`,
     {
       method: "GET",
     }
   ).then(async (response) => {
     return (await response.json()) as ResponseGetPocketApi;
   });
+};
 
 export default function useItemsGet(
   searchParameters: DeepReadonly<SearchParameters>
 ) {
-  return useQuery<ResponseGetPocketApi, Error>(
-    ["pocketArticles", searchParameters],
-    async () => await getPocketArticles(searchParameters),
+  type lala = DeepReadonly<{
+    pageParam: SearchParameters | undefined;
+  }>;
+
+  return useInfiniteQuery(
+    ["items", searchParameters],
+    /* @ts-expect-error any */
+    async ({ pageParam: pageParameter }: lala) => {
+      const searchParametersEdited =
+        pageParameter === undefined
+          ? { ...searchParameters, offset: 0, count: 10 }
+          : { ...searchParameters, ...pageParameter };
+
+      return await getPocketArticles(searchParametersEdited);
+    },
     {
-      keepPreviousData: true,
-      staleTime: 5000,
+      getNextPageParam: (lastPage, allPages) => {
+        return {
+          count: 10,
+          // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+          offset: allPages.length * 10,
+        };
+      },
     }
   );
 }
-
 export type {
   PocketArticle,
   ResponseGetPocketApi,

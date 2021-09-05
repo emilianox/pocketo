@@ -32,6 +32,7 @@
     "react-share": "^4.4.0",
     "react-tag-input": "^6.7.3",
     "react-virtual": "^2.8.1",
+    "react-virtuoso": "^2.0.1",
     "sass": "^1.39.0",
     "tailwindcss": "^2.2.9"
   },
