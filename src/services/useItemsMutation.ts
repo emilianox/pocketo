@@ -5,20 +5,21 @@ import { omit as rOmit } from "ramda";
 
 import type {
   ArticleAction,
-  Action_favorite,
-  Action_unfavorite,
   Actions,
-  Action_archive,
-  Action_delete,
+  ActionUnfavorite,
+  ActionFavorite,
+  ActionArchive,
+  ActionDelete,
 } from "./sendActions";
 import type { PocketArticle, ResponseGetPocketApi } from "./useItemsGet";
 
 interface ResponseSendPocketApi {
+  // eslint-disable-next-line @typescript-eslint/naming-convention, camelcase
   action_results: boolean[];
   status: number;
 }
 
-type useItemsMutationContext = {
+type UseItemsMutationContext = {
   oldData: ResponseGetPocketApi;
   newData: ResponseGetPocketApi;
   queryKey: QueryKey;
@@ -34,27 +35,45 @@ const postActions = async (actions: DeepReadonly<Actions>) => {
 
 const getIndexItemInPageQuery = (
   data: DeepReadonly<InfiniteData<ResponseGetPocketApi>>,
-  item_id: string
+  itemId: string
 ): number =>
   data.pages.reduce(
     (previous, current, index) =>
-      current.list[item_id] === undefined ? previous : index,
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+      current.list[itemId] === undefined ? previous : index,
     0
   );
 
-const updaterFn = <T extends ArticleAction>(
+// eslint-disable-next-line no-warning-comments
+// FIXME:eslint breaks on generics in fns when is fixed remove this typescript
+// and move this declaration to updaterFunction
+type UpdaterFunction<ArticleType> = (
   oldDatawithPages: InfiniteData<ResponseGetPocketApi> | undefined,
-  action: T,
-  getNewResponseFn: (
-    oldData: ResponseGetPocketApi,
-    action: T
+  action: ArticleType,
+  getNewResponseFunction: (
+    oldData: DeepReadonly<ResponseGetPocketApi>,
+    action: ArticleType
   ) => ResponseGetPocketApi
-): InfiniteData<ResponseGetPocketApi> => {
+) => InfiniteData<ResponseGetPocketApi>;
+
+// console.log("aaaa");
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const updaterFunction: UpdaterFunction<any> = (
+  oldDatawithPages,
+  action,
+  getNewResponseFunction
+) => {
   if (oldDatawithPages) {
-    const pageIndex = getIndexItemInPageQuery(oldDatawithPages, action.item_id);
+    const pageIndex = getIndexItemInPageQuery(
+      oldDatawithPages,
+      // eslint-disable-next-line no-warning-comments
+      // FIXME: eslint breaks on generics in fns when is fixed remove the cast
+      (action as ArticleAction).item_id
+    );
     const oldData: ResponseGetPocketApi = oldDatawithPages.pages[pageIndex];
 
-    const itemToReplace: ResponseGetPocketApi = getNewResponseFn(
+    const itemToReplace: ResponseGetPocketApi = getNewResponseFunction(
       oldData,
       action
     );
@@ -67,12 +86,12 @@ const updaterFn = <T extends ArticleAction>(
       }),
     };
   }
+
   return {} as InfiniteData<ResponseGetPocketApi>;
 };
-
 const getResponseGetPocketApiChangeFavorite = (
   oldData: DeepReadonly<ResponseGetPocketApi>,
-  action: Action_favorite | Action_unfavorite
+  action: ActionFavorite | ActionUnfavorite
 ): ResponseGetPocketApi => {
   const newItemEdited: PocketArticle = {
     ...oldData.list[action.item_id],
@@ -91,7 +110,7 @@ const getResponseGetPocketApiChangeFavorite = (
 
 const getResponseGetPocketApiRemoveKey = (
   oldData: DeepReadonly<ResponseGetPocketApi>,
-  action: DeepReadonly<Action_archive | Action_delete>
+  action: DeepReadonly<ActionArchive | ActionDelete>
 ): ResponseGetPocketApi => ({
   ...oldData,
   list: rOmit([action.item_id], oldData.list),
@@ -106,15 +125,16 @@ const setQueryDataFromActions = (
     case "favorite":
     case "unfavorite":
       return queryClient.setQueryData(queryKey, (oldData) =>
-        updaterFn(oldData, action, getResponseGetPocketApiChangeFavorite)
+        updaterFunction(oldData, action, getResponseGetPocketApiChangeFavorite)
       );
     case "archive":
     case "delete":
       return queryClient.setQueryData(queryKey, (oldData) =>
-        updaterFn(oldData, action, getResponseGetPocketApiRemoveKey)
+        updaterFunction(oldData, action, getResponseGetPocketApiRemoveKey)
       );
 
     default:
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       return queryClient.getQueryData(queryKey)!;
   }
 };
@@ -135,6 +155,7 @@ const getRelatedQueries = (
 const getAllItemsFromPagedQuery = (
   query: DeepReadonly<Query<InfiniteData<ResponseGetPocketApi>>>
 ): Record<string, PocketArticle> =>
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion, unicorn/prefer-object-from-entries
   query.state.data!.pages.reduce(
     (current, page) => ({
       ...current,
@@ -145,10 +166,11 @@ const getAllItemsFromPagedQuery = (
 
 const getItemQueryKeys = (
   queryClient: DeepReadonly<QueryClient>,
-  item_id: string
+  itemId: string
 ): QueryKey[] =>
   getRelatedQueries(queryClient, "items")
-    .filter((query) => getAllItemsFromPagedQuery(query)[item_id] !== undefined)
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    .filter((query) => getAllItemsFromPagedQuery(query)[itemId] !== undefined)
     .map((query) => query.queryKey);
 
 export default function useItemsSet() {
@@ -158,7 +180,7 @@ export default function useItemsSet() {
     ResponseSendPocketApi,
     unknown,
     Actions,
-    useItemsMutationContext
+    UseItemsMutationContext
   >(async (actions: DeepReadonly<Actions>) => await postActions(actions), {
     onMutate: async (variables) => {
       return await Promise.all(
@@ -166,18 +188,20 @@ export default function useItemsSet() {
           if ("item_id" in action) {
             const queryKeys = getItemQueryKeys(queryClient, action.item_id);
 
+            // eslint-disable-next-line @typescript-eslint/no-misused-promises
             queryKeys.forEach(async (queryKey) => {
               // Cancel any outgoing refetches (so they don't overwrite our optimistic update)
               await queryClient.cancelQueries(queryKey);
 
               // Snapshot the previous value
               const oldData =
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
                 queryClient.getQueryData<ResponseGetPocketApi>(queryKey)!;
               // Optimistically update to the new value
               const newData = setQueryDataFromActions(
                 queryClient,
                 queryKey,
-                action as ArticleAction
+                action
               );
 
               return {
@@ -198,6 +222,7 @@ export default function useItemsSet() {
     },
 
     onError: (error, variables, context) => {
+      // eslint-disable-next-line no-console
       console.error("endpoint error:", error);
 
       context?.forEach((aContext) => {
@@ -205,7 +230,9 @@ export default function useItemsSet() {
       });
     },
 
+    // eslint-disable-next-line max-params
     onSettled: (data, error, variables, context) => {
+      // eslint-disable-next-line no-console
       console.log("reload page,aContext", context);
 
       context?.forEach((aContext) => {

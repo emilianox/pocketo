@@ -9,7 +9,7 @@ interface ActionBase {
   time?: string;
 }
 
-interface Action_add extends ActionBase {
+interface ActionAdd extends ActionBase {
   action: "add";
   /** A Twitter status id; this is used to show tweet attribution. */
   ref_id?: number;
@@ -21,49 +21,49 @@ interface Action_add extends ActionBase {
   url?: string;
 }
 
-interface Action_archive extends ActionBase {
+interface ActionArchive extends ActionBase {
   action: "archive";
 }
 
-interface Action_readd extends ActionBase {
+interface ActionReadd extends ActionBase {
   action: "readd";
 }
 
-interface Action_favorite extends ActionBase {
+interface ActionFavorite extends ActionBase {
   action: "favorite";
 }
 
-interface Action_unfavorite extends ActionBase {
+interface ActionUnfavorite extends ActionBase {
   action: "unfavorite";
 }
 
-interface Action_delete extends ActionBase {
+interface ActionDelete extends ActionBase {
   action: "delete";
 }
 
-interface Action_tags_add extends ActionBase {
+interface ActionTags_add extends ActionBase {
   action: "tags_add";
   /** A comma-delimited list of one or more tags to add. */
   tags: string;
 }
 
-interface Action_tags_remove extends ActionBase {
+interface ActionTags_remove extends ActionBase {
   action: "tags_remove";
   /** A comma-delimited list of one or more tags to add. */
   tags: string;
 }
 
-interface Action_tags_replace extends ActionBase {
+interface ActionTags_replace extends ActionBase {
   action: "tags_replace";
   /** A comma-delimited list of one or more tags to add. */
   tags: string;
 }
 
-interface Action_tags_clear extends ActionBase {
+interface ActionTags_clear extends ActionBase {
   action: "tags_clear";
 }
 
-interface Action_tag_rename {
+interface ActionTag_rename {
   action: "tag_rename";
   /** The tag name that will be replaced. */
   old_tag: string;
@@ -73,7 +73,7 @@ interface Action_tag_rename {
   time?: string;
 }
 
-interface Action_tag_delete {
+interface ActionTag_delete {
   action: "tag_delete";
   /** The tag name that will be deleted. */
   tag: string;
@@ -82,18 +82,18 @@ interface Action_tag_delete {
 }
 
 type ArticleAction =
-  | Action_add
-  | Action_archive
-  | Action_delete
-  | Action_favorite
-  | Action_readd
-  | Action_tags_add
-  | Action_tags_clear
-  | Action_tags_remove
-  | Action_tags_replace
-  | Action_unfavorite;
+  | ActionAdd
+  | ActionArchive
+  | ActionDelete
+  | ActionFavorite
+  | ActionReadd
+  | ActionTags_add
+  | ActionTags_clear
+  | ActionTags_remove
+  | ActionTags_replace
+  | ActionUnfavorite;
 
-type Action = Action_tag_delete | Action_tag_rename | ArticleAction;
+type Action = ActionTag_delete | ActionTag_rename | ArticleAction;
 
 type Actions = Action[];
 
@@ -102,21 +102,21 @@ type ArticleActions = ArticleAction[];
 const createFavoriteAction = (
   favorite: PocketArticle["favorite"],
   item_id: PocketArticle["item_id"]
-): Action_favorite | Action_unfavorite => ({
+): ActionFavorite | ActionUnfavorite => ({
   action: favorite === "0" ? "favorite" : "unfavorite",
   item_id,
 });
 
 const createArchiveAction = (
   item_id: PocketArticle["item_id"]
-): Action_archive => ({
+): ActionArchive => ({
   action: "archive",
   item_id,
 });
 
 const createDeleteAction = (
   item_id: PocketArticle["item_id"]
-): Action_delete => ({
+): ActionDelete => ({
   action: "delete",
   item_id,
 });
@@ -124,7 +124,7 @@ const createDeleteAction = (
 const createTagReplaceAction = (
   item_id: PocketArticle["item_id"],
   tags: string
-): Action_tags_replace => ({
+): ActionTags_replace => ({
   action: "tags_replace",
   item_id,
   tags,
@@ -142,16 +142,16 @@ export type {
   Action,
   ArticleAction,
   ArticleActions,
-  Action_add,
-  Action_archive,
-  Action_delete,
-  Action_favorite,
-  Action_readd,
-  Action_tag_delete,
-  Action_tag_rename,
-  Action_tags_add,
-  Action_tags_clear,
-  Action_tags_remove,
-  Action_tags_replace,
-  Action_unfavorite,
+  ActionAdd,
+  ActionArchive,
+  ActionDelete,
+  ActionFavorite,
+  ActionReadd,
+  ActionTag_delete,
+  ActionTag_rename,
+  ActionTags_add,
+  ActionTags_clear,
+  ActionTags_remove,
+  ActionTags_replace,
+  ActionUnfavorite,
 };
