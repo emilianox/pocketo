@@ -87,13 +87,13 @@ type ArticleAction =
   | Action_delete
   | Action_favorite
   | Action_readd
-  | Action_tag_delete
-  | Action_tag_rename
   | Action_tags_add
   | Action_tags_clear
+  | Action_tags_remove
+  | Action_tags_replace
   | Action_unfavorite;
 
-type Action = Action_tags_remove | Action_tags_replace | ArticleAction;
+type Action = Action_tag_delete | Action_tag_rename | ArticleAction;
 
 type Actions = Action[];
 

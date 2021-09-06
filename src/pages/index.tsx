@@ -27,21 +27,23 @@ function Items() {
 
   const [selectedItem, setselectedItem] = useState<PocketArticle>();
 
-  // console.log("formSearchResult", formSearchResult);
-
   const { data, error, fetchNextPage, isFetching } = useItems(formSearchResult);
 
   const itemsMutation = useItemsMutation();
 
-  // const dataItems = data ? Object.values(data.list) : [];
-  const dataItems: PocketArticle[] = data
-    ? data.pages.reduce<PocketArticle[]>(
-        (previous, current) => [...previous, ...Object.values(current.list)],
-        []
-      )
-    : [];
-
-  // console.log("dataItems", dataItems);
+  const dataItems: PocketArticle[] = useMemo(
+    () =>
+      data
+        ? data.pages.reduce<PocketArticle[]>(
+            (previous, current) => [
+              ...previous,
+              ...Object.values(current.list),
+            ],
+            []
+          )
+        : [],
+    [data]
+  );
 
   /* eslint-disable react-hooks/exhaustive-deps */
   const mutationArchive: MakeMutation = useCallback((dataItem) => {
@@ -69,16 +71,13 @@ function Items() {
     setselectedItem(undefined);
     tagReplaceMutation(itemId, tags.join(","));
   }, []);
-  /* eslint-enable react-hooks/exhaustive-deps */
 
   const onCancelModal = useCallback(() => {
     setselectedItem(undefined);
   }, []);
 
-  const nextPage = useCallback(
-    async () => await fetchNextPage(),
-    [fetchNextPage]
-  );
+  const nextPage = useCallback(async () => await fetchNextPage(), []);
+  /* eslint-enable react-hooks/exhaustive-deps */
 
   // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
   if (error) {
@@ -96,7 +95,7 @@ function Items() {
         // we can use `isFetching` to show a background loading
         // indicator since our `status === 'loading'` state won't be triggered
         isFetching ? <span> Loading...</span> : undefined
-      }{" "}
+      }
       <Virtuoso
         // eslint-disable-next-line react-perf/jsx-no-new-object-as-prop
         components={{
@@ -131,6 +130,7 @@ function Items() {
             setselectedItem={setselectedItem}
           />
         )}
+        overscan={800}
         // eslint-disable-next-line react/forbid-component-props, react-perf/jsx-no-new-object-as-prop
         style={{ height: 800 }}
       />

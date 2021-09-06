@@ -148,30 +148,32 @@ const getPocketArticles = async (
   });
 };
 
+type pageParameters = DeepReadonly<{
+  pageParam: SearchParameters | undefined;
+}>;
+
 export default function useItemsGet(
   searchParameters: DeepReadonly<SearchParameters>
 ) {
-  type lala = DeepReadonly<{
-    pageParam: SearchParameters | undefined;
-  }>;
-
   return useInfiniteQuery(
     ["items", searchParameters],
     /* @ts-expect-error any */
-    async ({ pageParam: pageParameter }: lala) => {
+    async ({ pageParam: pageParameter }: pageParameters) => {
       const searchParametersEdited =
         pageParameter === undefined
-          ? { ...searchParameters, offset: 0, count: 10 }
+          ? { ...searchParameters, offset: 0, count: 30 }
           : { ...searchParameters, ...pageParameter };
 
       return await getPocketArticles(searchParametersEdited);
     },
     {
       getNextPageParam: (lastPage, allPages) => {
+        // console.log("getNextPageParam", lastPage, allPages);
+
         return {
-          count: 10,
+          count: 30,
           // eslint-disable-next-line @typescript-eslint/no-magic-numbers
-          offset: allPages.length * 10,
+          offset: allPages.length * 30,
         };
       },
     }
