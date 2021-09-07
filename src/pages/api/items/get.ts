@@ -5,8 +5,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable import/no-anonymous-default-export */
 /* eslint-disable @typescript-eslint/prefer-readonly-parameter-types */
-//   console.log("res", res);
-//
+
 // state	string		See below for valid values
 // favorite	0 or 1		See below for valid values
 // tag	string		See below for valid values

@@ -149,31 +149,29 @@ const getPocketArticles = async (
 };
 
 type pageParameters = DeepReadonly<{
-  pageParam: SearchParameters | undefined;
+  pageParam?: SearchParameters | undefined;
 }>;
+
+const itemPerRequest = 100;
 
 export default function useItemsGet(
   searchParameters: DeepReadonly<SearchParameters>
 ) {
   return useInfiniteQuery(
     ["items", searchParameters],
-    /* @ts-expect-error any */
     async ({ pageParam: pageParameter }: pageParameters) => {
       const searchParametersEdited =
         pageParameter === undefined
-          ? { ...searchParameters, offset: 0, count: 30 }
+          ? { ...searchParameters, offset: 0, count: itemPerRequest }
           : { ...searchParameters, ...pageParameter };
 
       return await getPocketArticles(searchParametersEdited);
     },
     {
       getNextPageParam: (lastPage, allPages) => {
-        // console.log("getNextPageParam", lastPage, allPages);
-
         return {
-          count: 30,
-          // eslint-disable-next-line @typescript-eslint/no-magic-numbers
-          offset: allPages.length * 30,
+          count: itemPerRequest,
+          offset: allPages.length * itemPerRequest,
         };
       },
     }

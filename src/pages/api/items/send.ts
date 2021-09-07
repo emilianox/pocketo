@@ -3,8 +3,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable import/no-anonymous-default-export */
 /* eslint-disable @typescript-eslint/prefer-readonly-parameter-types */
-//   console.log("res", res);
-//
 
 // List of Actions
 // Basic Actions
@@ -27,8 +25,6 @@ import type { NextApiRequest, NextApiResponse } from "next";
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const accessToken = process.env.POCKET_ACCESS_TOKEN!;
   const consumerKey = process.env.POCKET_CONSUMER_KEY!;
-
-  // console.log("req.query.actions", req.query.actions);
 
   const actions =
     typeof req.query.actions === "string" ? req.query.actions : "";

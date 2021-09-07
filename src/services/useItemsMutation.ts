@@ -56,8 +56,6 @@ type UpdaterFunction<ArticleType> = (
   ) => ResponseGetPocketApi
 ) => InfiniteData<ResponseGetPocketApi>;
 
-// console.log("aaaa");
-
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const updaterFunction: UpdaterFunction<any> = (
   oldDatawithPages,
@@ -232,9 +230,6 @@ export default function useItemsSet() {
 
     // eslint-disable-next-line max-params
     onSettled: (data, error, variables, context) => {
-      // eslint-disable-next-line no-console
-      console.log("reload page,aContext", context);
-
       context?.forEach((aContext) => {
         void queryClient.invalidateQueries(aContext.queryKey);
       });
