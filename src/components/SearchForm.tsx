@@ -1,7 +1,14 @@
+/* eslint-disable @typescript-eslint/naming-convention */
+/* eslint-disable react-perf/jsx-no-new-object-as-prop */
+/* eslint-disable no-console */
+/* eslint-disable react/forbid-component-props */
 /* eslint-disable react/jsx-props-no-spreading */
 import type { SubmitHandler } from "react-hook-form";
 import { useForm } from "react-hook-form";
+import type { ReactTagifySettings } from "@yaireo/tagify/dist/react.tagify";
+import MixedTags from "@yaireo/tagify/dist/react.tagify";
 import type { DeepReadonly } from "ts-essentials/dist/types";
+import { useCallback } from "react";
 
 import type {
   SearchParameters,
@@ -12,7 +19,6 @@ import type {
 interface SearchParametersAll
   extends Omit<SearchParametersFavorite, "favorite">,
     SearchParametersSearch {
-  // eslint-disable-next-line @typescript-eslint/naming-convention
   favorite: boolean;
 }
 
@@ -43,20 +49,51 @@ export default function SearchForm({
 
     onSubmit(parameters);
   };
+  const settings: ReactTagifySettings = {
+    // eslint-disable-next-line no-inline-comments, line-comment-position
+    pattern: /#/u, // <- must define "patten" in mixed mode
+    mode: "mix",
+
+    dropdown: {
+      enabled: true,
+      position: "text",
+      highlightFirst: true,
+    },
+
+    whitelist: [
+      // { id: 109, value: "Mr. Mackey", title: "M'Kay" },
+      "test",
+      "test2",
+      "zzzz",
+    ],
+  };
+
+  const onChange = useCallback((event) => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    console.log("CHANGED:", event.detail.value);
+  }, []);
 
   return (
     <form
       className="flex-row justify-center items-center p-3 form-control"
       onSubmit={handleSubmit(onParse)}
     >
-      <label className="label">
+      <MixedTags
+        // autoFocus
+        className="mixedTags"
+        onChange={onChange}
+        readonly={isFavorite}
+        settings={settings}
+        value={`This is a textarea which `}
+      />
+      {/* <label className="label">
         <input
           {...register("search")}
           className="input input-bordered"
           disabled={isFavorite}
           placeholder="Search..."
         />
-      </label>
+      </label> */}
       <label className="label">
         <select
           {...register("state")}

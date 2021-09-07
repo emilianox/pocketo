@@ -18,10 +18,12 @@
   },
   "dependencies": {
     "@tool-belt/type-predicates": "^1.1.0",
+    "@yaireo/tagify": "^4.7.2",
     "clsx": "^1.1.1",
     "copy-text-to-clipboard": "^3.0.1",
     "daisyui": "^1.14.0",
     "next": "11.1.2",
+    "notistack": "^1.0.10",
     "pocket-auth": "^1.2.4",
     "ramda": "^0.27.1",
     "react": "17.0.2",

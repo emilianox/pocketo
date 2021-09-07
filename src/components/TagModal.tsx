@@ -37,7 +37,7 @@ function TagModal({
   const { status, data: allTags, error } = useTagGet();
 
   if (status === "loading") {
-    return <div>Loading...</div>;
+    return <div>Loading Modal...</div>;
   }
 
   if (error) {

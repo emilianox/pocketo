@@ -1,0 +1,98 @@
+:root {
+  --tagify-dd-bg-color: rgb(61, 68, 81);
+  --tagify-dd-color-primary: rgb(53, 149, 246);
+}
+
+@import "@yaireo/tagify/dist/tagify.css";
+
+.mixedTags {
+  @apply input input-primary input-bordered;
+}
+
+// $padding: 1.5rem;
+
+// html,
+// body,
+// #app {
+//   height: 100%;
+//   padding: 0;
+//   margin: 0;
+// }
+
+// *,
+// *::before,
+// *::after {
+//   box-sizing: border-box;
+// }
+
+// body {
+//   font: 16px Arial;
+//   background: #f5f5f5;
+// }
+
+// #app {
+//   > * {
+//     padding: 0 $padding;
+//   }
+// }
+
+// body .tagify {
+//   margin-bottom: 3em;
+//   --tag-bg: #6c0e42;
+//   --tag-text-color: white;
+//   --tag-text-color--edit: var(--tag-bg);
+//   --tag-hover: rgb(162, 8, 56);
+//   --tag-remove-btn-color: white;
+// }
+
+// header {
+//   color: white;
+//   background: #111;
+//   background: linear-gradient(145deg, rgb(162, 8, 56) 0%, rgb(54, 20, 75) 100%);
+
+//   text-align: center;
+//   margin-bottom: 2em;
+//   padding: $padding !important;
+//   border-bottom: 1px solid #ccc;
+
+//   h1 {
+//     margin: 0 0 1em;
+//   }
+//   a {
+//     color: inherit;
+//     font-style: italic;
+//     text-decoration: none;
+//     border-radius: 8px;
+//     padding: 0.22em;
+//     margin: -0.22em;
+//   }
+//   a:hover {
+//     background: rgba(white, 0.12);
+//   }
+// }
+
+// nav {
+//   > a {
+//     color: white;
+//     margin: 0 1em;
+//     padding: 0.8em;
+//     border-radius: 6px;
+//     text-decoration: none;
+//   }
+//   .active {
+//     background: rgba(black, 0.25);
+//   }
+// }
+
+// h2 {
+//   margin: 0 0 1em 0;
+// }
+
+// .clearAllBtn {
+//   float: right;
+//   margin-bottom: 0.5em;
+//   margin-right: $padding;
+//   + div {
+//     clear: both;
+//   }
+// }

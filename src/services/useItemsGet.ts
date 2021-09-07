@@ -4,9 +4,12 @@
 /** 1 if the item is archived - 2 if the item should be deleted */
 /** if the item has videos in it - 2 if the item is a video  */
 /** 1 if the item has images in it - 2 if the item is an image */
+
 import { useInfiniteQuery } from "react-query";
 import type { DeepReadonly } from "ts-essentials/dist/types";
 import { identity, pickBy } from "ramda";
+
+import useNotify from "hooks/useNotify";
 
 interface Searchmeta {
   search_type: string;
@@ -126,8 +129,16 @@ interface SearchParametersSearch extends SearchParametersBase {
 
 type SearchParameters = SearchParametersFavorite | SearchParametersSearch;
 
-const getPocketArticles = async (
-  searchParameters: DeepReadonly<SearchParameters>
+type GetPocketArticles = (
+  searchParameters: DeepReadonly<SearchParameters>,
+  onStartNotify: () => void,
+  onFinishNotify: () => void
+) => Promise<ResponseGetPocketApi>;
+
+const getPocketArticles: GetPocketArticles = async (
+  searchParameters,
+  onStartNotify,
+  onFinishNotify
 ) => {
   const parsed = pickBy<Record<string, string>, Record<string, string>>(
     identity,
@@ -138,12 +149,16 @@ const getPocketArticles = async (
     }
   );
 
+  onStartNotify();
+
   return await fetch(
     `/api/items/get?${new URLSearchParams(parsed).toString()}`,
     {
       method: "GET",
     }
   ).then(async (response) => {
+    onFinishNotify();
+
     return (await response.json()) as ResponseGetPocketApi;
   });
 };
@@ -157,6 +172,11 @@ const itemPerRequest = 100;
 export default function useItemsGet(
   searchParameters: DeepReadonly<SearchParameters>
 ) {
+  const { onStartNotify, onFinishNotify } = useNotify("Loading..", {
+    key: "loading",
+    preventDuplicate: true,
+  });
+
   return useInfiniteQuery(
     ["items", searchParameters],
     async ({ pageParam: pageParameter }: pageParameters) => {
@@ -165,7 +185,11 @@ export default function useItemsGet(
           ? { ...searchParameters, offset: 0, count: itemPerRequest }
           : { ...searchParameters, ...pageParameter };
 
-      return await getPocketArticles(searchParametersEdited);
+      return await getPocketArticles(
+        searchParametersEdited,
+        onStartNotify,
+        onFinishNotify
+      );
     },
     {
       getNextPageParam: (lastPage, allPages) => {

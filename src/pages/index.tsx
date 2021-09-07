@@ -26,7 +26,7 @@ function Items() {
 
   const [selectedItem, setselectedItem] = useState<PocketArticle>();
 
-  const { data, error, fetchNextPage, isFetching } = useItems(formSearchResult);
+  const { data, error, fetchNextPage } = useItems(formSearchResult);
 
   const itemsMutation = useItemsMutation();
 
@@ -80,7 +80,7 @@ function Items() {
 
   // eslint-disable-next-line @typescript-eslint/naming-convention
   const Footer = useCallback(
-    () => <div className="flex justify-center p-8">Loading...</div>,
+    () => <div className="flex justify-center p-8">uhhh...</div>,
     []
   );
 
@@ -89,15 +89,9 @@ function Items() {
     () => (
       <div className="fixed z-10 w-full bg-gray-800">
         <SearchForm onSubmit={setFormSearchResult} />
-        {
-          // Since the last page's data potentially sticks around between page requests,
-          // we can use `isFetching` to show a background loading
-          // indicator since our `status === 'loading'` state won't be triggered
-          isFetching ? <span> Loading...</span> : undefined
-        }
       </div>
     ),
-    [isFetching, setFormSearchResult]
+    [setFormSearchResult]
   );
 
   // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
