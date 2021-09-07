@@ -1,7 +1,10 @@
 import "tailwindcss/tailwind.css";
+import "styles/app.scss";
+
 import "styles/TagSelector.scss";
 import type { AppProps } from "next/app";
 import { QueryClient, QueryClientProvider } from "react-query";
+import Head from "next/head";
 
 const queryClient = new QueryClient();
 
@@ -9,6 +12,9 @@ const queryClient = new QueryClient();
 function MyApp({ Component, pageProps }: AppProps): JSX.Element {
   return (
     <QueryClientProvider client={queryClient}>
+      <Head>
+        <title>Pocketo</title>
+      </Head>
       {/* eslint-disable-next-line react/jsx-props-no-spreading */}
       <Component {...pageProps} />
     </QueryClientProvider>

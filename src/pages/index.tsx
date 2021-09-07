@@ -1,6 +1,5 @@
 /* eslint-disable max-statements */
-import Head from "next/head";
-import { useCallback, useMemo, useState } from "react";
+import { forwardRef, useCallback, useMemo, useState } from "react";
 import type { DeepReadonly } from "ts-essentials/dist/types";
 // import { ReactQueryDevtools } from "react-query/devtools";
 import { Virtuoso } from "react-virtuoso";
@@ -79,6 +78,28 @@ function Items() {
   const nextPage = useCallback(async () => await fetchNextPage(), []);
   /* eslint-enable react-hooks/exhaustive-deps */
 
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  const Footer = useCallback(
+    () => <div className="flex justify-center p-8">Loading...</div>,
+    []
+  );
+
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  const Header = useCallback(
+    () => (
+      <div className="fixed z-10 w-full bg-gray-800">
+        <SearchForm onSubmit={setFormSearchResult} />
+        {
+          // Since the last page's data potentially sticks around between page requests,
+          // we can use `isFetching` to show a background loading
+          // indicator since our `status === 'loading'` state won't be triggered
+          isFetching ? <span> Loading...</span> : undefined
+        }
+      </div>
+    ),
+    [isFetching, setFormSearchResult]
+  );
+
   // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
   if (error) {
     return "Error...";
@@ -86,37 +107,22 @@ function Items() {
 
   return (
     <>
-      <Head>
-        <title>Pocketo</title>
-      </Head>
-      <SearchForm onSubmit={setFormSearchResult} />
-      {
-        // Since the last page's data potentially sticks around between page requests,
-        // we can use `isFetching` to show a background loading
-        // indicator since our `status === 'loading'` state won't be triggered
-        isFetching ? <span> Loading...</span> : undefined
-      }
       <Virtuoso
+        /* eslint-disable @typescript-eslint/naming-convention */
         // eslint-disable-next-line react-perf/jsx-no-new-object-as-prop
         components={{
-          // eslint-disable-next-line react/no-unstable-nested-components, react/display-name, react/no-multi-comp, @typescript-eslint/naming-convention
-          Footer: () => {
-            return (
-              <div
-                style={useMemo(
-                  () => ({
-                    padding: "2rem",
-                    display: "flex",
-                    justifyContent: "center",
-                  }),
-                  []
-                )}
-              >
-                Loading...
-              </div>
-            );
-          },
+          // eslint-disable-next-line react/display-name, react/no-multi-comp
+          List: forwardRef(({ style, children }, listReference) => (
+            // eslint-disable-next-line react-perf/jsx-no-new-object-as-prop
+            <div ref={listReference} style={{ ...style, marginTop: 88 }}>
+              {children}
+            </div>
+          )),
+
+          Header,
+          Footer,
         }}
+        /* eslint-enable @typescript-eslint/naming-convention */
         data={dataItems}
         endReached={nextPage}
         // eslint-disable-next-line react/jsx-no-bind, react-perf/jsx-no-new-function-as-prop, react/no-unstable-nested-components
@@ -130,10 +136,10 @@ function Items() {
             setselectedItem={setselectedItem}
           />
         )}
-        overscan={800}
-        // eslint-disable-next-line react/forbid-component-props, react-perf/jsx-no-new-object-as-prop
-        style={{ height: 800 }}
+        overscan={1000}
+        useWindowScroll
       />
+
       {/* <ReactQueryDevtools initialIsOpen /> */}
       <TagModal
         onCancel={onCancelModal}

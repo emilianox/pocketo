@@ -24,34 +24,36 @@ function ActionButtons({
   url,
 }: DeepReadonly<ActionButtonsProps>): JSX.Element {
   return (
-    <div className="btn-group">
+    <div className="p-2 shadow-lg menu bg-base-100 rounded-box horizontal">
+      <li>
+        <button
+          className="inline-block mx-2 w-6 h-6 stroke-current"
+          onClick={toggleFavorite}
+          type="button"
+        >
+          {favorite === "0" ? (
+            <MdStarBorder size="1.5em" />
+          ) : (
+            <MdStar size="1.5em" />
+          )}
+        </button>
+      </li>
       <button
-        className="text-gray-400 btn btn-outline btn-sm"
-        onClick={toggleFavorite}
-        type="button"
-      >
-        {favorite === "0" ? (
-          <MdStarBorder size="1.5em" />
-        ) : (
-          <MdStar size="1.5em" />
-        )}
-      </button>
-      <button
-        className="text-gray-400 btn btn-outline btn-sm"
+        className="inline-block mx-2 w-6 h-6 stroke-current"
         onClick={archive}
         type="button"
       >
         <MdArchive size="1.5em" />
       </button>
       <button
-        className="text-gray-400 btn btn-outline btn-sm"
+        className="inline-block mx-2 w-6 h-6 stroke-current"
         onClick={selectItem}
         type="button"
       >
         <AiOutlineTags size="1.5em" />
       </button>
       <button
-        className="text-gray-400 btn btn-outline btn-sm"
+        className="inline-block mx-2 w-6 h-6 stroke-current"
         onClick={deleteItem}
         type="button"
       >
@@ -59,7 +61,7 @@ function ActionButtons({
       </button>
 
       <button
-        className="text-gray-400 btn btn-outline btn-sm"
+        className="inline-block mx-2 w-6 h-6 stroke-current"
         onClick={React.useCallback(() => copy(url), [url])}
         type="button"
       >
@@ -67,7 +69,7 @@ function ActionButtons({
       </button>
       <WhatsappShareButton
         // eslint-disable-next-line react/forbid-component-props
-        className="text-gray-400 btn btn-outline btn-sm"
+        className="inline-block mx-2 w-6 h-6 stroke-current"
         resetButtonStyle={false}
         // title={title}
         separator=":: "
@@ -77,7 +79,7 @@ function ActionButtons({
       </WhatsappShareButton>
       <TelegramShareButton
         // eslint-disable-next-line react/forbid-component-props
-        className="text-gray-400 btn btn-outline btn-sm"
+        className="inline-block mx-2 w-6 h-6 stroke-current"
         resetButtonStyle={false}
         // title={title}
         // separator=":: "

@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable react/jsx-props-no-spreading */
 import type { SubmitHandler } from "react-hook-form";
 import { useForm } from "react-hook-form";
@@ -46,8 +45,11 @@ export default function SearchForm({
   };
 
   return (
-    <form onSubmit={handleSubmit(onParse)}>
-      <label>
+    <form
+      className="flex-row justify-center items-center p-3 form-control"
+      onSubmit={handleSubmit(onParse)}
+    >
+      <label className="label">
         <input
           {...register("search")}
           className="input input-bordered"
@@ -55,7 +57,7 @@ export default function SearchForm({
           placeholder="Search..."
         />
       </label>
-      <label>
+      <label className="label">
         <select
           {...register("state")}
           className="w-full max-w-xs select select-bordered"
@@ -73,12 +75,12 @@ export default function SearchForm({
           type="checkbox"
         />
       </label>
-      <label>
+      {/* <label>
         <div>TAGS(comming soon)</div>
-      </label>
-      <label>
+      </label> */}
+      {/* <label>
         <div>content(comming soon)</div>
-      </label>
+      </label> */}
       <label>
         <select
           {...register("sort")}
@@ -90,14 +92,14 @@ export default function SearchForm({
           <option value="title">Title</option>
         </select>
       </label>
-      <label>
+      {/* <label>
         <div>domain(comming soon)</div>
-      </label>
-      <label>
+      </label> */}
+      {/* <label>
         <div>since(comming soon)</div>
-      </label>
+      </label> */}
 
-      <input type="submit" />
+      <input className="btn" type="submit" />
     </form>
   );
 }

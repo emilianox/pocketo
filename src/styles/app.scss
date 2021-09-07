@@ -1,0 +1,7 @@
+.actionItemButton {
+  @apply inline-block mx-2 w-6 h-6 stroke-current;
+}
+
+.actionButtons {
+  @apply p-2 shadow-lg menu bg-base-100 rounded-box horizontal;
+}
