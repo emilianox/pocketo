@@ -16,6 +16,7 @@ import {
   createFavoriteAction,
   createTagReplaceAction,
 } from "services/sendActions";
+import ItemLoaderPage from "components/ItemLoaderPage";
 
 type MakeMutation = (dataItem: DeepReadonly<PocketArticle>) => void;
 
@@ -79,12 +80,6 @@ function Items() {
   /* eslint-enable react-hooks/exhaustive-deps */
 
   // eslint-disable-next-line @typescript-eslint/naming-convention
-  const Footer = useCallback(
-    () => <div className="flex justify-center p-8">uhhh...</div>,
-    []
-  );
-
-  // eslint-disable-next-line @typescript-eslint/naming-convention
   const Header = useCallback(
     () => (
       <div className="fixed z-10 w-full bg-gray-800">
@@ -114,7 +109,7 @@ function Items() {
           )),
 
           Header,
-          Footer,
+          Footer: ItemLoaderPage,
         }}
         /* eslint-enable @typescript-eslint/naming-convention */
         data={dataItems}
