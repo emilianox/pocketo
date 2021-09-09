@@ -1,9 +1,5 @@
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
-/** 0 if false 1 if true */
-/** 1 if the item is archived - 2 if the item should be deleted */
-/** if the item has videos in it - 2 if the item is a video  */
-/** 1 if the item has images in it - 2 if the item is an image */
 
 import { identity, pickBy } from "ramda";
 import { useInfiniteQuery } from "react-query";
@@ -63,6 +59,7 @@ type Images = Record<string, Image>;
 
 type Tags = Record<string, Tag>;
 
+/** 0 if false 1 if true */
 type pocketBoolean = "0" | "1";
 
 interface PocketArticle {
@@ -71,6 +68,7 @@ interface PocketArticle {
   given_url: string;
   given_title: string;
   favorite: pocketBoolean;
+  /** 1 if the item is archived - 2 if the item should be deleted */
   status: "0" | "1" | "2";
   time_added: string;
   time_updated: string;
@@ -82,7 +80,9 @@ interface PocketArticle {
   excerpt: string;
   is_article: pocketBoolean;
   is_index: string;
+  /** if the item has videos in it - 2 if the item is a video  */
   has_video: "0" | "1" | "2";
+  /** 1 if the item has images in it - 2 if the item is an image */
   has_image: "0" | "1" | "2";
   word_count: string;
   lang: string;

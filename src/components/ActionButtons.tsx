@@ -3,15 +3,18 @@ import React from "react";
 import copy from "copy-text-to-clipboard";
 import { AiOutlineTags } from "react-icons/ai";
 import { FaLink, FaTelegram, FaTrash, FaWhatsapp } from "react-icons/fa";
-import { MdStarBorder, MdArchive, MdStar } from "react-icons/md";
+import { MdStarBorder, MdArchive, MdStar, MdUnarchive } from "react-icons/md";
 import { TelegramShareButton, WhatsappShareButton } from "react-share";
+
+import type { PocketArticle } from "services/useItemsGet";
 
 import type { DeepReadonly } from "ts-essentials/dist/types";
 
 interface ActionButtonsProps {
   archive: () => void;
   deleteItem: () => void;
-  favorite: "0" | "1";
+  favorite: PocketArticle["favorite"];
+  status: PocketArticle["status"];
   selectItem: () => void;
   toggleFavorite: () => void;
   url: string;
@@ -24,6 +27,7 @@ function ActionButtons({
   selectItem,
   toggleFavorite,
   url,
+  status,
 }: DeepReadonly<ActionButtonsProps>): JSX.Element {
   return (
     <div className="p-2 shadow-lg menu bg-base-100 rounded-box horizontal">
@@ -45,7 +49,11 @@ function ActionButtons({
         onClick={archive}
         type="button"
       >
-        <MdArchive size="1.5em" />
+        {status === "0" ? (
+          <MdArchive size="1.5em" />
+        ) : (
+          <MdUnarchive size="1.5em" />
+        )}
       </button>
       <button
         className="inline-block mx-2 w-6 h-6 stroke-current"

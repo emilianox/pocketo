@@ -8,6 +8,7 @@ import {
   createDeleteAction,
   createFavoriteAction,
   createTagReplaceAction,
+  createUnarchiveAction,
 } from "services/sendActions";
 
 import type {
@@ -137,6 +138,7 @@ const setQueryDataFromActions = (
         updaterFunction(oldData, action, getResponseGetPocketApiChangeFavorite)
       );
     case "archive":
+    case "readd":
     case "delete":
       return queryClient.setQueryData(queryKey, (oldData) =>
         updaterFunction(oldData, action, getResponseGetPocketApiRemoveKey)
@@ -250,6 +252,10 @@ export default function useItemsSet() {
   });
   /* eslint-disable react-hooks/exhaustive-deps */
 
+  const mutationUnarchive: MakeMutation = useCallback((dataItem) => {
+    itemsMutation.mutate([createUnarchiveAction(dataItem.item_id)]);
+  }, []);
+
   const mutationArchive: MakeMutation = useCallback((dataItem) => {
     itemsMutation.mutate([createArchiveAction(dataItem.item_id)]);
   }, []);
@@ -273,6 +279,7 @@ export default function useItemsSet() {
   return {
     ...itemsMutation,
     mutationArchive,
+    mutationUnarchive,
     mutationtoggleFavorite,
     mutationDelete,
     tagReplaceMutation,

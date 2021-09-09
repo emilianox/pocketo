@@ -13,6 +13,7 @@ import type { DeepReadonly } from "ts-essentials/dist/types";
 interface ItemProps {
   dataItem: PocketArticle;
   mutationArchive: MakeMutation;
+  mutationUnarchive: MakeMutation;
   mutationDelete: MakeMutation;
   mutationtoggleFavorite: MakeMutation;
   setselectedItem: Dispatch<SetStateAction<PocketArticle | undefined>>;
@@ -21,6 +22,7 @@ interface ItemProps {
 function Item({
   dataItem,
   mutationArchive,
+  mutationUnarchive,
   mutationDelete,
   mutationtoggleFavorite,
   setselectedItem,
@@ -29,8 +31,13 @@ function Item({
     useState(false);
 
   const archive = useCallback(() => {
-    mutationArchive(dataItem);
-  }, [dataItem, mutationArchive]);
+    if (dataItem.status === "0") {
+      mutationArchive(dataItem);
+      // eslint-disable-next-line sonarjs/elseif-without-else
+    } else if (dataItem.status === "1") {
+      mutationUnarchive(dataItem);
+    }
+  }, [dataItem, mutationArchive, mutationUnarchive]);
 
   const deleteItem = useCallback(() => {
     setIsConfirmDeleteModalOpen(true);
@@ -110,6 +117,7 @@ function Item({
                 deleteItem={deleteItem}
                 favorite={dataItem.favorite}
                 selectItem={selectItem}
+                status={dataItem.status}
                 toggleFavorite={toggleFavorite}
                 url={dataItem.resolved_url}
               />

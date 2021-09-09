@@ -114,6 +114,13 @@ const createArchiveAction = (
   item_id,
 });
 
+const createUnarchiveAction = (
+  item_id: PocketArticle["item_id"]
+): ActionReadd => ({
+  action: "readd",
+  item_id,
+});
+
 const createDeleteAction = (
   item_id: PocketArticle["item_id"]
 ): ActionDelete => ({
@@ -135,6 +142,7 @@ export {
   createArchiveAction,
   createDeleteAction,
   createTagReplaceAction,
+  createUnarchiveAction,
 };
 
 export type {

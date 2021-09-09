@@ -24,6 +24,7 @@ function Items() {
 
   const {
     mutationArchive,
+    mutationUnarchive,
     mutationtoggleFavorite,
     mutationDelete,
     tagReplaceMutation,
@@ -101,6 +102,7 @@ function Items() {
             key={index}
             mutationArchive={mutationArchive}
             mutationDelete={mutationDelete}
+            mutationUnarchive={mutationUnarchive}
             mutationtoggleFavorite={mutationtoggleFavorite}
             setselectedItem={setselectedItem}
           />
