@@ -1,15 +1,17 @@
-/* eslint-disable max-statements */
 /* eslint-disable react-perf/jsx-no-new-function-as-prop */
 /* eslint-disable react/jsx-no-bind */
 /* eslint-disable camelcase */
+import React, { useState, useMemo } from "react";
+
 import clsx from "clsx";
-import type { DeepReadonly } from "ts-essentials/dist/types";
-import { useState, useMemo } from "react";
 
 import type { tagItem } from "components/TagSelector";
 import TagSelector from "components/TagSelector";
+
 import type { PocketArticle } from "services/useItemsGet";
 import useTagGet from "services/useTagGet";
+
+import type { DeepReadonly } from "ts-essentials/dist/types";
 
 const tagToListTag = (tags: DeepReadonly<tagItem[]>): string[] =>
   tags.map((tag) => tag.id);
@@ -36,10 +38,6 @@ function TagModal({
 
   const { status, data: allTags, error } = useTagGet();
 
-  if (status === "loading") {
-    return <div>Loading Modal...</div>;
-  }
-
   if (error) {
     return <div>Error...</div>;
   }
@@ -58,6 +56,7 @@ function TagModal({
       })}
     >
       <div className="modal-box">
+        {status === "loading" && <div>Loading Modal...</div>}
         <TagSelector setTags={setTags} suggestions={suggestions} tags={tags} />
 
         <div className="modal-action">
@@ -90,4 +89,4 @@ TagModal.defaultProps = {
   selectedItem: undefined,
 };
 
-export default TagModal;
+export default React.memo(TagModal);
