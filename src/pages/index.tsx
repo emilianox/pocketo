@@ -1,24 +1,18 @@
 /* eslint-disable max-statements */
-import { forwardRef, useCallback, useMemo, useState } from "react";
-import type { DeepReadonly } from "ts-essentials/dist/types";
+import React, { forwardRef, useCallback, useMemo, useState } from "react";
+
 // import { ReactQueryDevtools } from "react-query/devtools";
 import { Virtuoso } from "react-virtuoso";
 
-import type { PocketArticle, SearchParameters } from "services/useItemsGet";
-import useItems from "services/useItemsGet";
-import TagModal from "components/TagModal";
-import SearchForm from "components/SearchForm";
+import ConfirmModal from "components/ConfirmModal";
 import Item from "components/Item";
-import useItemsMutation from "services/useItemsMutation";
-import {
-  createArchiveAction,
-  createDeleteAction,
-  createFavoriteAction,
-  createTagReplaceAction,
-} from "services/sendActions";
 import ItemLoaderPage from "components/ItemLoaderPage";
+import SearchForm from "components/SearchForm";
+import TagModal from "components/TagModal";
 
-type MakeMutation = (dataItem: DeepReadonly<PocketArticle>) => void;
+import useItems from "services/useItemsGet";
+import type { PocketArticle, SearchParameters } from "services/useItemsGet";
+import useItemsMutation from "services/useItemsMutation";
 
 function Items() {
   const [formSearchResult, setFormSearchResult] = useState<SearchParameters>(
@@ -29,55 +23,42 @@ function Items() {
 
   const { data, error, fetchNextPage } = useItems(formSearchResult);
 
-  const itemsMutation = useItemsMutation();
+  const {
+    mutationArchive,
+    mutationtoggleFavorite,
+    mutationDelete,
+    tagReplaceMutation,
+  } = useItemsMutation();
 
-  const dataItems: PocketArticle[] = useMemo(
-    () =>
-      data
-        ? data.pages.reduce<PocketArticle[]>(
-            (previous, current) => [
-              ...previous,
-              ...Object.values(current.list),
-            ],
-            []
-          )
-        : [],
-    [data]
-  );
+  const dataItems: PocketArticle[] = useMemo(() => {
+    const parsedData = data?.pages.reduce<PocketArticle[]>(
+      (objectArticlesArray, page) => [
+        ...objectArticlesArray,
+        // eslint-disable-next-line fp/no-mutating-methods
+        ...Object.values(page.list).reverse(),
+      ],
+      []
+    );
 
-  /* eslint-disable react-hooks/exhaustive-deps */
-  const mutationArchive: MakeMutation = useCallback((dataItem) => {
-    itemsMutation.mutate([createArchiveAction(dataItem.item_id)]);
-  }, []);
+    return parsedData ?? [];
+  }, [data]);
 
-  const mutationtoggleFavorite: MakeMutation = useCallback((dataItem) => {
-    itemsMutation.mutate([
-      createFavoriteAction(dataItem.favorite, dataItem.item_id),
-    ]);
-  }, []);
-
-  const mutationDelete: MakeMutation = useCallback(
-    (dataItem) => () => {
-      itemsMutation.mutate([createDeleteAction(dataItem.item_id)]);
+  const onSaveModal = useCallback(
+    (itemId: string, tags: readonly string[]) => {
+      setselectedItem(undefined);
+      tagReplaceMutation(itemId, tags.join(","));
     },
-    []
+    [tagReplaceMutation]
   );
-
-  const tagReplaceMutation = useCallback((itemId: string, tags: string) => {
-    itemsMutation.mutate([createTagReplaceAction(itemId, tags)]);
-  }, []);
-
-  const onSaveModal = useCallback((itemId: string, tags: readonly string[]) => {
-    setselectedItem(undefined);
-    tagReplaceMutation(itemId, tags.join(","));
-  }, []);
 
   const onCancelModal = useCallback(() => {
     setselectedItem(undefined);
   }, []);
 
-  const nextPage = useCallback(async () => await fetchNextPage(), []);
-  /* eslint-enable react-hooks/exhaustive-deps */
+  const nextPage = useCallback(
+    async () => await fetchNextPage(),
+    [fetchNextPage]
+  );
 
   // eslint-disable-next-line @typescript-eslint/naming-convention
   const Header = useCallback(
@@ -130,15 +111,23 @@ function Items() {
       />
 
       {/* <ReactQueryDevtools initialIsOpen /> */}
-      <TagModal
-        onCancel={onCancelModal}
-        onSave={onSaveModal}
-        selectedItem={selectedItem}
+      {selectedItem && (
+        <TagModal
+          onCancel={onCancelModal}
+          onSave={onSaveModal}
+          selectedItem={selectedItem}
+        />
+      )}
+      <ConfirmModal
+        cta="Are you sure you want to delete this item? This cannot be undone."
+        isOpen
+        // eslint-disable-next-line react/jsx-no-bind, react-perf/jsx-no-new-function-as-prop
+        onCancel={() => true}
+        // eslint-disable-next-line react/jsx-no-bind, react-perf/jsx-no-new-function-as-prop
+        onConfirm={() => true}
       />
     </>
   );
 }
-
-export type { MakeMutation };
 
 export default Items;

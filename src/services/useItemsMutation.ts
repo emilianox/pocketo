@@ -1,7 +1,14 @@
-import type { InfiniteData, Query, QueryClient, QueryKey } from "react-query";
-import { useMutation, useQueryClient } from "react-query";
-import type { DeepReadonly } from "ts-essentials/dist/types";
+import { useCallback } from "react";
+
 import { omit as rOmit } from "ramda";
+import { useMutation, useQueryClient } from "react-query";
+
+import {
+  createArchiveAction,
+  createDeleteAction,
+  createFavoriteAction,
+  createTagReplaceAction,
+} from "services/sendActions";
 
 import type {
   ArticleAction,
@@ -12,6 +19,8 @@ import type {
   ActionDelete,
 } from "./sendActions";
 import type { PocketArticle, ResponseGetPocketApi } from "./useItemsGet";
+import type { InfiniteData, Query, QueryClient, QueryKey } from "react-query";
+import type { DeepReadonly } from "ts-essentials/dist/types";
 
 interface ResponseSendPocketApi {
   // eslint-disable-next-line @typescript-eslint/naming-convention, camelcase
@@ -109,10 +118,12 @@ const getResponseGetPocketApiChangeFavorite = (
 const getResponseGetPocketApiRemoveKey = (
   oldData: DeepReadonly<ResponseGetPocketApi>,
   action: DeepReadonly<ActionArchive | ActionDelete>
-): ResponseGetPocketApi => ({
-  ...oldData,
-  list: rOmit([action.item_id], oldData.list),
-});
+): ResponseGetPocketApi => {
+  return {
+    ...oldData,
+    list: rOmit([action.item_id], oldData.list),
+  };
+};
 
 const setQueryDataFromActions = (
   queryClient: DeepReadonly<QueryClient>,
@@ -171,10 +182,12 @@ const getItemQueryKeys = (
     .filter((query) => getAllItemsFromPagedQuery(query)[itemId] !== undefined)
     .map((query) => query.queryKey);
 
+type MakeMutation = (dataItem: DeepReadonly<PocketArticle>) => void;
+
 export default function useItemsSet() {
   const queryClient = useQueryClient();
 
-  return useMutation<
+  const itemsMutation = useMutation<
     ResponseSendPocketApi,
     unknown,
     Actions,
@@ -235,4 +248,35 @@ export default function useItemsSet() {
       });
     },
   });
+  /* eslint-disable react-hooks/exhaustive-deps */
+
+  const mutationArchive: MakeMutation = useCallback((dataItem) => {
+    itemsMutation.mutate([createArchiveAction(dataItem.item_id)]);
+  }, []);
+
+  const mutationtoggleFavorite: MakeMutation = useCallback((dataItem) => {
+    itemsMutation.mutate([
+      createFavoriteAction(dataItem.favorite, dataItem.item_id),
+    ]);
+  }, []);
+
+  const mutationDelete: MakeMutation = useCallback((dataItem) => {
+    itemsMutation.mutate([createDeleteAction(dataItem.item_id)]);
+  }, []);
+
+  const tagReplaceMutation = useCallback((itemId: string, tags: string) => {
+    itemsMutation.mutate([createTagReplaceAction(itemId, tags)]);
+  }, []);
+
+  /* eslint-enable react-hooks/exhaustive-deps */
+
+  return {
+    ...itemsMutation,
+    mutationArchive,
+    mutationtoggleFavorite,
+    mutationDelete,
+    tagReplaceMutation,
+  };
 }
+
+export type { MakeMutation };

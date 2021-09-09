@@ -1,10 +1,12 @@
-import { MdStarBorder, MdArchive, MdStar } from "react-icons/md";
+import React from "react";
+
+import copy from "copy-text-to-clipboard";
 import { AiOutlineTags } from "react-icons/ai";
 import { FaLink, FaTelegram, FaTrash, FaWhatsapp } from "react-icons/fa";
-import type { DeepReadonly } from "ts-essentials/dist/types";
-import React from "react";
-import copy from "copy-text-to-clipboard";
+import { MdStarBorder, MdArchive, MdStar } from "react-icons/md";
 import { TelegramShareButton, WhatsappShareButton } from "react-share";
+
+import type { DeepReadonly } from "ts-essentials/dist/types";
 
 interface ActionButtonsProps {
   archive: () => void;
@@ -54,14 +56,6 @@ function ActionButtons({
       </button>
       <button
         className="inline-block mx-2 w-6 h-6 stroke-current"
-        onClick={deleteItem}
-        type="button"
-      >
-        <FaTrash size="1.5em" />
-      </button>
-
-      <button
-        className="inline-block mx-2 w-6 h-6 stroke-current"
         onClick={React.useCallback(() => copy(url), [url])}
         type="button"
       >
@@ -87,6 +81,13 @@ function ActionButtons({
       >
         <FaTelegram size="1.5em" />
       </TelegramShareButton>
+      <button
+        className="inline-block mx-2 w-6 h-6 stroke-current"
+        onClick={deleteItem}
+        type="button"
+      >
+        <FaTrash size="1.5em" />
+      </button>
     </div>
   );
 }
