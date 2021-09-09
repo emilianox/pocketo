@@ -1,5 +1,6 @@
-import type { OptionsObject, SnackbarMessage } from "notistack";
 import { useSnackbar } from "notistack";
+
+import type { OptionsObject, SnackbarMessage } from "notistack";
 
 export default function useNotify(
   message: SnackbarMessage,

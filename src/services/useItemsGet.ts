@@ -5,11 +5,12 @@
 /** if the item has videos in it - 2 if the item is a video  */
 /** 1 if the item has images in it - 2 if the item is an image */
 
-import { useInfiniteQuery } from "react-query";
-import type { DeepReadonly } from "ts-essentials/dist/types";
 import { identity, pickBy } from "ramda";
+import { useInfiniteQuery } from "react-query";
 
 import useNotify from "hooks/useNotify";
+
+import type { DeepReadonly } from "ts-essentials/dist/types";
 
 interface Searchmeta {
   search_type: string;
@@ -97,12 +98,12 @@ interface PocketArticle {
   domain_metadata?: Domainmetadata;
 }
 
-type List = Record<string, PocketArticle>;
+type ListPocketArticle = Record<string, PocketArticle>;
 
 interface ResponseGetPocketApi {
   status: number;
   complete: number;
-  list: List;
+  list: ListPocketArticle;
   error?: unknown;
   search_meta: Searchmeta;
   since: number;
@@ -151,23 +152,26 @@ const getPocketArticles: GetPocketArticles = async (
 
   onStartNotify();
 
-  return await fetch(
-    `/api/items/get?${new URLSearchParams(parsed).toString()}`,
-    {
-      method: "GET",
-    }
-  ).then(async (response) => {
-    onFinishNotify();
+  onStartNotify();
 
-    return (await response.json()) as ResponseGetPocketApi;
-  });
+  const response = await fetch(
+    `/api/items/get?${new URLSearchParams(parsed).toString()}`
+  );
+
+  if (!response.ok) {
+    throw new Error("Network response was not ok");
+  }
+
+  onFinishNotify();
+
+  return (await response.json()) as ResponseGetPocketApi;
 };
 
 type pageParameters = DeepReadonly<{
   pageParam?: SearchParameters | undefined;
 }>;
 
-const itemPerRequest = 100;
+const itemPerRequest = 30;
 
 export default function useItemsGet(
   searchParameters: DeepReadonly<SearchParameters>
@@ -192,6 +196,12 @@ export default function useItemsGet(
       );
     },
     {
+      notifyOnChangeProps: ["data", "error"],
+      // eslint-disable-next-line no-warning-comments
+      // FIXME: in production
+      refetchOnWindowFocus: false,
+      staleTime: 5000,
+
       getNextPageParam: (lastPage, allPages) => {
         return {
           count: itemPerRequest,

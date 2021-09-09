@@ -3,6 +3,7 @@
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true
   },
+  "eslint.alwaysShowStatus": true,
   "workbench.colorCustomizations": {
     "activityBar.activeBackground": "#350a4a",
     "activityBar.activeBorder": "#70500f",

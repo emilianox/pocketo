@@ -1,13 +1,16 @@
 import "tailwindcss/tailwind.css";
-import "styles/app.scss";
 
-import "styles/TagSelector.scss";
+import "styles/app.scss";
 import "styles/tagify.scss";
-import type { AppProps } from "next/app";
-import { QueryClient, QueryClientProvider } from "react-query";
+import "styles/TagSelector.scss";
+
+import React from "react";
+
 import Head from "next/head";
 import { SnackbarProvider } from "notistack";
-import React from "react";
+import { QueryClient, QueryClientProvider } from "react-query";
+
+import type { AppProps } from "next/app";
 
 const queryClient = new QueryClient();
 

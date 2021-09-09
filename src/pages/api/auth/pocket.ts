@@ -12,8 +12,9 @@
 /* eslint-disable import/no-anonymous-default-export */
 //   console.log("res", res);
 //   res.status(200).json({ name: "John Doe" });
-import type { NextApiRequest, NextApiResponse } from "next";
 import auth from "pocket-auth";
+
+import type { NextApiRequest, NextApiResponse } from "next";
 
 interface Data {
   name: string;

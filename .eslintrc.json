@@ -13,6 +13,57 @@
   ],
   "rules": {
     // override default options
+    "import/order": [
+      "error",
+      {
+        // "warnOnUnassignedImports": true,
+        "groups": [
+          "builtin",
+          "external",
+          "internal",
+          "unknown",
+          "parent",
+          "sibling",
+          "index",
+          "object",
+          "type"
+        ],
+        "pathGroups": [
+          // {
+          //   "pattern": "*+(css|sass|less|scss|pcss|styl)",
+          //   "group": "builtin",
+          //   "patternOptions": { "matchBase": true },
+          //   "position": "after"
+          // },
+          {
+            "pattern": "react",
+            "group": "external",
+            "position": "before"
+          },
+          {
+            "pattern": "components/*",
+            "group": "internal",
+            "position": "before"
+          },
+          {
+            "pattern": "hooks/*",
+            "group": "internal",
+            "position": "before"
+          },
+          {
+            "pattern": "services/*",
+            "group": "internal",
+            "position": "before"
+          }
+        ],
+        "pathGroupsExcludedImportTypes": ["react"],
+        "newlines-between": "always",
+        "alphabetize": {
+          "order": "asc",
+          "caseInsensitive": true
+        }
+      }
+    ],
     "func-style": "off",
     "import/no-unused-modules": "off",
     "react/function-component-definition": "off",
