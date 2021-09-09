@@ -1,6 +1,8 @@
 import React from "react";
-import type { IContentLoaderProps } from "react-content-loader";
+
 import ContentLoader from "react-content-loader";
+
+import type { IContentLoaderProps } from "react-content-loader";
 
 // eslint-disable-next-line @typescript-eslint/naming-convention,  @typescript-eslint/prefer-readonly-parameter-types
 const ItemLoader = (props: IContentLoaderProps) => (
@@ -12,6 +14,7 @@ const ItemLoader = (props: IContentLoaderProps) => (
     height={265}
     speed={3}
     title="assa"
+    uniqueKey="my-random-value"
     viewBox="3 50 1300 265"
     width={1300}
     // eslint-disable-next-line react/jsx-props-no-spreading
