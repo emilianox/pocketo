@@ -4,7 +4,6 @@ import React, { forwardRef, useCallback, useMemo, useState } from "react";
 // import { ReactQueryDevtools } from "react-query/devtools";
 import { Virtuoso } from "react-virtuoso";
 
-import ConfirmModal from "components/ConfirmModal";
 import Item from "components/Item";
 import ItemLoaderPage from "components/ItemLoaderPage";
 import SearchForm from "components/SearchForm";
@@ -118,14 +117,6 @@ function Items() {
           selectedItem={selectedItem}
         />
       )}
-      <ConfirmModal
-        cta="Are you sure you want to delete this item? This cannot be undone."
-        isOpen
-        // eslint-disable-next-line react/jsx-no-bind, react-perf/jsx-no-new-function-as-prop
-        onCancel={() => true}
-        // eslint-disable-next-line react/jsx-no-bind, react-perf/jsx-no-new-function-as-prop
-        onConfirm={() => true}
-      />
     </>
   );
 }
