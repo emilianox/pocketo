@@ -1,10 +1,12 @@
-import type { DeepReadonly } from "ts-essentials/dist/types";
-import type { Dispatch, SetStateAction } from "react";
 import React, { useCallback } from "react";
+import type { Dispatch, SetStateAction } from "react";
+
+import ActionButtons from "components/ActionButtons";
 
 import type { PocketArticle } from "services/useItemsGet";
-import type { MakeMutation } from "pages";
-import ActionButtons from "components/ActionButtons";
+import type { MakeMutation } from "services/useItemsMutation";
+
+import type { DeepReadonly } from "ts-essentials/dist/types";
 
 interface ItemProps {
   dataItem: PocketArticle;
@@ -39,28 +41,29 @@ function Item({
 
   return (
     <div className="flex py-3 m-auto w-8/12 border-b-2">
-      <div className="mr-4 avatar">
+      <div className="mr-4 w-1/12 avatar">
         <div className="w-24 h-24">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img alt="post" height="96" src={dataItem.top_image_url} width="96" />
         </div>
       </div>
-      <div className="w-full">
+      <div className="w-11/12">
         <h2
           className="overflow-hidden mb-1 font-bold overflow-ellipsis whitespace-nowrap"
           title={dataItem.resolved_title}
         >
           {dataItem.resolved_title}
         </h2>
-        <a
-          className="overflow-hidden text-sm overflow-ellipsis whitespace-nowrap opacity-50"
-          href={dataItem.resolved_url}
-          rel="noreferrer"
-          target="_blank"
-          title={dataItem.resolved_url}
-        >
-          {dataItem.resolved_url}
-        </a>
+        <div className="overflow-hidden text-sm overflow-ellipsis whitespace-nowrap opacity-50">
+          <a
+            href={dataItem.resolved_url}
+            rel="noreferrer"
+            target="_blank"
+            title={dataItem.resolved_url}
+          >
+            {dataItem.resolved_url}
+          </a>
+        </div>
         <p className="mt-2">{dataItem.excerpt}</p>
 
         <div className="mt-4">
