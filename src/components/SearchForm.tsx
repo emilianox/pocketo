@@ -3,18 +3,20 @@
 /* eslint-disable no-console */
 /* eslint-disable react/forbid-component-props */
 /* eslint-disable react/jsx-props-no-spreading */
-import type { SubmitHandler } from "react-hook-form";
-import { useForm } from "react-hook-form";
-import type { ReactTagifySettings } from "@yaireo/tagify/dist/react.tagify";
-import MixedTags from "@yaireo/tagify/dist/react.tagify";
-import type { DeepReadonly } from "ts-essentials/dist/types";
 import { useCallback } from "react";
+
+import MixedTags from "@yaireo/tagify/dist/react.tagify";
+import { useForm } from "react-hook-form";
 
 import type {
   SearchParameters,
   SearchParametersFavorite,
   SearchParametersSearch,
 } from "services/useItemsGet";
+
+import type { ReactTagifySettings } from "@yaireo/tagify/dist/react.tagify";
+import type { SubmitHandler } from "react-hook-form";
+import type { DeepReadonly } from "ts-essentials/dist/types";
 
 interface SearchParametersAll
   extends Omit<SearchParametersFavorite, "favorite">,
@@ -78,14 +80,24 @@ export default function SearchForm({
       className="flex-row justify-center items-center p-3 form-control"
       onSubmit={handleSubmit(onParse)}
     >
-      <MixedTags
-        // autoFocus
-        className="mixedTags"
-        onChange={onChange}
-        readonly={isFavorite}
-        settings={settings}
-        value={`This is a textarea which `}
-      />
+      <div className="flex">
+        <select
+          {...register("state")}
+          className="rounded-r-none focus:ring-0 btn btn-primary"
+        >
+          <option value="unread">Unread</option>
+          <option value="all">All</option>
+          <option value="archive">Archive</option>
+        </select>
+        <MixedTags
+          // autoFocus
+          className="mixedTags"
+          onChange={onChange}
+          readonly={isFavorite}
+          settings={settings}
+          value={`This is a textarea which `}
+        />
+      </div>
       {/* <label className="label">
         <input
           {...register("search")}
@@ -94,16 +106,7 @@ export default function SearchForm({
           placeholder="Search..."
         />
       </label> */}
-      <label className="label">
-        <select
-          {...register("state")}
-          className="w-full max-w-xs select select-bordered"
-        >
-          <option value="unread">Unread</option>
-          <option value="all">All</option>
-          <option value="archive">Archive</option>
-        </select>
-      </label>
+
       <label className="cursor-pointer">
         <span className="label-text">Only Favorites</span>
         <input
@@ -136,7 +139,9 @@ export default function SearchForm({
         <div>since(comming soon)</div>
       </label> */}
 
-      <input className="btn" type="submit" />
+      <button className="btn btn-primary" type="submit">
+        Search
+      </button>
     </form>
   );
 }

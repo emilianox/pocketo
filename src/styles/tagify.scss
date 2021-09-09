@@ -5,8 +5,12 @@
 
 @import "@yaireo/tagify/dist/tagify.css";
 
+// .tags-input {
+//   @apply w-full pr-16 input input-primary input-bordered right-0;
+// }
 .mixedTags {
-  @apply input input-primary input-bordered;
+  @apply w-full input input-primary;
+  @apply rounded-l-none;
 }
 
 // $padding: 1.5rem;
