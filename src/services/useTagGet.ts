@@ -25,7 +25,11 @@ const getPocketTags = async () =>
 export default function useTagGet() {
   return useQuery<ResponseGetTagsPocketApi, Error>(
     "tags",
-    async () => await getPocketTags()
+    async () => await getPocketTags(),
+    {
+      refetchOnWindowFocus: false,
+      staleTime: 5000,
+    }
   );
 }
 export type { ResponseGetTagsPocketApi };

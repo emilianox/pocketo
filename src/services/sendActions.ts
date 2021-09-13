@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
 
-import type { PocketArticle } from "./useItemsGet";
+import type { PocketArticle } from "./pocketApi";
 
 interface ActionBase {
   item_id: string;

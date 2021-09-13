@@ -1,7 +1,7 @@
 import "tailwindcss/tailwind.css";
 
 import "styles/app.scss";
-import "styles/tagify.scss";
+import "styles/react-mention.scss";
 import "styles/TagSelector.scss";
 
 import React from "react";

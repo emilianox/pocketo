@@ -5,27 +5,30 @@ import React, { useState, useMemo } from "react";
 
 import clsx from "clsx";
 
-import type { tagItem } from "components/TagSelector";
 import TagSelector from "components/TagSelector";
 
-import type { PocketArticle } from "services/useItemsGet";
-import useTagGet from "services/useTagGet";
+import type { PocketArticle } from "services/pocketApi";
 
+import type { Tag } from "react-tag-input";
 import type { DeepReadonly } from "ts-essentials/dist/types";
 
-const tagToListTag = (tags: DeepReadonly<tagItem[]>): string[] =>
+const tagToListTag = (tags: DeepReadonly<Tag[]>): string[] =>
   tags.map((tag) => tag.id);
+
+type TagModalProps = DeepReadonly<{
+  selectedItem?: PocketArticle;
+  onSave: (item_id: string, tags: readonly string[]) => void;
+  onCancel: () => void;
+  suggestions: Tag[];
+}>;
 
 function TagModal({
   selectedItem,
   onSave,
   onCancel,
-}: DeepReadonly<{
-  selectedItem?: PocketArticle;
-  onSave: (item_id: string, tags: readonly string[]) => void;
-  onCancel: () => void;
-}>) {
-  const [tags, setTags] = useState<tagItem[]>([]);
+  suggestions,
+}: TagModalProps) {
+  const [tags, setTags] = useState<Tag[]>([]);
 
   useMemo(() => {
     setTags(
@@ -36,18 +39,9 @@ function TagModal({
     );
   }, [selectedItem]);
 
-  const { status, data: allTags, error } = useTagGet();
-
-  if (error) {
-    return <div>Error...</div>;
-  }
-
   if (!selectedItem) {
     return <div />;
   }
-
-  const suggestions =
-    allTags?.tags.map((tag) => ({ id: tag, text: tag })) ?? [];
 
   return (
     <div
@@ -56,8 +50,12 @@ function TagModal({
       })}
     >
       <div className="modal-box">
-        {status === "loading" && <div>Loading Modal...</div>}
-        <TagSelector setTags={setTags} suggestions={suggestions} tags={tags} />
+        <TagSelector
+          setTags={setTags}
+          // clash readonly with mutable
+          suggestions={suggestions as Tag[]}
+          tags={tags}
+        />
 
         <div className="modal-action">
           <button

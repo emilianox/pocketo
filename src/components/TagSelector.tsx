@@ -8,10 +8,7 @@ import React from "react";
 
 import { WithContext as ReactTags } from "react-tag-input";
 
-interface tagItem {
-  id: string;
-  text: string;
-}
+import type { Tag } from "react-tag-input";
 
 const keyCodes = {
   comma: 188,
@@ -24,19 +21,19 @@ const TagSelector = ({
   setTags,
   suggestions,
 }: {
-  tags: tagItem[];
-  setTags: Dispatch<SetStateAction<tagItem[]>>;
-  suggestions: tagItem[];
+  tags: Tag[];
+  setTags: Dispatch<SetStateAction<Tag[]>>;
+  suggestions: Tag[];
 }) => {
   const handleDelete = (index_: number) => {
     setTags(tags.filter((tag, index) => index !== index_));
   };
 
-  const handleAddition = (tag: tagItem) => {
+  const handleAddition = (tag: Tag) => {
     setTags([...tags, tag]);
   };
 
-  const handleDrag = (tag: tagItem, currentPos: number, newPos: number) => {
+  const handleDrag = (tag: Tag, currentPos: number, newPos: number) => {
     const newTags = tags.slice();
 
     newTags.splice(currentPos, 1);
@@ -68,7 +65,5 @@ const TagSelector = ({
     </div>
   );
 };
-
-export type { tagItem };
 
 export default TagSelector;

@@ -11,6 +11,7 @@ import {
   createUnarchiveAction,
 } from "services/sendActions";
 
+import type { PocketArticle, ResponseGetPocketApi } from "./pocketApi";
 import type {
   ArticleAction,
   Actions,
@@ -19,7 +20,6 @@ import type {
   ActionArchive,
   ActionDelete,
 } from "./sendActions";
-import type { PocketArticle, ResponseGetPocketApi } from "./useItemsGet";
 import type { InfiniteData, Query, QueryClient, QueryKey } from "react-query";
 import type { DeepReadonly } from "ts-essentials/dist/types";
 
@@ -186,7 +186,7 @@ const getItemQueryKeys = (
 
 type MakeMutation = (dataItem: DeepReadonly<PocketArticle>) => void;
 
-export default function useItemsSet() {
+export default function useItemsMutation() {
   const queryClient = useQueryClient();
 
   const itemsMutation = useMutation<

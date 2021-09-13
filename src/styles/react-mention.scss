@@ -1,0 +1,18 @@
+.pocketoMixedTags {
+  @apply w-full;
+}
+
+.pocketoMixedTags__input {
+  @apply w-full input input-primary p-3 focus:ring-1;
+  @apply rounded-r-none;
+}
+
+.pocketoMixedTags__suggestions {
+  @apply bg-base-200  #{!important};
+  &__item {
+    @apply px-3;
+    &--focused {
+      @apply bg-base-100;
+    }
+  }
+}

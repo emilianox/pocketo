@@ -48,6 +48,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   const authKeys = `access_token=${process.env
     .POCKET_ACCESS_TOKEN!}&consumer_key=${process.env.POCKET_CONSUMER_KEY!}`;
+  const total = "&total=1";
 
   const state = typeof qy.state === "string" ? `&state=${qy.state}` : "";
   const favorite =
@@ -64,11 +65,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const offset = typeof qy.offset === "string" ? `&offset=${qy.offset}` : "0";
 
   // console.log(
-  //   `https://getpocket.com/v3/get?${authKeys}${state}${favorite}${tag}${contentType}${sort}${detailType}${search}${domain}${since}${count}${offset}`
+  //   `https://getpocket.com/v3/get?${authKeys}${count}${offset}${detailType}${total}${state}${favorite}${tag}${contentType}${sort}${search}${domain}${since}`
   // );
 
   const response = await fetch(
-    `https://getpocket.com/v3/get?${authKeys}${state}${favorite}${tag}${contentType}${sort}${detailType}${search}${domain}${since}${count}${offset}`
+    `https://getpocket.com/v3/get?${authKeys}${count}${offset}${detailType}${total}${state}${favorite}${tag}${contentType}${sort}${search}${domain}${since}`
   );
   const jsonData = await response.json();
 

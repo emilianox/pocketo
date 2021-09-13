@@ -3,7 +3,7 @@ import type { Dispatch, SetStateAction } from "react";
 
 import ActionButtons from "components/ActionButtons";
 
-import type { PocketArticle } from "services/useItemsGet";
+import type { PocketArticle } from "services/pocketApi";
 import type { MakeMutation } from "services/useItemsMutation";
 
 import ConfirmModal from "./ConfirmModal";
