@@ -53,7 +53,7 @@ interface ActionTags_remove extends ActionBase {
   tags: string;
 }
 
-interface ActionTags_replace extends ActionBase {
+interface ActionTagsReplace extends ActionBase {
   action: "tags_replace";
   /** A comma-delimited list of one or more tags to add. */
   tags: string;
@@ -90,7 +90,7 @@ type ArticleAction =
   | ActionTags_add
   | ActionTags_clear
   | ActionTags_remove
-  | ActionTags_replace
+  | ActionTagsReplace
   | ActionUnfavorite;
 
 type Action = ActionTag_delete | ActionTag_rename | ArticleAction;
@@ -131,7 +131,7 @@ const createDeleteAction = (
 const createTagReplaceAction = (
   item_id: PocketArticle["item_id"],
   tags: string
-): ActionTags_replace => ({
+): ActionTagsReplace => ({
   action: "tags_replace",
   item_id,
   tags,
@@ -160,6 +160,6 @@ export type {
   ActionTags_add,
   ActionTags_clear,
   ActionTags_remove,
-  ActionTags_replace,
+  ActionTagsReplace,
   ActionUnfavorite,
 };

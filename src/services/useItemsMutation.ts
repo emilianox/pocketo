@@ -1,8 +1,18 @@
+/* eslint-disable max-lines */
 import { useCallback } from "react";
 
 import { omit as rOmit } from "ramda";
 import { useMutation, useQueryClient } from "react-query";
 
+import type {
+  ActionTagsReplace,
+  ArticleAction,
+  Actions,
+  ActionUnfavorite,
+  ActionFavorite,
+  ActionArchive,
+  ActionDelete,
+} from "services/sendActions";
 import {
   createArchiveAction,
   createDeleteAction,
@@ -12,14 +22,6 @@ import {
 } from "services/sendActions";
 
 import type { PocketArticle, ResponseGetPocketApi } from "./pocketApi";
-import type {
-  ArticleAction,
-  Actions,
-  ActionUnfavorite,
-  ActionFavorite,
-  ActionArchive,
-  ActionDelete,
-} from "./sendActions";
 import type { InfiniteData, Query, QueryClient, QueryKey } from "react-query";
 import type { DeepReadonly } from "ts-essentials/dist/types";
 
@@ -116,6 +118,36 @@ const getResponseGetPocketApiChangeFavorite = (
   };
 };
 
+const getResponseGetPocketApiChangeTag = (
+  oldData: DeepReadonly<ResponseGetPocketApi>,
+  action: DeepReadonly<ActionTagsReplace>
+): ResponseGetPocketApi => {
+  const tags = action.tags
+    .split(",")
+    // eslint-disable-next-line @typescript-eslint/naming-convention, camelcase
+    .map((tagName) => ({ item_id: tagName, tag: tagName }))
+    // eslint-disable-next-line unicorn/prefer-object-from-entries
+    .reduce(
+      (previous, current) => ({ ...previous, [current.item_id]: current }),
+      {}
+    );
+
+  const newItemEdited: PocketArticle = {
+    ...oldData.list[action.item_id],
+
+    tags,
+  };
+
+  return {
+    ...oldData,
+
+    list: {
+      ...oldData.list,
+      [action.item_id]: newItemEdited,
+    },
+  };
+};
+
 const getResponseGetPocketApiRemoveKey = (
   oldData: DeepReadonly<ResponseGetPocketApi>,
   action: DeepReadonly<ActionArchive | ActionDelete>
@@ -142,6 +174,10 @@ const setQueryDataFromActions = (
     case "delete":
       return queryClient.setQueryData(queryKey, (oldData) =>
         updaterFunction(oldData, action, getResponseGetPocketApiRemoveKey)
+      );
+    case "tags_replace":
+      return queryClient.setQueryData(queryKey, (oldData) =>
+        updaterFunction(oldData, action, getResponseGetPocketApiChangeTag)
       );
 
     default:
@@ -228,7 +264,7 @@ export default function useItemsMutation() {
           return {
             oldData: {} as ResponseGetPocketApi,
             newData: {} as ResponseGetPocketApi,
-            queryKey: "" as QueryKey,
+            queryKey: "items" as QueryKey,
           };
         })
       );
