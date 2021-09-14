@@ -1,4 +1,4 @@
-interface Searchmeta {
+interface SearchMetaPremium {
   search_type: string;
   total_result_count: number;
   count: number;
@@ -6,6 +6,12 @@ interface Searchmeta {
   has_more: boolean;
   search_type: "premium";
 }
+
+interface SearchMetaNormal {
+  search_type: "normal";
+}
+
+type SearchMeta = SearchMetaNormal | SearchMetaPremium;
 
 interface Video {
   item_id: string;
@@ -100,10 +106,10 @@ interface ResponseGetPocketApi {
   complete: number;
   list: ListPocketArticle;
   error?: unknown;
-  search_meta: Searchmeta;
+  search_meta: SearchMeta;
   since: number;
   /** number in string */
-  total: string;
+  total?: string;
 }
 
 interface SearchParametersBase {
@@ -133,4 +139,5 @@ export type {
   SearchParameters,
   SearchParametersFavorite,
   SearchParametersSearch,
+  SearchMetaPremium,
 };

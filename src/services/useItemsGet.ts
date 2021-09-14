@@ -5,7 +5,11 @@ import { useInfiniteQuery } from "react-query";
 
 import useNotify from "hooks/useNotify";
 
-import type { ResponseGetPocketApi, SearchParameters } from "./pocketApi";
+import type {
+  ResponseGetPocketApi,
+  SearchMetaPremium,
+  SearchParameters,
+} from "./pocketApi";
 import type { DeepReadonly } from "ts-essentials/dist/types";
 
 type GetPocketArticles = (
@@ -86,8 +90,16 @@ export default function useItemsGet(
       staleTime: 5000,
 
       getNextPageParam: (lastPage, allPages) => {
-        // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
-        return lastPage.search_meta.has_more
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        const hasNewPage: boolean =
+          lastPage.search_meta.search_type === "normal"
+            ? allPages.length * itemPerRequest <
+              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+              Number.parseInt(lastPage.total ?? "0", 10)
+            : // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+              (lastPage.search_meta as SearchMetaPremium).has_more;
+
+        return hasNewPage
           ? {
               count: itemPerRequest,
               offset: allPages.length * itemPerRequest,

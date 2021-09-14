@@ -9,7 +9,11 @@ import ItemLoaderPage from "components/ItemLoaderPage";
 import SearchForm from "components/SearchForm";
 import TagModal from "components/TagModal";
 
-import type { PocketArticle, SearchParameters } from "services/pocketApi";
+import type {
+  PocketArticle,
+  SearchMetaPremium,
+  SearchParameters,
+} from "services/pocketApi";
 import useItems from "services/useItemsGet";
 import useItemsMutation from "services/useItemsMutation";
 import useTagGet from "services/useTagGet";
@@ -88,6 +92,23 @@ function ItemsPage() {
     return "Error...";
   }
 
+  const getTotalResults = (): number => {
+    if (data?.pages[0]) {
+      if (data.pages[0].total === undefined) {
+        return 0;
+      }
+
+      if (data.pages[0].search_meta.search_type === "normal") {
+        return Number.parseInt(data.pages[0].total, 10);
+      }
+
+      return (data.pages[0].search_meta as SearchMetaPremium)
+        .total_result_count;
+    }
+
+    return 0;
+  };
+
   return (
     <>
       <div className="fixed z-10 w-full bg-gray-800">
@@ -95,7 +116,7 @@ function ItemsPage() {
           isLoading={isLoading}
           onSubmit={setFormSearchResult}
           suggestions={suggestionsTags}
-          totalResults={data?.pages[0].search_meta.total_result_count ?? 0}
+          totalResults={getTotalResults()}
         />
       </div>
       <Virtuoso

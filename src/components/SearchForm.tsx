@@ -7,6 +7,7 @@
 import { memo, useEffect, useMemo, useState } from "react";
 
 import { FaRegTimesCircle } from "@react-icons/all-files/fa/FaRegTimesCircle";
+import { FaSpinner } from "@react-icons/all-files/fa/FaSpinner";
 import { useForm } from "react-hook-form";
 import { MentionsInput, Mention } from "react-mentions";
 
@@ -132,17 +133,20 @@ export default memo(function SearchForm({
         </div>
         <div className=" flex justify-between ml-4">
           <div className="flex items-center space-x-2">
-            <div>{!isLoading && `${totalResults} results.`}</div>
+            <div className=" flex items-center space-x-1">
+              {isLoading && <FaSpinner className="animate-spin" />}
+              <div>{!isLoading && `${totalResults} results.`}</div>
+            </div>
             <div className="flex space-x-1">
               <button
-                className="space-x-1 badge badge-primary btn-outline"
+                className="space-x-1 badge badge-primary badge-outline"
                 onClick={() => {
                   reset();
                   setInputValue("");
                 }}
                 type="button"
               >
-                <div>filters</div>
+                <div>clear</div>
                 <FaRegTimesCircle />
               </button>
             </div>
