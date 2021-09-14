@@ -30,7 +30,7 @@ interface SearchParametersAll
 interface SearchFormProps {
   onSubmit: SubmitHandler<SearchParameters>;
   suggestions: Tag[];
-  totalResults: string;
+  totalResults: number;
   isLoading: boolean;
 }
 

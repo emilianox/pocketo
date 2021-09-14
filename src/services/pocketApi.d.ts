@@ -1,5 +1,10 @@
 interface Searchmeta {
   search_type: string;
+  total_result_count: number;
+  count: number;
+  offset: number;
+  has_more: boolean;
+  search_type: "premium";
 }
 
 interface Video {

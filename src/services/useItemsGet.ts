@@ -86,10 +86,13 @@ export default function useItemsGet(
       staleTime: 5000,
 
       getNextPageParam: (lastPage, allPages) => {
-        return {
-          count: itemPerRequest,
-          offset: allPages.length * itemPerRequest,
-        };
+        // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+        return lastPage.search_meta.has_more
+          ? {
+              count: itemPerRequest,
+              offset: allPages.length * itemPerRequest,
+            }
+          : undefined;
       },
     }
   );

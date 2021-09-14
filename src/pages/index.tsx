@@ -95,7 +95,7 @@ function ItemsPage() {
           isLoading={isLoading}
           onSubmit={setFormSearchResult}
           suggestions={suggestionsTags}
-          totalResults={data?.pages[0].total ?? "0"}
+          totalResults={data?.pages[0].search_meta.total_result_count ?? 0}
         />
       </div>
       <Virtuoso
