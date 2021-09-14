@@ -1,19 +1,20 @@
+/* eslint-disable react/forbid-component-props */
 import React from "react";
 
+import { AiOutlineDelete } from "@react-icons/all-files/ai/AiOutlineDelete";
 import { AiOutlineTags } from "@react-icons/all-files/ai/AiOutlineTags";
-import { FaLink } from "@react-icons/all-files/fa/FaLink";
-import { FaTelegram } from "@react-icons/all-files/fa/FaTelegram";
-import { FaTrash } from "@react-icons/all-files/fa/FaTrash";
-import { FaWhatsapp } from "@react-icons/all-files/fa/FaWhatsapp";
-import { MdArchive } from "@react-icons/all-files/md/MdArchive";
+import { FiLink } from "@react-icons/all-files/fi/FiLink";
+import { IoArchive } from "@react-icons/all-files/io5/IoArchive";
+import { IoArchiveOutline } from "@react-icons/all-files/io5/IoArchiveOutline";
 import { MdStar } from "@react-icons/all-files/md/MdStar";
 import { MdStarBorder } from "@react-icons/all-files/md/MdStarBorder";
-import { MdUnarchive } from "@react-icons/all-files/md/MdUnarchive";
+import { RiDeviceRecoverLine } from "@react-icons/all-files/ri/RiDeviceRecoverLine";
+import { RiTelegramLine } from "@react-icons/all-files/ri/RiTelegramLine";
+import { RiWhatsappLine } from "@react-icons/all-files/ri/RiWhatsappLine";
 import copy from "copy-text-to-clipboard";
-// import { AiOutlineTags } from "react-icons/ai";
-// import { FaLink, FaTelegram, FaTrash, FaWhatsapp } from "react-icons/fa";
-// import { MdStarBorder, MdArchive, MdStar, MdUnarchive } from "react-icons/md";
 import { TelegramShareButton, WhatsappShareButton } from "react-share";
+
+import useNotify from "hooks/useNotify";
 
 import type { PocketArticle } from "services/pocketApi";
 
@@ -27,6 +28,7 @@ interface ActionButtonsProps {
   selectItem: () => void;
   toggleFavorite: () => void;
   url: string;
+  cacheUrl: string;
 }
 
 function ActionButtons({
@@ -36,20 +38,30 @@ function ActionButtons({
   selectItem,
   toggleFavorite,
   url,
+  cacheUrl,
   status,
 }: DeepReadonly<ActionButtonsProps>): JSX.Element {
+  const { onStartNotify } = useNotify("link copied", {
+    variant: "success",
+  });
+  const copyFunction = React.useCallback(() => {
+    copy(url);
+
+    return onStartNotify();
+  }, [url, onStartNotify]);
+
   return (
-    <div className="p-2 shadow-lg menu bg-base-100 rounded-box horizontal">
+    <div className=" p-2 shadow-lg menu bg-base-100 rounded-box horizontal">
       <li>
         <button
-          className="inline-block mx-2 w-6 h-6 stroke-current"
+          className=" inline-block mx-2 w-6 h-6 stroke-current"
           onClick={toggleFavorite}
           type="button"
         >
           {favorite === "0" ? (
-            <MdStarBorder size="1.5em" />
+            <MdStarBorder className="hover:text-purple-500" size="1.5em" />
           ) : (
-            <MdStar size="1.5em" />
+            <MdStar className="hover:text-purple-500" size="1.5em" />
           )}
         </button>
       </li>
@@ -59,9 +71,9 @@ function ActionButtons({
         type="button"
       >
         {status === "0" ? (
-          <MdArchive size="1.5em" />
+          <IoArchiveOutline className="hover:text-purple-500" size="1.5em" />
         ) : (
-          <MdUnarchive size="1.5em" />
+          <IoArchive className="hover:text-purple-500" size="1.5em" />
         )}
       </button>
       <button
@@ -69,41 +81,47 @@ function ActionButtons({
         onClick={selectItem}
         type="button"
       >
-        <AiOutlineTags size="1.5em" />
+        <AiOutlineTags className="hover:text-purple-500" size="1.5em" />
       </button>
       <button
         className="inline-block mx-2 w-6 h-6 stroke-current"
-        onClick={React.useCallback(() => copy(url), [url])}
+        onClick={copyFunction}
         type="button"
       >
-        <FaLink size="1.5em" />
+        <FiLink className="hover:text-purple-500" size="1.5em" />
       </button>
       <WhatsappShareButton
-        // eslint-disable-next-line react/forbid-component-props
         className="inline-block mx-2 w-6 h-6 stroke-current"
         resetButtonStyle={false}
         // title={title}
         separator=":: "
         url={url}
       >
-        <FaWhatsapp size="1.5em" />
+        <RiWhatsappLine className="hover:text-purple-500" size="1.5em" />
       </WhatsappShareButton>
       <TelegramShareButton
-        // eslint-disable-next-line react/forbid-component-props
         className="inline-block mx-2 w-6 h-6 stroke-current"
         resetButtonStyle={false}
         // title={title}
         // separator=":: "
         url={url}
       >
-        <FaTelegram size="1.5em" />
+        <RiTelegramLine className="hover:text-purple-500" size="1.5em" />
       </TelegramShareButton>
+      <a
+        className="inline-block mx-2 w-6 h-6 stroke-current"
+        href={cacheUrl}
+        rel="noreferrer"
+        target="_blank"
+      >
+        <RiDeviceRecoverLine className="hover:text-purple-500" size="1.5em" />
+      </a>
       <button
         className="inline-block mx-2 w-6 h-6 stroke-current"
         onClick={deleteItem}
         type="button"
       >
-        <FaTrash size="1.5em" />
+        <AiOutlineDelete className="hover:text-purple-500" size="1.5em" />
       </button>
     </div>
   );

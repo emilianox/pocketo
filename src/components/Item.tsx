@@ -86,12 +86,31 @@ function Item({
           </div>
         </div>
         <div className="w-11/12">
-          <h2
-            className="overflow-hidden mb-1 font-bold overflow-ellipsis whitespace-nowrap"
-            title={dataItem.resolved_title}
-          >
-            {dataItem.resolved_title}
-          </h2>
+          <div className="flex justify-between">
+            <a
+              href={dataItem.resolved_url}
+              rel="noreferrer"
+              target="_blank"
+              title={dataItem.resolved_url}
+            >
+              <h2
+                className="overflow-hidden mb-1 font-bold overflow-ellipsis whitespace-nowrap"
+                title={dataItem.resolved_title}
+              >
+                {dataItem.resolved_title}
+              </h2>
+            </a>
+            <div className="space-x-1">
+              {dataItem.favorite === "1" && (
+                <div className="badge badge-accent badge-outline">starred</div>
+              )}
+              {dataItem.status === "1" && (
+                <div className="badge badge-secondary badge-outline">
+                  archived
+                </div>
+              )}
+            </div>
+          </div>
           <div className="overflow-hidden text-sm overflow-ellipsis whitespace-nowrap opacity-50">
             <a
               href={dataItem.resolved_url}
@@ -117,6 +136,7 @@ function Item({
               </div>
               <ActionButtons
                 archive={archive}
+                cacheUrl={`https://getpocket.com/read/${dataItem.item_id}`}
                 deleteItem={deleteItem}
                 favorite={dataItem.favorite}
                 selectItem={selectItem}
