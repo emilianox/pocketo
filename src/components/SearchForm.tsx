@@ -40,7 +40,7 @@ export default memo(function SearchForm({
   isLoading,
   totalResults,
 }: DeepReadonly<SearchFormProps>) {
-  const { register, handleSubmit, watch, setValue } =
+  const { reset, register, handleSubmit, watch, setValue } =
     useForm<SearchParametersAll>();
   const [inputValue, setInputValue] = useState<string>("");
 
@@ -88,6 +88,9 @@ export default memo(function SearchForm({
         <div className="flex mb-2">
           <MentionsInput
             a11ySuggestionsListLabel="Suggested mentions"
+            autoComplete="off"
+            // eslint-disable-next-line jsx-a11y/no-autofocus
+            autoFocus
             className="pocketoMixedTags"
             disabled={isFavorite}
             name="search"
@@ -128,14 +131,18 @@ export default memo(function SearchForm({
           </button>
         </div>
         <div className=" flex justify-between ml-4">
-          <div className="flex items-center space-x-8">
-            {!isLoading && `${totalResults} results.`}
+          <div className="flex items-center space-x-2">
+            <div>{!isLoading && `${totalResults} results.`}</div>
             <div className="flex space-x-1">
               <button
                 className="space-x-1 badge badge-primary btn-outline"
+                onClick={() => {
+                  reset();
+                  setInputValue("");
+                }}
                 type="button"
               >
-                <span>2 filters </span>
+                <div>filters</div>
                 <FaRegTimesCircle />
               </button>
             </div>
