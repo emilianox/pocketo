@@ -154,6 +154,14 @@ export default memo(function SearchForm({
           <div className="flex space-x-2">
             <label className="flex items-center cursor-pointer">
               <input
+                {...register("domain")}
+                className="w-40 input input-sm input-bordered"
+                placeholder="webpage.domain"
+                type="text"
+              />
+            </label>
+            <label className="flex items-center cursor-pointer">
+              <input
                 {...register("favorite")}
                 className="mr-2 toggle toggle-primary"
                 type="checkbox"
@@ -169,9 +177,7 @@ export default memo(function SearchForm({
               <option value="site">Url</option>
               <option value="title">Title</option>
             </select>
-            {/* <label>
-            <div>domain(comming soon)</div>
-                    </label> */}
+
             {/* <label>
             <div>since(comming soon)</div>
                     </label> */}
