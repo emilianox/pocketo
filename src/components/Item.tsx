@@ -77,7 +77,10 @@ function Item({
             <img
               alt="post"
               height="96"
-              src={dataItem.top_image_url}
+              src={
+                dataItem.top_image_url ??
+                "https://via.placeholder.com/96x96.webp/2a2e37/ebecf0?text=No%20Image"
+              }
               width="96"
             />
           </div>

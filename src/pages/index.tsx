@@ -87,12 +87,7 @@ function ItemsPage() {
     [mutationArchive, mutationDelete, mutationUnarchive, mutationtoggleFavorite]
   );
 
-  // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
-  if (error || errorTags) {
-    return "Error...";
-  }
-
-  const getTotalResults = (): number => {
+  const getTotalResults = useCallback((): number => {
     if (data?.pages[0]) {
       if (data.pages[0].total === undefined) {
         return 0;
@@ -107,7 +102,13 @@ function ItemsPage() {
     }
 
     return 0;
-  };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data?.pages[0]]);
+
+  // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+  if (error || errorTags) {
+    return "Error...";
+  }
 
   return (
     <>

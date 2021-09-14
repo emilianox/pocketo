@@ -87,7 +87,7 @@ interface PocketArticle {
   has_image: "0" | "1" | "2";
   word_count: string;
   lang: string;
-  top_image_url: string;
+  top_image_url?: string;
   listen_duration_estimate: number;
   time_to_read?: number;
   amp_url?: string;
