@@ -35,12 +35,11 @@
     "react-query": "^3.21.1",
     "react-share": "^4.4.0",
     "react-tag-input": "^6.7.3",
-    "react-virtual": "^2.8.1",
     "react-virtuoso": "^2.0.4",
-    "sass": "^1.39.0",
     "tailwindcss": "^2.2.9"
   },
   "devDependencies": {
+    "sass": "^1.39.0",
     "@next/bundle-analyzer": "^11.1.2",
     "@types/eslint": "7.28.0",
     "@types/ramda": "^0.27.44",
