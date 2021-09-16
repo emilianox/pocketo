@@ -1,0 +1,14 @@
+{
+  "recommendations": [
+    "austenc.tailwind-docs",
+    "bradlc.vscode-tailwindcss",
+    "christian-kohler.path-intellisense",
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "johnpapa.vscode-peacock",
+    "macieklad.tailwind-sass-syntax",
+    "stylelint.vscode-stylelint",
+    "syler.sass-indented",
+    "wayou.vscode-todo-highlight"
+  ]
+}
