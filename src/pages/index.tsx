@@ -6,6 +6,7 @@ import { Virtuoso } from "react-virtuoso";
 
 import Item from "components/Item";
 import ItemLoaderPage from "components/ItemLoaderPage";
+import Logo from "components/Logo";
 import SearchForm from "components/SearchForm";
 import TagModal from "components/TagModal";
 
@@ -112,7 +113,13 @@ function ItemsPage() {
 
   return (
     <>
-      <div className="fixed z-10 w-full bg-gray-800">
+      <div className="flex fixed z-10 w-full bg-gray-800">
+        <div className="flex justify-end items-center px-8 w-2/12">
+          <div className="flex flex-col items-center">
+            <Logo fill="hsl(var(--p))" />
+            <h1 className="text-lg font-extrabold text-primary">Pocketo</h1>
+          </div>
+        </div>
         <SearchForm
           isLoading={isLoading}
           onSubmit={setFormSearchResult}

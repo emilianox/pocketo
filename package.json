@@ -15,7 +15,8 @@
     "dependencies": "depcruise -v --ts-config tsconfig.json --include-only '^src' --output-type dot . | dot -T svg > dependencygraph.svg",
     "dependencies-with-nodeModules": "depcruise -v --ts-config tsconfig.json --include-only '^(node_modules|src)' --output-type dot . | dot -T svg > dependencygraph.svg",
     "prepare": "husky install",
-    "production": "next build && next start"
+    "production": "next build && next start",
+    "production-profile": "next build-profile && next start"
   },
   "dependencies": {
     "@react-icons/all-files": "^4.1.0",

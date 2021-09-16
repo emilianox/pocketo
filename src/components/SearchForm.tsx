@@ -81,111 +81,110 @@ export default memo(function SearchForm({
   );
 
   return (
-    <div className="flex justify-center">
-      <form
-        className=" flex justify-center p-3 m-auto w-8/12 form-control"
-        onSubmit={handleSubmit(onParse)}
-      >
-        <div className="flex mb-2">
-          <MentionsInput
-            a11ySuggestionsListLabel="Suggested mentions"
-            autoComplete="off"
-            // eslint-disable-next-line jsx-a11y/no-autofocus
-            autoFocus
-            className="pocketoMixedTags"
-            disabled={isFavorite}
-            name="search"
-            onChange={(event, value) => {
-              // searchRegister.onChange(event);
-              setInputValue(value);
-              setValue("search", value);
-            }}
-            placeholder={"Search using text and '#tag'"}
-            singleLine
-            value={inputValue}
-          >
-            <Mention
-              appendSpaceOnAdd
-              data={
-                searchSuggestions as unknown as {
-                  id: string;
-                  display: string;
-                }[]
-              }
-              displayTransform={(id, display) => `#${display}`}
-              // renderSuggestion={renderTagSuggestion}
-              // markup="#__id__"
-              markup="(#)__id__"
-              trigger="#"
-            />
-          </MentionsInput>
-          <select
-            {...register("state")}
-            className="rounded-none focus:ring-1 btn-outline select select-bordered select-primary"
-          >
-            <option value="unread">Unread</option>
-            <option value="all">All</option>
-            <option value="archive">Archive</option>
-          </select>
-          <button className="rounded-l-none btn btn-primary" type="submit">
-            Search
-          </button>
-        </div>
-        <div className=" flex justify-between ml-4">
-          <div className="flex items-center space-x-2">
-            <div className=" flex items-center space-x-1">
-              {isLoading && <FaSpinner className="animate-spin" />}
-              <div>{!isLoading && `${totalResults} results.`}</div>
-            </div>
-            <div className="flex space-x-1">
-              <button
-                className="space-x-1 badge badge-primary badge-outline"
-                onClick={() => {
-                  reset();
-                  setInputValue("");
-                }}
-                type="button"
-              >
-                <div>clear</div>
-                <FaRegTimesCircle />
-              </button>
-            </div>
+    <form
+      className="flex justify-center py-3 w-8/12 form-control"
+      onSubmit={handleSubmit(onParse)}
+    >
+      <div className="flex mb-2">
+        <MentionsInput
+          a11ySuggestionsListLabel="Suggested mentions"
+          autoComplete="off"
+          // eslint-disable-next-line jsx-a11y/no-autofocus
+          autoFocus
+          className="pocketoMixedTags"
+          disabled={isFavorite}
+          name="search"
+          onChange={(event, value) => {
+            // searchRegister.onChange(event);
+            setInputValue(value);
+            setValue("search", value);
+          }}
+          placeholder={"Search using text and '#tag'"}
+          singleLine
+          value={inputValue}
+        >
+          <Mention
+            appendSpaceOnAdd
+            data={
+              searchSuggestions as unknown as {
+                id: string;
+                display: string;
+              }[]
+            }
+            displayTransform={(id, display) => `#${display}`}
+            // renderSuggestion={renderTagSuggestion}
+            // markup="#__id__"
+            markup="(#)__id__"
+            trigger="#"
+          />
+        </MentionsInput>
+        <select
+          {...register("state")}
+          className="rounded-none focus:ring-1 btn-outline select select-bordered select-primary"
+        >
+          <option value="unread">Unread</option>
+          <option value="all">All</option>
+          <option value="archive">Archive</option>
+        </select>
+        <button className="rounded-l-none btn btn-primary" type="submit">
+          Search
+        </button>
+      </div>
+      <div className=" flex justify-between ml-4">
+        <div className="flex items-center space-x-2">
+          <div className=" flex items-center space-x-1">
+            {isLoading && <FaSpinner className="animate-spin" />}
+            <div>{!isLoading && `${totalResults} results.`}</div>
           </div>
-          <div className="flex space-x-2">
-            <label className="flex items-center cursor-pointer">
-              <input
-                {...register("domain")}
-                className="w-40 input input-sm input-bordered"
-                placeholder="webpage.domain"
-                type="text"
-              />
-            </label>
-            <label className="flex items-center cursor-pointer">
-              <input
-                {...register("favorite")}
-                className="mr-2 toggle toggle-primary"
-                type="checkbox"
-              />
-              <span className="label-text">Favorites</span>
-            </label>
-            <select
-              {...register("sort")}
-              className="pr-8 w-full max-w-max focus:ring-1 select select-sm"
+          <div className="flex space-x-1">
+            <button
+              className="space-x-1 badge badge-primary badge-outline"
+              onClick={() => {
+                reset();
+                setInputValue("");
+              }}
+              type="button"
             >
-              <option value="newest">Newest</option>
-              <option value="oldest">Oldest</option>
-              <option value="site">Url</option>
-              <option value="title">Title</option>
-            </select>
+              <div>clear</div>
+              <FaRegTimesCircle />
+            </button>
+          </div>
+        </div>
+        <div className="flex space-x-2">
+          <label className="flex items-center cursor-pointer">
+            <input
+              {...register("domain")}
+              className="w-40 input input-sm input-bordered"
+              placeholder="webpage.domain"
+              type="text"
+            />
+          </label>
+          <label className="flex items-center cursor-pointer">
+            <input
+              {...register("favorite")}
+              className="mr-2 toggle toggle-primary"
+              type="checkbox"
+            />
+            <span className="label-text">Favorites</span>
+          </label>
+          <select
+            {...register("sort")}
+            className="pr-8 w-full max-w-max focus:ring-1 select select-sm"
+          >
+            <option value="newest">Newest</option>
+            <option value="oldest">Oldest</option>
+            <option value="site">Url</option>
+            <option value="title">Title</option>
+          </select>
 
-            {/* <label>
+          {/* <label>
             <div>since(comming soon)</div>
                     </label> */}
-            {/* <label>
+          {/* <label>
             <div>content(comming soon)</div>
              </label> */}
-          </div>
-          {/* <div className=" flex btn-group disabled">
+        </div>
+        {/* <div className=" flex btn-group disabled">
             <button
               className="btn btn-sm btn-disabled bg-primary"
               type="button"
@@ -196,8 +195,7 @@ export default memo(function SearchForm({
               <BiGridSmall size="26" />
             </button>
           </div> */}
-        </div>
-      </form>
-    </div>
+      </div>
+    </form>
   );
 });
