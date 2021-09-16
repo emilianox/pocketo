@@ -4,6 +4,7 @@
 import React, { useState, useMemo } from "react";
 
 import clsx from "clsx";
+import { useShortcuts } from "react-shortcuts-hook";
 
 import TagSelector from "components/TagSelector";
 
@@ -29,6 +30,13 @@ function TagModal({
   suggestions,
 }: TagModalProps) {
   const [tags, setTags] = useState<Tag[]>([]);
+
+  const onSaveModal = () => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+    selectedItem && onSave(selectedItem.item_id, tagToListTag(tags));
+  };
+
+  useShortcuts(["Control", "Enter"], onSaveModal, [selectedItem, tags]);
 
   useMemo(() => {
     setTags(
@@ -60,9 +68,7 @@ function TagModal({
         <div className="modal-action">
           <button
             className="btn btn-primary"
-            onClick={() => {
-              onSave(selectedItem.item_id, tagToListTag(tags));
-            }}
+            onClick={onSaveModal}
             type="button"
           >
             Save
