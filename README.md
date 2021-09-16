@@ -19,7 +19,7 @@
 <br />
 <p align="center">
   <a href="https://github.com/emilianox/pocketo">
-    <img src="public/pocketo_v1.svg" alt="Logo" width="80" height="80">
+    <img src="public/pocketo_v1.svg" alt="Logo" width="109" height="78">
   </a>
 
   <h3 align="center">Pocketo!</h3>
@@ -172,4 +172,4 @@ Distributed under the MIT License. See `LICENSE` for more information.
 [license-url]: https://github.com/emilianox/pocketo/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/emilianohfernandez
-[product-screenshot]: public/screenshoot-pocketo.png
+[product-screenshot]: public/screenshot-pocketo.png
