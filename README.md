@@ -72,15 +72,39 @@
 
 [![Product Name Screen Shot][product-screenshot]](https://example.com)
 
-There are many great Pockets clients, however, I didn't find one that really suit my needs so I created this enhanced one. I want to create a pocket client focused in speed and ux.
+There are many great Pocket clients, however, I didn't find one that really suit my needs, so I created this enhanced one. I want to create a client focused on speed and UX and advanced filtering. I also want to put an emphasis on offline reading. I'm currently working on the first release of the application.
 
 Here's why:
-* Pocket webapp is focused on read more than search 
+* Pocket web app is focused on read more than search 
 * Search by tags must be a first class.
-* Search by domain are great
-* Webpage link first and then cache
+* Search by domain are great.
+* Advanced search capacities is a must.
+* Webpage access first and then pocket's cache.
+* Filtering by tags must be fast.
+* Offline reading support in web.
+* Simple UI.
+* Fast.
+* Great UX.
 
-Of course, at the end this is a mostly opiniotate client of pocket. 
+
+The application is still in an early state, but the main features are already implemented:
+* Search by tags and text combined
+* Filter by domain
+* Filter by Read/Unread
+* Clear search
+* Filter by starred
+* Sort by age, domain
+* Archive
+* Star
+* Add and revome tags
+* Copy link
+* Whatsapp and Telegram share
+* View Pocket cache
+* Remove
+* Shortcuts(now only ctrl+enter to add save tags)
+* Image support
+
+Of course, at the end, this is a mostly opinionated client of pocket. 
 Please suggest changes by forking this repo and creating a pull request or opening an issue. Thanks to all the people have contributed to expanding this template!
 
 
@@ -95,8 +119,6 @@ Please suggest changes by forking this repo and creating a pull request or openi
 <!-- GETTING STARTED -->
 ## Getting Started
 
-This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
 
 ### Prerequisites
 
@@ -117,7 +139,8 @@ This is an example of how to list things you need to use the software and how to
    ```sh
    npm install
    ```
-4. Enter your API in `.env.local`
+4. Enter your API credentials in `.env.local`
+  You can generate the POCKET_ACCESS_TOKEN using the `/api/auth` endpoint in the console 
    ```sh
     SECRET= xxxxxxxxxxxxxxxxxxxxxxx # Linux: `openssl rand -hex 32` or go to https://generate-secret.now.sh/32
     POCKET_CONSUMER_KEY=xxxxxxxxxxxxxxxxxxxxxx
