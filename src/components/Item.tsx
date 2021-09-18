@@ -70,7 +70,7 @@ function Item({
           onConfirm={onConfirmModalDelete}
         />
       )}
-      <div className="flex py-3 m-auto w-8/12 border-b-2">
+      <div className="flex p-2 m-auto w-8/12 hover:bg-black hover:bg-opacity-10 border-b-2 border-gray-800">
         <div className="mr-4 w-1/12 avatar">
           <div className="w-24 h-24">
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -129,7 +129,7 @@ function Item({
               <div>
                 {dataItem.tags &&
                   Object.values(dataItem.tags).map((tag) => (
-                    <span className="mr-2 badge badge-lg" key={tag.tag}>
+                    <span className="mr-2 shadow badge badge-lg" key={tag.tag}>
                       {tag.tag}
                     </span>
                   ))}

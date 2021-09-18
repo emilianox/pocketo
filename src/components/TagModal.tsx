@@ -3,6 +3,7 @@
 /* eslint-disable camelcase */
 import React, { useState, useMemo } from "react";
 
+import { FaInfoCircle } from "@react-icons/all-files/fa/FaInfoCircle";
 import clsx from "clsx";
 import { useShortcuts } from "react-shortcuts-hook";
 
@@ -65,23 +66,31 @@ function TagModal({
           tags={tags}
         />
 
-        <div className="modal-action">
-          <button
-            className="btn btn-primary"
-            onClick={onSaveModal}
-            type="button"
-          >
-            Save
-          </button>
-          <button
-            className="btn"
-            onClick={() => {
-              onCancel();
-            }}
-            type="button"
-          >
-            Cancel
-          </button>
+        <div className="flex justify-between">
+          <small className="flex items-end pb-1">
+            {/* eslint-disable-next-line react/forbid-component-props */}
+            <FaInfoCircle className="mb-1" size="0.95em" />
+            &nbsp;
+            <strong>Ctrl</strong>+<strong>Enter</strong>&nbsp;to save
+          </small>
+          <div className="modal-action">
+            <button
+              className="btn btn-primary"
+              onClick={onSaveModal}
+              type="button"
+            >
+              Save
+            </button>
+            <button
+              className="btn"
+              onClick={() => {
+                onCancel();
+              }}
+              type="button"
+            >
+              Cancel
+            </button>
+          </div>
         </div>
       </div>
     </div>
