@@ -1,5 +1,5 @@
 /* eslint-disable max-statements */
-import React, { forwardRef, useCallback, useMemo, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 
 // import { ReactQueryDevtools } from "react-query/devtools";
 import { Virtuoso } from "react-virtuoso";
@@ -113,40 +113,35 @@ function ItemsPage() {
 
   return (
     <>
-      <div className="flex fixed z-10 w-full bg-gray-800">
-        <div className="flex justify-end items-center px-8 w-2/12">
-          <div className="flex flex-col items-center">
-            <Logo fill="hsl(var(--p))" />
-            <h1 className="text-lg font-extrabold text-primary">Pocketo</h1>
-          </div>
-        </div>
-        <SearchForm
-          isLoading={isLoading}
-          onSubmit={setFormSearchResult}
-          suggestions={suggestionsTags}
-          totalResults={getTotalResults()}
-        />
-      </div>
-      <Virtuoso
-        // eslint-disable-next-line react-perf/jsx-no-new-object-as-prop
-        components={{
-          // eslint-disable-next-line react/display-name, react/no-multi-comp, @typescript-eslint/naming-convention
-          List: forwardRef(({ style, children }, listReference) => (
-            // eslint-disable-next-line react-perf/jsx-no-new-object-as-prop
-            <div ref={listReference} style={{ ...style, marginTop: 120 }}>
-              {children}
+      <div className="flex-col h-screen	flex">
+        <div className="flex bg-gray-800">
+          <div className="flex justify-end items-center px-8 w-2/12">
+            <div className="flex flex-col items-center">
+              <Logo fill="hsl(var(--p))" />
+              <h1 className="text-lg font-extrabold text-primary">Pocketo</h1>
             </div>
-          )),
-
-          // eslint-disable-next-line @typescript-eslint/naming-convention
-          EmptyPlaceholder: isLoading ? ItemLoaderPage : undefined,
-        }}
-        data={dataItems}
-        endReached={nextPage}
-        itemContent={itemContent}
-        overscan={1000}
-        useWindowScroll
-      />
+          </div>
+          <SearchForm
+            isLoading={isLoading}
+            onSubmit={setFormSearchResult}
+            suggestions={suggestionsTags}
+            totalResults={getTotalResults()}
+          />
+        </div>
+        <div className="flex-1">
+          <Virtuoso
+            // eslint-disable-next-line react-perf/jsx-no-new-object-as-prop
+            components={{
+              // eslint-disable-next-line @typescript-eslint/naming-convention
+              EmptyPlaceholder: isLoading ? ItemLoaderPage : undefined,
+            }}
+            data={dataItems}
+            endReached={nextPage}
+            itemContent={itemContent}
+            overscan={1000}
+          />
+        </div>
+      </div>
       {/* <ReactQueryDevtools initialIsOpen /> */}
       {selectedItem && (
         <TagModal
