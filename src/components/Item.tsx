@@ -1,13 +1,15 @@
+/* eslint-disable max-statements */
 import React, { useCallback, useState } from "react";
-import type { Dispatch, SetStateAction } from "react";
 
 import ActionButtons from "components/ActionButtons";
+import TagModal from "components/TagModal";
 
 import type { PocketArticle } from "services/pocketApi";
 import type { MakeMutation } from "services/useItemsMutation";
 
 import ConfirmModal from "./ConfirmModal";
 
+import type { Tag } from "react-tag-input";
 import type { DeepReadonly } from "ts-essentials/dist/types";
 
 interface ItemProps {
@@ -16,7 +18,8 @@ interface ItemProps {
   mutationUnarchive: MakeMutation;
   mutationDelete: MakeMutation;
   mutationtoggleFavorite: MakeMutation;
-  setselectedItem: Dispatch<SetStateAction<PocketArticle | undefined>>;
+  mutationTagReplace: (itemId: string, tags: string) => void;
+  suggestionsTags: Tag[];
 }
 
 function Item({
@@ -25,10 +28,13 @@ function Item({
   mutationUnarchive,
   mutationDelete,
   mutationtoggleFavorite,
-  setselectedItem,
+  mutationTagReplace,
+  suggestionsTags,
 }: DeepReadonly<ItemProps>): JSX.Element {
   const [isConfirmDeleteModalOpen, setIsConfirmDeleteModalOpen] =
     useState(false);
+
+  const [selectedItem, setSelectedItem] = useState<PocketArticle>();
 
   const archive = useCallback(() => {
     if (dataItem.status === "0") {
@@ -48,8 +54,8 @@ function Item({
   }, [dataItem, mutationtoggleFavorite]);
 
   const selectItem = useCallback(() => {
-    setselectedItem(dataItem);
-  }, [dataItem, setselectedItem]);
+    setSelectedItem(dataItem);
+  }, [dataItem, setSelectedItem]);
 
   const onCancelModalDelete = useCallback(() => {
     setIsConfirmDeleteModalOpen(false);
@@ -59,6 +65,18 @@ function Item({
     setIsConfirmDeleteModalOpen(false);
     mutationDelete(dataItem);
   }, [dataItem, mutationDelete]);
+
+  const onSaveModal = useCallback(
+    (itemId: string, tags: readonly string[]) => {
+      setSelectedItem(undefined);
+      mutationTagReplace(itemId, tags.join(","));
+    },
+    [mutationTagReplace]
+  );
+
+  const onCancelModal = useCallback(() => {
+    setSelectedItem(undefined);
+  }, []);
 
   return (
     <>
@@ -70,12 +88,23 @@ function Item({
           onConfirm={onConfirmModalDelete}
         />
       )}
+      {selectedItem && (
+        <TagModal
+          onCancel={onCancelModal}
+          onSave={onSaveModal}
+          selectedItem={selectedItem}
+          suggestions={suggestionsTags}
+        />
+      )}
+      {/* Wrapper */}
       <div className="flex p-2 m-auto w-8/12 hover:bg-black hover:bg-opacity-10 border-b-2 border-gray-800">
+        {/* Image */}
         <div className="mr-4 w-1/12 avatar">
           <div className="w-24 h-24">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               alt="post"
+              className="w-24 h-24"
               height="96"
               src={
                 dataItem.top_image_url ??
@@ -85,7 +114,9 @@ function Item({
             />
           </div>
         </div>
+        {/* Data */}
         <div className="w-11/12">
+          {/* Title */}
           <div className="flex justify-between">
             <a
               href={dataItem.resolved_url}
@@ -111,6 +142,7 @@ function Item({
               )}
             </div>
           </div>
+          {/* Link */}
           <div className="overflow-hidden text-sm overflow-ellipsis whitespace-nowrap opacity-50">
             <a
               href={dataItem.resolved_url}
@@ -121,10 +153,12 @@ function Item({
               {dataItem.resolved_url}
             </a>
           </div>
+          {/* Excerpt */}
           <p className="mt-2">{dataItem.excerpt}</p>
-
+          {/* Tags and Buttons */}
           <div className="mt-4">
             <div className="flex justify-between">
+              {/* Tags */}
               {/* eslint-disable-next-line @shopify/jsx-prefer-fragment-wrappers */}
               <div>
                 {dataItem.tags &&
@@ -134,6 +168,7 @@ function Item({
                     </span>
                   ))}
               </div>
+              {/* Buttons */}
               <ActionButtons
                 archive={archive}
                 cacheUrl={`https://getpocket.com/read/${dataItem.item_id}`}

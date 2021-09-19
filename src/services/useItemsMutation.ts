@@ -306,7 +306,7 @@ export default function useItemsMutation() {
     itemsMutation.mutate([createDeleteAction(dataItem.item_id)]);
   }, []);
 
-  const tagReplaceMutation = useCallback((itemId: string, tags: string) => {
+  const mutationTagReplace = useCallback((itemId: string, tags: string) => {
     itemsMutation.mutate([createTagReplaceAction(itemId, tags)]);
   }, []);
 
@@ -318,7 +318,7 @@ export default function useItemsMutation() {
     mutationUnarchive,
     mutationtoggleFavorite,
     mutationDelete,
-    tagReplaceMutation,
+    mutationTagReplace,
   };
 }
 
