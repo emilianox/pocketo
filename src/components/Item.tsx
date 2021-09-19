@@ -1,11 +1,11 @@
-/* eslint-disable max-statements */
-import React, { useCallback, useState } from "react";
+import React from "react";
 
 import ActionButtons from "components/ActionButtons";
 import TagModal from "components/TagModal";
 
 import type { PocketArticle } from "services/pocketApi";
-import type { MakeMutation } from "services/useItemsMutation";
+
+import useItemContainer from "hooks/containers/useItemContainer";
 
 import ConfirmModal from "./ConfirmModal";
 
@@ -14,69 +14,25 @@ import type { DeepReadonly } from "ts-essentials/dist/types";
 
 interface ItemProps {
   dataItem: PocketArticle;
-  mutationArchive: MakeMutation;
-  mutationUnarchive: MakeMutation;
-  mutationDelete: MakeMutation;
-  mutationtoggleFavorite: MakeMutation;
-  mutationTagReplace: (itemId: string, tags: string) => void;
   suggestionsTags: Tag[];
 }
 
 function Item({
   dataItem,
-  mutationArchive,
-  mutationUnarchive,
-  mutationDelete,
-  mutationtoggleFavorite,
-  mutationTagReplace,
   suggestionsTags,
 }: DeepReadonly<ItemProps>): JSX.Element {
-  const [isConfirmDeleteModalOpen, setIsConfirmDeleteModalOpen] =
-    useState(false);
-
-  const [selectedItem, setSelectedItem] = useState<PocketArticle>();
-
-  const archive = useCallback(() => {
-    if (dataItem.status === "0") {
-      mutationArchive(dataItem);
-      // eslint-disable-next-line sonarjs/elseif-without-else
-    } else if (dataItem.status === "1") {
-      mutationUnarchive(dataItem);
-    }
-  }, [dataItem, mutationArchive, mutationUnarchive]);
-
-  const deleteItem = useCallback(() => {
-    setIsConfirmDeleteModalOpen(true);
-  }, []);
-
-  const toggleFavorite = useCallback(() => {
-    mutationtoggleFavorite(dataItem);
-  }, [dataItem, mutationtoggleFavorite]);
-
-  const selectItem = useCallback(() => {
-    setSelectedItem(dataItem);
-  }, [dataItem, setSelectedItem]);
-
-  const onCancelModalDelete = useCallback(() => {
-    setIsConfirmDeleteModalOpen(false);
-  }, []);
-
-  const onConfirmModalDelete = useCallback(() => {
-    setIsConfirmDeleteModalOpen(false);
-    mutationDelete(dataItem);
-  }, [dataItem, mutationDelete]);
-
-  const onSaveModal = useCallback(
-    (itemId: string, tags: readonly string[]) => {
-      setSelectedItem(undefined);
-      mutationTagReplace(itemId, tags.join(","));
-    },
-    [mutationTagReplace]
-  );
-
-  const onCancelModal = useCallback(() => {
-    setSelectedItem(undefined);
-  }, []);
+  const {
+    isConfirmDeleteModalOpen,
+    selectedItem,
+    archiveItem,
+    deleteItem,
+    toggleFavorite,
+    selectItem,
+    onConfirmModalDelete,
+    onCancelModalDelete,
+    onSaveModalTag,
+    onCancelModalTag,
+  } = useItemContainer({ dataItem });
 
   return (
     <>
@@ -90,8 +46,8 @@ function Item({
       )}
       {selectedItem && (
         <TagModal
-          onCancel={onCancelModal}
-          onSave={onSaveModal}
+          onCancel={onCancelModalTag}
+          onSave={onSaveModalTag}
           selectedItem={selectedItem}
           suggestions={suggestionsTags}
         />
@@ -170,7 +126,7 @@ function Item({
               </div>
               {/* Buttons */}
               <ActionButtons
-                archive={archive}
+                archive={archiveItem}
                 cacheUrl={`https://getpocket.com/read/${dataItem.item_id}`}
                 deleteItem={deleteItem}
                 favorite={dataItem.favorite}
