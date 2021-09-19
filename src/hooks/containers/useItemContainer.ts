@@ -43,7 +43,7 @@ const useItemContainer = ({
     mutationtoggleFavorite(dataItem);
   }, [dataItem, mutationtoggleFavorite]);
 
-  const selectItem = useCallback(() => {
+  const changeTagsItem = useCallback(() => {
     setSelectedItem(dataItem);
   }, [dataItem, setSelectedItem]);
 
@@ -74,7 +74,7 @@ const useItemContainer = ({
     archiveItem,
     deleteItem,
     toggleFavorite,
-    selectItem,
+    changeTagsItem,
     onConfirmModalDelete,
     onCancelModalDelete,
     onSaveModalTag,

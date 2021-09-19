@@ -25,7 +25,7 @@ interface ActionButtonsProps {
   deleteItem: () => void;
   favorite: PocketArticle["favorite"];
   status: PocketArticle["status"];
-  selectItem: () => void;
+  changeTagsItem: () => void;
   toggleFavorite: () => void;
   url: string;
   cacheUrl: string;
@@ -35,7 +35,7 @@ function ActionButtons({
   archive,
   deleteItem,
   favorite,
-  selectItem,
+  changeTagsItem,
   toggleFavorite,
   url,
   cacheUrl,
@@ -78,7 +78,7 @@ function ActionButtons({
       </button>
       <button
         className="inline-block mx-2 w-6 h-6 stroke-current"
-        onClick={selectItem}
+        onClick={changeTagsItem}
         type="button"
       >
         <AiOutlineTags className="hover:text-purple-500" size="1.5em" />

@@ -27,7 +27,7 @@ function Item({
     archiveItem,
     deleteItem,
     toggleFavorite,
-    selectItem,
+    changeTagsItem,
     onConfirmModalDelete,
     onCancelModalDelete,
     onSaveModalTag,
@@ -128,9 +128,9 @@ function Item({
               <ActionButtons
                 archive={archiveItem}
                 cacheUrl={`https://getpocket.com/read/${dataItem.item_id}`}
+                changeTagsItem={changeTagsItem}
                 deleteItem={deleteItem}
                 favorite={dataItem.favorite}
-                selectItem={selectItem}
                 status={dataItem.status}
                 toggleFavorite={toggleFavorite}
                 url={dataItem.resolved_url}
