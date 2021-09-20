@@ -5,7 +5,7 @@ import React, { useState, useMemo } from "react";
 
 import { FaInfoCircle } from "@react-icons/all-files/fa/FaInfoCircle";
 import clsx from "clsx";
-import { useShortcuts } from "react-shortcuts-hook";
+import { useHotkeys } from "react-hotkeys-hook";
 
 import TagSelector from "components/TagSelector";
 
@@ -37,7 +37,10 @@ function TagModal({
     selectedItem && onSave(selectedItem.item_id, tagToListTag(tags));
   };
 
-  useShortcuts(["Control", "Enter"], onSaveModal, [selectedItem, tags]);
+  useHotkeys("ctrl+enter", onSaveModal, { enableOnTags: ["INPUT"] }, [
+    selectedItem,
+    tags,
+  ]);
 
   useMemo(() => {
     setTags(

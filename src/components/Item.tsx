@@ -1,4 +1,7 @@
-import React from "react";
+/* eslint-disable @typescript-eslint/naming-convention */
+import React, { useState } from "react";
+
+import { useHotkeys } from "react-hotkeys-hook";
 
 import ActionButtons from "components/ActionButtons";
 import TagModal from "components/TagModal";
@@ -34,6 +37,53 @@ function Item({
     onCancelModalTag,
   } = useItemContainer({ dataItem });
 
+  const [isItemHover, setIsItemHover] = useState(false);
+
+  // useShortcuts(
+  //   ["s"],
+  //   () => {
+  //     isItemHover && toggleFavorite();
+  //   },
+  //   [isItemHover, dataItem]
+  // );
+
+  useHotkeys("a", archiveItem, { enabled: isItemHover }, [
+    dataItem,
+    isItemHover,
+  ]);
+
+  useHotkeys("s", toggleFavorite, { enabled: isItemHover }, [
+    dataItem,
+    isItemHover,
+  ]);
+
+  useHotkeys(
+    "t",
+    (event) => {
+      event.preventDefault();
+      changeTagsItem();
+    },
+    {
+      enabled: isItemHover,
+    },
+    [dataItem, isItemHover]
+  );
+
+  // useHotkeys("l", toggleFavorite, { enabled: isItemHover }, [
+  //   dataItem,
+  //   isItemHover,
+  // ]);
+
+  // useHotkeys("c", toggleFavorite, { enabled: isItemHover }, [
+  //   dataItem,
+  //   isItemHover,
+  // ]);
+
+  useHotkeys("r", deleteItem, { enabled: isItemHover }, [
+    dataItem,
+    isItemHover,
+  ]);
+
   return (
     <>
       {isConfirmDeleteModalOpen && (
@@ -53,7 +103,17 @@ function Item({
         />
       )}
       {/* Wrapper */}
-      <div className="flex p-2 m-auto w-8/12 hover:bg-black hover:bg-opacity-10 border-b-2 border-gray-800">
+      <div
+        className="flex p-2 m-auto w-8/12 hover:bg-black hover:bg-opacity-10 border-b-2 border-gray-800"
+        // eslint-disable-next-line react/jsx-no-bind, react-perf/jsx-no-new-function-as-prop
+        onMouseEnter={() => {
+          setIsItemHover(true);
+        }}
+        // eslint-disable-next-line react/jsx-no-bind, react-perf/jsx-no-new-function-as-prop
+        onMouseLeave={() => {
+          setIsItemHover(false);
+        }}
+      >
         {/* Image */}
         <div className="mr-4 w-1/12 avatar">
           <div className="w-24 h-24">

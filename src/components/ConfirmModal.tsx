@@ -2,7 +2,7 @@ import React from "react";
 
 import { FaInfoCircle } from "@react-icons/all-files/fa/FaInfoCircle";
 import clsx from "clsx";
-import { useShortcuts } from "react-shortcuts-hook";
+import { useHotkeys } from "react-hotkeys-hook";
 
 import type { DeepReadonly } from "ts-essentials/dist/types";
 
@@ -14,7 +14,7 @@ type ConfirmModalProps = DeepReadonly<{
 }>;
 
 function ConfirmModal({ isOpen, cta, onConfirm, onCancel }: ConfirmModalProps) {
-  useShortcuts(["Control", "Enter"], onConfirm, []);
+  useHotkeys("ctrl+enter", onConfirm);
 
   return (
     <div
