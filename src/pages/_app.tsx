@@ -10,7 +10,7 @@ import Head from "next/head";
 import { SnackbarProvider } from "notistack";
 import { QueryClient, QueryClientProvider } from "react-query";
 
-import type { AppProps, NextWebVitalsMetric } from "next/app";
+import type { AppProps } from "next/app";
 
 const queryClient = new QueryClient();
 
@@ -33,9 +33,9 @@ function MyApp({ Component, pageProps }: AppProps): JSX.Element {
 }
 
 // // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/explicit-function-return-type
-export function reportWebVitals(metric: NextWebVitalsMetric) {
-  // eslint-disable-next-line no-console
-  console.log(metric);
-}
+// export function reportWebVitals(metric: NextWebVitalsMetric) {
+//   // eslint-disable-next-line no-console
+//   console.log(metric);
+// }
 
 export default MyApp;
