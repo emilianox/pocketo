@@ -21,6 +21,8 @@ const useItemContainer = ({
     mutationTagReplace,
   } = useItemsMutation();
 
+  const [isItemHover, setIsItemHover] = useState(false);
+
   const [isConfirmDeleteModalOpen, setIsConfirmDeleteModalOpen] =
     useState(false);
 
@@ -59,6 +61,7 @@ const useItemContainer = ({
   const onSaveModalTag = useCallback(
     (itemId: string, tags: readonly string[]) => {
       setSelectedItem(undefined);
+      setIsItemHover(true);
       mutationTagReplace(itemId, tags.join(","));
     },
     [mutationTagReplace]
@@ -66,6 +69,7 @@ const useItemContainer = ({
 
   const onCancelModalTag = useCallback(() => {
     setSelectedItem(undefined);
+    setIsItemHover(true);
   }, []);
 
   return {
@@ -79,6 +83,8 @@ const useItemContainer = ({
     onCancelModalDelete,
     onSaveModalTag,
     onCancelModalTag,
+    isItemHover,
+    setIsItemHover,
   };
 };
 

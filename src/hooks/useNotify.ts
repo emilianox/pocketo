@@ -7,7 +7,7 @@ export default function useNotify(
   options?: OptionsObject
 ) {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
-  const onStartNotify = () => enqueueSnackbar(message, options);
+  const onStartNotify = (msj = message) => enqueueSnackbar(msj, options);
   const onFinishNotify = () => {
     closeSnackbar(options?.key);
   };

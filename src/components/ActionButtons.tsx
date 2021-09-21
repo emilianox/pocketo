@@ -11,10 +11,7 @@ import { MdStarBorder } from "@react-icons/all-files/md/MdStarBorder";
 import { RiDeviceRecoverLine } from "@react-icons/all-files/ri/RiDeviceRecoverLine";
 import { RiTelegramLine } from "@react-icons/all-files/ri/RiTelegramLine";
 import { RiWhatsappLine } from "@react-icons/all-files/ri/RiWhatsappLine";
-import copy from "copy-text-to-clipboard";
 import { TelegramShareButton, WhatsappShareButton } from "react-share";
-
-import useNotify from "hooks/useNotify";
 
 import type { PocketArticle } from "services/pocketApi";
 
@@ -27,6 +24,7 @@ interface ActionButtonsProps {
   status: PocketArticle["status"];
   changeTagsItem: () => void;
   toggleFavorite: () => void;
+  copyLinkItem: () => void;
   url: string;
   cacheUrl: string;
 }
@@ -40,16 +38,8 @@ function ActionButtons({
   url,
   cacheUrl,
   status,
+  copyLinkItem,
 }: DeepReadonly<ActionButtonsProps>): JSX.Element {
-  const { onStartNotify } = useNotify("link copied", {
-    variant: "success",
-  });
-  const copyFunction = React.useCallback(() => {
-    copy(url);
-
-    return onStartNotify();
-  }, [url, onStartNotify]);
-
   return (
     <div className=" p-2 shadow-lg menu bg-base-100 rounded-box horizontal">
       <li>
@@ -85,7 +75,7 @@ function ActionButtons({
       </button>
       <button
         className="inline-block mx-2 w-6 h-6 stroke-current"
-        onClick={copyFunction}
+        onClick={copyLinkItem}
         type="button"
       >
         <FiLink className="hover:text-purple-500" size="1.5em" />

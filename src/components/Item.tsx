@@ -1,10 +1,13 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import React, { useState } from "react";
+import React from "react";
 
+import copy from "copy-text-to-clipboard";
 import { useHotkeys } from "react-hotkeys-hook";
 
 import ActionButtons from "components/ActionButtons";
 import TagModal from "components/TagModal";
+
+import useNotify from "hooks/useNotify";
 
 import type { PocketArticle } from "services/pocketApi";
 
@@ -35,17 +38,18 @@ function Item({
     onCancelModalDelete,
     onSaveModalTag,
     onCancelModalTag,
+    isItemHover,
+    setIsItemHover,
   } = useItemContainer({ dataItem });
 
-  const [isItemHover, setIsItemHover] = useState(false);
+  const { onStartNotify } = useNotify("link copied", {
+    variant: "success",
+  });
 
-  // useShortcuts(
-  //   ["s"],
-  //   () => {
-  //     isItemHover && toggleFavorite();
-  //   },
-  //   [isItemHover, dataItem]
-  // );
+  const copyLinkItem = React.useCallback(() => {
+    copy(dataItem.resolved_url);
+    onStartNotify();
+  }, [dataItem.resolved_url, onStartNotify]);
 
   useHotkeys("a", archiveItem, { enabled: isItemHover }, [
     dataItem,
@@ -62,6 +66,7 @@ function Item({
     (event) => {
       event.preventDefault();
       changeTagsItem();
+      setIsItemHover(true);
     },
     {
       enabled: isItemHover,
@@ -69,15 +74,19 @@ function Item({
     [dataItem, isItemHover]
   );
 
-  // useHotkeys("l", toggleFavorite, { enabled: isItemHover }, [
-  //   dataItem,
-  //   isItemHover,
-  // ]);
+  useHotkeys("l", copyLinkItem, { enabled: isItemHover }, [
+    dataItem.resolved_url,
+    isItemHover,
+  ]);
 
-  // useHotkeys("c", toggleFavorite, { enabled: isItemHover }, [
-  //   dataItem,
-  //   isItemHover,
-  // ]);
+  useHotkeys(
+    "c",
+    () => {
+      window.open(`https://getpocket.com/read/${dataItem.item_id}`, "_blank");
+    },
+    { enabled: isItemHover },
+    [dataItem, isItemHover]
+  );
 
   useHotkeys("r", deleteItem, { enabled: isItemHover }, [
     dataItem,
@@ -189,6 +198,7 @@ function Item({
                 archive={archiveItem}
                 cacheUrl={`https://getpocket.com/read/${dataItem.item_id}`}
                 changeTagsItem={changeTagsItem}
+                copyLinkItem={copyLinkItem}
                 deleteItem={deleteItem}
                 favorite={dataItem.favorite}
                 status={dataItem.status}
