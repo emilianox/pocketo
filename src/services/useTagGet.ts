@@ -3,6 +3,8 @@
 
 import { useQuery } from "react-query";
 
+import useNotify from "hooks/useNotify";
+
 interface ResponseGetTagsPocketApi {
   status: number;
   complete: number;
@@ -15,17 +17,32 @@ interface ResponseGetTagsPocketApi {
   since: number;
 }
 
-const getPocketTags = async () =>
-  await fetch(`/api/items/getTags`, {
+type GetPocketTags = (
+  onStartNotify: () => void,
+  onFinishNotify: () => void
+) => Promise<ResponseGetTagsPocketApi>;
+
+const getPocketTags: GetPocketTags = async (onStartNotify, onFinishNotify) => {
+  onStartNotify();
+
+  const response = await fetch(`/api/items/getTags`, {
     method: "GET",
-  }).then(async (response) => {
-    return (await response.json()) as ResponseGetTagsPocketApi;
   });
 
+  onFinishNotify();
+
+  return (await response.json()) as ResponseGetTagsPocketApi;
+};
+
 export default function useTagGet() {
+  const { onStartNotify, onFinishNotify } = useNotify("Loading Tags..", {
+    key: "loading-tags",
+    preventDuplicate: true,
+  });
+
   return useQuery<ResponseGetTagsPocketApi, Error>(
     "tags",
-    async () => await getPocketTags(),
+    async () => await getPocketTags(onStartNotify, onFinishNotify),
     {
       refetchOnWindowFocus: false,
       staleTime: 5000,
