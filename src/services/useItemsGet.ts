@@ -39,8 +39,6 @@ const getPocketArticles: GetPocketArticles = async (
 
   onStartNotify();
 
-  onStartNotify();
-
   const response = await fetch(
     `/api/items/get?${new URLSearchParams(parsed).toString()}`
   );
@@ -63,7 +61,7 @@ const itemPerRequest = 30;
 export default function useItemsGet(
   searchParameters: DeepReadonly<SearchParameters>
 ) {
-  const { onStartNotify, onFinishNotify } = useNotify("Loading..", {
+  const { onStartNotify, onFinishNotify } = useNotify("Loading Articles..", {
     key: "loading",
     preventDuplicate: true,
   });
