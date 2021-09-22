@@ -4,3 +4,4 @@ postcss.config.js
 .dependency-cruiser.js
 lint-staged.config.js
 stylelint.config.js
+babel.config.js
