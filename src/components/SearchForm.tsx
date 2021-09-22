@@ -33,23 +33,36 @@ interface SearchFormProps {
   suggestions: Tag[];
   totalResults: number;
   isLoading: boolean;
+  searchParameters: SearchParameters;
+}
+
+function parseToForm(parameters: SearchParameters): SearchParametersAll {
+  // const fav = parameters.favorite === "1";
+  const favorite =
+    "favorite" in parameters ? parameters.favorite === "1" : false;
+  const search =
+    "search" in parameters ? parameters.search?.replaceAll("#", "(#)") : "";
+
+  return { ...parameters, favorite, search };
 }
 
 export default memo(function SearchForm({
   onSubmit,
+  searchParameters,
   suggestions,
   isLoading,
   totalResults,
 }: DeepReadonly<SearchFormProps>) {
   const { reset, register, handleSubmit, watch, setValue } =
     useForm<SearchParametersAll>();
-  const [inputValue, setInputValue] = useState<string>("");
+
+  useEffect(() => {
+    reset(parseToForm(searchParameters));
+  }, [reset, searchParameters]);
 
   const isFavorite = watch("favorite");
 
   const onParse: SubmitHandler<SearchParametersAll> = (data) => {
-    // console.log("onparse", data);
-
     const toOmit = data.favorite ? "search" : "favorite";
 
     // this is for some search restriction on pocket api
@@ -68,7 +81,6 @@ export default memo(function SearchForm({
 
   useEffect(() => {
     register("search");
-    // register("lastName");
   }, [register]);
 
   const searchSuggestions = useMemo(
@@ -95,13 +107,11 @@ export default memo(function SearchForm({
           disabled={isFavorite}
           name="search"
           onChange={(event, value) => {
-            // searchRegister.onChange(event);
-            setInputValue(value);
             setValue("search", value);
           }}
           placeholder={"Search using text and '#tag'"}
           singleLine
-          value={inputValue}
+          value={watch("search")}
         >
           <Mention
             appendSpaceOnAdd
@@ -140,8 +150,7 @@ export default memo(function SearchForm({
             <button
               className="space-x-1 badge badge-primary badge-outline"
               onClick={() => {
-                reset();
-                setInputValue("");
+                reset({});
               }}
               type="button"
             >

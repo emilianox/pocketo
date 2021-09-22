@@ -1,7 +1,8 @@
 /* eslint-disable max-statements */
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 
 // import { ReactQueryDevtools } from "react-query/devtools";
+import { useRouter } from "next/dist/client/router";
 import { Virtuoso } from "react-virtuoso";
 
 import Item from "components/Item";
@@ -21,9 +22,33 @@ import type { Tag } from "react-tag-input";
 import type { DeepReadonly } from "ts-essentials/dist/types";
 
 function ItemsPage() {
+  const router = useRouter();
+
   const [formSearchResult, setFormSearchResult] = useState<SearchParameters>(
     {} as SearchParameters
   );
+
+  useEffect(() => {
+    if (!router.isReady) return;
+
+    // eslint-disable-next-line fp/no-mutating-methods
+    void router.push({
+      pathname: "/",
+      query: formSearchResult as unknown as null,
+    });
+    // console.log("query", query);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [formSearchResult]);
+
+  useEffect(() => {
+    if (!router.isReady) return;
+
+    // codes using router.query
+    setFormSearchResult(router.query as unknown as SearchParameters);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router.isReady]);
+
+  // console.log(router.query);
 
   const { data, error, fetchNextPage, isLoading } = useItems(formSearchResult);
   const dataItems: PocketArticle[] = useMemo(() => {
@@ -100,6 +125,7 @@ function ItemsPage() {
         <SearchForm
           isLoading={isLoading}
           onSubmit={setFormSearchResult}
+          searchParameters={formSearchResult}
           suggestions={suggestionsTags}
           totalResults={getTotalResults()}
         />
