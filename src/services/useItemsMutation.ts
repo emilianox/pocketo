@@ -4,6 +4,8 @@ import { useCallback } from "react";
 import { omit as rOmit } from "ramda";
 import { useMutation, useQueryClient } from "react-query";
 
+import useNotify from "hooks/useNotify";
+
 import type {
   ActionTagsReplace,
   ArticleAction,
@@ -161,14 +163,25 @@ const getResponseGetPocketApiRemoveKey = (
 const setQueryDataFromActions = (
   queryClient: DeepReadonly<QueryClient>,
   queryKey: QueryKey,
-  action: ArticleAction
+  action: ArticleAction,
+  notify: (name: string) => void
 ): InfiniteData<ResponseGetPocketApi> => {
   switch (action.action) {
     case "favorite":
     case "unfavorite":
-      return queryClient.setQueryData(queryKey, (oldData) =>
-        updaterFunction(oldData, action, getResponseGetPocketApiChangeFavorite)
-      );
+      return queryClient.setQueryData(queryKey, (oldData) => {
+        switch (action.action) {
+          case "favorite":
+            notify("Favorite");
+          case "unfavorite":
+            notify("Unfavorite");
+        }
+        return updaterFunction(
+          oldData,
+          action,
+          getResponseGetPocketApiChangeFavorite
+        );
+      });
     case "archive":
     case "readd":
     case "delete":
@@ -224,6 +237,11 @@ type MakeMutation = (dataItem: DeepReadonly<PocketArticle>) => void;
 
 export default function useItemsMutation() {
   const queryClient = useQueryClient();
+  const { onStartNotify, onFinishNotify } = useNotify("Loading Articles..", {
+    key: "mutating-article",
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    preventDuplicate: true,
+  });
 
   const itemsMutation = useMutation<
     ResponseSendPocketApi,
@@ -250,7 +268,8 @@ export default function useItemsMutation() {
               const newData = setQueryDataFromActions(
                 queryClient,
                 queryKey,
-                action
+                action,
+                onStartNotify
               );
 
               return {
@@ -281,6 +300,7 @@ export default function useItemsMutation() {
 
     // eslint-disable-next-line max-params
     onSettled: (data, error, variables, context) => {
+      onFinishNotify();
       context?.forEach((aContext) => {
         void queryClient.invalidateQueries(aContext.queryKey);
       });
