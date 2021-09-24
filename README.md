@@ -6,14 +6,13 @@
 *** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
 *** https://www.markdownguide.org/basic-syntax/#reference-style-links
 -->
+
 [![Contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
 [![LinkedIn][linkedin-shield]][linkedin-url]
-
-
 
 <!-- PROJECT LOGO -->
 <br />
@@ -37,8 +36,6 @@
     <a href="https://github.com/emilianox/pocketo/issues">Request Feature</a>
   </p>
 </p>
-
-
 
 <!-- TABLE OF CONTENTS -->
 <details open="open">
@@ -65,72 +62,72 @@
   </ol>
 </details>
 
-
-
 <!-- ABOUT THE PROJECT -->
+
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
+[![Product Name Screen Shot][product-screenshot]](https://github.com/emilianox/pocketo)
 
 There are many great Pocket clients, however, I didn't find one that really suit my needs, so I created this enhanced one. I want to create a client focused on speed and UX and advanced filtering. I also want to put an emphasis on offline reading. I'm currently working on the first release of the application.
 
 Here's why:
-* Pocket web app is focused on read more than search 
-* Search by tags must be a first class.
-* Search by domain are great.
-* Advanced search capacities is a must.
-* Webpage access first and then pocket's cache.
-* Filtering by tags must be fast.
-* Offline reading support in web.
-* Simple UI.
-* Fast.
-* Great UX.
 
+- Pocket web app is focused on read more than search
+- Search by tags must be a first class.
+- Search by domain are great.
+- Advanced search capacities is a must.
+- Webpage access first and then pocket's cache.
+- Filtering by tags must be fast.
+- Offline reading support in web.
+- Simple UI.
+- Fast.
+- Great UX.
 
 The application is still in an early state, but the main features are already implemented:
-* Search by tags and text combined
-* Filter by domain
-* Filter by Read/Unread
-* Clear search
-* Filter by starred
-* Sort by age, domain
-* Archive
-* Star
-* Add and revome tags
-* Copy link
-* Whatsapp and Telegram share
-* View Pocket cache
-* Remove
-* Shortcuts(now only ctrl+enter to add save tags)
-* Image support
 
-Of course, at the end, this is a mostly opinionated client of pocket. 
+- Search by tags and text combined
+- Filter by domain
+- Filter by Read/Unread
+- Clear search
+- Filter by starred
+- Sort by age, domain
+- Archive
+- Star
+- Add and revome tags
+- Copy link
+- Whatsapp and Telegram share
+- View Pocket cache
+- Remove
+- Shortcuts(WIP ctrl+enter to add save tags)
+- Image support
+
+Of course, at the end, this is a mostly opinionated client of pocket.
 Please suggest changes by forking this repo and creating a pull request or opening an issue. Thanks to all the people have contributed to expanding this template!
-
 
 ### Built With
 
-* [React](https://reactjs.org/)
-* [Next.js](https://nextjs.org/)
-* [Tailwinds](https://tailwindcss.com/)
-* [DaisyUI](https://github.com/saadeghi/daisyui)
-* [React Query](https://react-query.tanstack.com/)
+- [React](https://reactjs.org/)
+- [Next.js](https://nextjs.org/)
+- [Tailwinds](https://tailwindcss.com/)
+- [DaisyUI](https://github.com/saadeghi/daisyui)
+- [React Query](https://react-query.tanstack.com/)
 
 <!-- GETTING STARTED -->
-## Getting Started
 
+## Getting Started
 
 ### Prerequisites
 
 This is an example of how to list things you need to use the software and how to install them.
-* npm
+
+- npm
   ```sh
   npm install npm@latest -g
   ```
 
 ### Installation
 
-1. Get a free API Key at [https://getpocket.com/developer/apps/](https://example.com)
+1. Get a free API Key at [https://getpocket.com/developer/apps/](https://getpocket.com/developer/apps/)
 2. Clone the repo
    ```sh
    git clone https://github.com/emilianox/pocketo.git
@@ -140,7 +137,7 @@ This is an example of how to list things you need to use the software and how to
    npm install
    ```
 4. Enter your API credentials in `.env.local`
-  You can generate the POCKET_ACCESS_TOKEN using the `/api/auth` endpoint in the console 
+   You can generate the POCKET_ACCESS_TOKEN using the `/api/auth` endpoint in the console
    ```sh
     SECRET= xxxxxxxxxxxxxxxxxxxxxxx # Linux: `openssl rand -hex 32` or go to https://generate-secret.now.sh/32
     POCKET_CONSUMER_KEY=xxxxxxxxxxxxxxxxxxxxxx
@@ -152,16 +149,14 @@ This is an example of how to list things you need to use the software and how to
    npm run production
    ```
 
-
-
 <!-- ROADMAP -->
+
 ## Roadmap
 
 See the [open issues](https://github.com/emilianox/pocketo/issues) for a list of proposed features (and known issues).
 
-
-
 <!-- CONTRIBUTING -->
+
 ## Contributing
 
 Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
@@ -172,17 +167,15 @@ Contributions are what make the open source community such an amazing place to l
 4. Push to the Branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
-
-
 <!-- LICENSE -->
+
 ## License
 
 Distributed under the MIT License. See `LICENSE` for more information.
 
-
-
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
+
 [contributors-shield]: https://img.shields.io/github/contributors/emilianox/pocketo.svg?style=for-the-badge
 [contributors-url]: https://github.com/emilianox/pocketo/graphs/contributors
 [forks-shield]: https://img.shields.io/github/forks/emilianox/pocketo.svg?style=for-the-badge
