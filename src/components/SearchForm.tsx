@@ -37,7 +37,6 @@ interface SearchFormProps {
 }
 
 function parseToForm(parameters: SearchParameters): SearchParametersAll {
-  // const fav = parameters.favorite === "1";
   const favorite =
     "favorite" in parameters ? parameters.favorite === "1" : false;
   const search =
@@ -107,6 +106,7 @@ export default memo(function SearchForm({
           disabled={isFavorite}
           name="search"
           onChange={(event, value) => {
+            // eslint-disable-next-line react-hook-form/no-nested-object-setvalue
             setValue("search", value);
           }}
           placeholder={"Search using text and '#tag'"}
@@ -122,8 +122,6 @@ export default memo(function SearchForm({
               }[]
             }
             displayTransform={(id, display) => `#${display}`}
-            // renderSuggestion={renderTagSuggestion}
-            // markup="#__id__"
             markup="(#)__id__"
             trigger="#"
           />
@@ -185,25 +183,7 @@ export default memo(function SearchForm({
             <option value="site">Url</option>
             <option value="title">Title</option>
           </select>
-
-          {/* <label>
-            <div>since(comming soon)</div>
-                    </label> */}
-          {/* <label>
-            <div>content(comming soon)</div>
-             </label> */}
         </div>
-        {/* <div className=" flex btn-group disabled">
-            <button
-              className="btn btn-sm btn-disabled bg-primary"
-              type="button"
-            >
-              <FaList />
-            </button>
-            <button className="btn btn-sm btn-disabled" type="button">
-              <BiGridSmall size="26" />
-            </button>
-          </div> */}
       </div>
     </form>
   );

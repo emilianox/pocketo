@@ -10,8 +10,6 @@
 /* eslint-disable @typescript-eslint/no-magic-numbers */
 /* eslint-disable @typescript-eslint/prefer-readonly-parameter-types */
 /* eslint-disable import/no-anonymous-default-export */
-//   console.log("res", res);
-//   res.status(200).json({ name: "John Doe" });
 import auth from "pocket-auth";
 
 import type { NextApiRequest, NextApiResponse } from "next";

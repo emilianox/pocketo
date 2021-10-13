@@ -8,8 +8,8 @@
     "hardcore/fp",
     "hardcore/ts",
     "plugin:tailwindcss/recommended",
-    "next/core-web-vitals",
-    "plugin:prettier/recommended"
+    "next/core-web-vitals"
+    // "plugin:prettier/recommended"
   ],
   "rules": {
     // override default options
@@ -69,7 +69,10 @@
     "react/function-component-definition": "off",
     "tailwindcss/no-custom-classname": "off",
     "@typescript-eslint/explicit-module-boundary-types": "off",
-    "@typescript-eslint/explicit-function-return-type": "off"
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "lines-around-comment": "off",
+    "etc/no-commented-out-code": "off"
+    // "react/jsx-no-target-blank": "on"
   },
   "parserOptions": {
     "project": "./tsconfig.json"

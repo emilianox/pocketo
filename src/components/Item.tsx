@@ -184,6 +184,7 @@ function Item({
           <div className="mt-4">
             <div className="flex justify-between">
               {/* Tags */}
+              {/* eslint-disable-next-line max-len */}
               {/* eslint-disable-next-line @shopify/jsx-prefer-fragment-wrappers */}
               <div>
                 {dataItem.tags &&

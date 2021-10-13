@@ -29,26 +29,29 @@ function ItemsPage() {
   );
 
   useEffect(() => {
-    if (!router.isReady) return;
+    if (!router.isReady) {
+      return;
+    }
 
     // eslint-disable-next-line fp/no-mutating-methods
     void router.push({
       pathname: "/",
       query: formSearchResult as unknown as null,
     });
+
     // console.log("query", query);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formSearchResult]);
 
   useEffect(() => {
-    if (!router.isReady) return;
+    if (!router.isReady) {
+      return;
+    }
 
     // codes using router.query
     setFormSearchResult(router.query as unknown as SearchParameters);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.isReady]);
-
-  // console.log(router.query);
 
   const { data, error, fetchNextPage, isLoading } = useItems(formSearchResult);
   const dataItems: PocketArticle[] = useMemo(() => {
@@ -114,7 +117,7 @@ function ItemsPage() {
   }
 
   return (
-    <div className="flex-col h-screen	flex">
+    <div className="flex flex-col h-screen">
       <div className="flex bg-gray-800">
         <div className="flex justify-end items-center px-8 w-2/12">
           <div className="flex flex-col items-center">

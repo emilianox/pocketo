@@ -1,3 +1,5 @@
+/* eslint-disable max-len */
+/* eslint-disable no-tabs */
 /* eslint-disable complexity */
 /* eslint-disable max-statements */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
@@ -57,7 +59,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const contentType =
     typeof qy.contentType === "string" ? `&contentType=${qy.contentType}` : "";
   const sort = typeof qy.sort === "string" ? `&sort=${qy.sort}` : "";
-  const detailType = `&detailType=complete`;
+  const detailType = "&detailType=complete";
   const search = typeof qy.search === "string" ? `&search=${qy.search}` : "";
   const domain = typeof qy.domain === "string" ? `&domain=${qy.domain}` : "";
   const since = typeof qy.since === "string" ? `&since=${qy.since}` : "";

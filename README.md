@@ -137,7 +137,7 @@ This is an example of how to list things you need to use the software and how to
    npm install
    ```
 4. Enter your API credentials in `.env.local`
-   You can generate the POCKET_ACCESS_TOKEN using the `/api/auth` endpoint in the console
+   You can generate the POCKET_ACCESS_TOKEN using the `/api/auth/pocket` and check in the console for the url
    ```sh
     SECRET= xxxxxxxxxxxxxxxxxxxxxxx # Linux: `openssl rand -hex 32` or go to https://generate-secret.now.sh/32
     POCKET_CONSUMER_KEY=xxxxxxxxxxxxxxxxxxxxxx
