@@ -7,7 +7,7 @@ module.exports = function (api) {
   const pluginsProduction = [];
   const pluginsNoProduction = [
     "console-source",
-    "babel-plugin-typescript-to-proptypes",
+    // "babel-plugin-typescript-to-proptypes",
   ];
 
   const pluginsToAdd = api.env("production")
