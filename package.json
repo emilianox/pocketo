@@ -26,7 +26,7 @@
     "clsx": "^1.1.1",
     "copy-text-to-clipboard": "^3.0.1",
     "daisyui": "^1.14.0",
-    "next": "11.1.2",
+    "next": "11.1.3",
     "notistack": "^1.0.10",
     "pocket-auth": "^1.2.4",
     "ramda": "^0.27.1",
