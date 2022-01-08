@@ -3,12 +3,10 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable @typescript-eslint/prefer-readonly-parameter-types */
 /* eslint-disable react-perf/jsx-no-new-function-as-prop */
-import type { Dispatch, SetStateAction } from "react";
-import React from "react";
+// eslint-disable-next-line prettier/prettier
+import React, {type Dispatch, type SetStateAction} from "react";
 
-import { WithContext as ReactTags } from "react-tag-input";
-
-import type { Tag } from "react-tag-input";
+import {WithContext as ReactTags, type Tag} from "react-tag-input";
 
 const keyCodes = {
   comma: 188,
@@ -67,3 +65,4 @@ const TagSelector = ({
 };
 
 export default TagSelector;
+

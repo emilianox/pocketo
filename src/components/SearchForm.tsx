@@ -8,7 +8,8 @@ import { memo, useEffect, useMemo, useState } from "react";
 
 import { FaRegTimesCircle } from "@react-icons/all-files/fa/FaRegTimesCircle";
 import { FaSpinner } from "@react-icons/all-files/fa/FaSpinner";
-import { useForm } from "react-hook-form";
+// eslint-disable-next-line prettier/prettier
+import {useForm, type SubmitHandler} from "react-hook-form";
 import { MentionsInput, Mention } from "react-mentions";
 
 import type {
@@ -17,7 +18,6 @@ import type {
   SearchParametersSearch,
 } from "services/pocketApi";
 
-import type { SubmitHandler } from "react-hook-form";
 import type { Tag } from "react-tag-input";
 import type { DeepReadonly } from "ts-essentials/dist/types";
 
@@ -188,3 +188,4 @@ export default memo(function SearchForm({
     </form>
   );
 });
+

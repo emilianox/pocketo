@@ -12,11 +12,14 @@ import type {
 } from "./pocketApi";
 import type { DeepReadonly } from "ts-essentials/dist/types";
 
-type GetPocketArticles = (
-  searchParameters: DeepReadonly<SearchParameters>,
-  onStartNotify: () => void,
-  onFinishNotify: () => void
-) => Promise<ResponseGetPocketApi>;
+interface GetPocketArticles {
+  // eslint-disable-next-line @typescript-eslint/prefer-function-type
+  (
+    searchParameters: DeepReadonly<SearchParameters>,
+    onStartNotify: () => void,
+    onFinishNotify: () => void
+  ): Promise<ResponseGetPocketApi>;
+}
 
 const getPocketArticles: GetPocketArticles = async (
   searchParameters,
@@ -88,14 +91,11 @@ export default function useItemsGet(
       staleTime: 5000,
 
       getNextPageParam: (lastPage, allPages) => {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         const hasNewPage: boolean =
           lastPage.search_meta.search_type === "normal"
             ? allPages.length * itemPerRequest <
-              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
               Number.parseInt(lastPage.total ?? "0", 10)
-            : // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-              (lastPage.search_meta as SearchMetaPremium).has_more;
+            : (lastPage.search_meta as SearchMetaPremium).has_more;
 
         return hasNewPage
           ? {

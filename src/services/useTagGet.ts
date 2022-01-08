@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
 
 import { useQuery } from "react-query";
@@ -17,6 +16,7 @@ interface ResponseGetTagsPocketApi {
   since: number;
 }
 
+// eslint-disable-next-line etc/prefer-interface
 type GetPocketTags = (
   onStartNotify: () => void,
   onFinishNotify: () => void
@@ -25,7 +25,7 @@ type GetPocketTags = (
 const getPocketTags: GetPocketTags = async (onStartNotify, onFinishNotify) => {
   onStartNotify();
 
-  const response = await fetch(`/api/items/getTags`, {
+  const response = await fetch("/api/items/getTags", {
     method: "GET",
   });
 

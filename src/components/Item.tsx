@@ -113,7 +113,7 @@ function Item({
       )}
       {/* Wrapper */}
       <div
-        className="flex p-2 m-auto w-8/12 hover:bg-black hover:bg-opacity-10 border-b-2 border-gray-800"
+        className="flex p-2 m-auto w-8/12 hover:bg-black border-b-2 border-gray-800 hover:bg-opacity/10"
         // eslint-disable-next-line react/jsx-no-bind, react-perf/jsx-no-new-function-as-prop
         onMouseEnter={() => {
           setIsItemHover(true);
@@ -150,7 +150,7 @@ function Item({
               title={dataItem.resolved_url}
             >
               <h2
-                className="overflow-hidden mb-1 font-bold overflow-ellipsis whitespace-nowrap"
+                className="overflow-hidden mb-1 font-bold text-ellipsis whitespace-nowrap"
                 title={dataItem.resolved_title}
               >
                 {dataItem.resolved_title}
@@ -168,7 +168,7 @@ function Item({
             </div>
           </div>
           {/* Link */}
-          <div className="overflow-hidden text-sm overflow-ellipsis whitespace-nowrap opacity-50">
+          <div className="overflow-hidden text-sm text-ellipsis whitespace-nowrap opacity-50">
             <a
               href={dataItem.resolved_url}
               rel="noreferrer"

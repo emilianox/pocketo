@@ -1,6 +1,5 @@
-import { useSnackbar } from "notistack";
-
-import type { OptionsObject, SnackbarMessage } from "notistack";
+// eslint-disable-next-line prettier/prettier
+import {useSnackbar, type OptionsObject, type SnackbarMessage} from "notistack";
 
 export default function useNotify(
   message: SnackbarMessage,
@@ -14,3 +13,4 @@ export default function useNotify(
 
   return { onStartNotify, onFinishNotify };
 }
+

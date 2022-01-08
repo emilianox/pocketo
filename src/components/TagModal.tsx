@@ -1,6 +1,5 @@
 /* eslint-disable react-perf/jsx-no-new-function-as-prop */
 /* eslint-disable react/jsx-no-bind */
-/* eslint-disable camelcase */
 import React, { useState, useMemo } from "react";
 
 import { FaInfoCircle } from "@react-icons/all-files/fa/FaInfoCircle";
