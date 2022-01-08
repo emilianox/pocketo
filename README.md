@@ -135,15 +135,17 @@ This is an example of how to list things you need to use the software and how to
 3. Install NPM packages
    ```sh
    npm install
+   npm run build
    ```
 4. Enter your API credentials in `.env.local`
-   You can generate the POCKET_ACCESS_TOKEN using the `/api/auth/pocket` and check in the console for the url
    ```sh
     SECRET= xxxxxxxxxxxxxxxxxxxxxxx # Linux: `openssl rand -hex 32` or go to https://generate-secret.now.sh/32
     POCKET_CONSUMER_KEY=xxxxxxxxxxxxxxxxxxxxxx
-    POCKET_REDIRECT_URI=http://localhost:3000/api/items
+    POCKET_REDIRECT_URI=http://localhost:9807/api/items
     POCKET_ACCESS_TOKEN=xxxxxxxxxxxxxxxxxxxxxx
    ```
+   You can generate the POCKET_ACCESS_TOKEN using the `http://localhost:9807/api/auth/pocket` and check in the console for the url and follow the instructions
+
 5. Run in production mode
    ```sh
    npm run production
