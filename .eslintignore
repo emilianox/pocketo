@@ -5,3 +5,4 @@ postcss.config.js
 lint-staged.config.js
 stylelint.config.js
 babel.config.js
+.storybook
