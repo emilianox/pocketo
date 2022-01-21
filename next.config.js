@@ -16,4 +16,9 @@ module.exports = withBundleAnalyzer({
     formats: ['image/avif', 'image/webp']
   },
   swcMinify: true,
+  // experimental: {
+  //   removeConsole: {
+  //     exclude: ['error'],
+  //   },
+  // },
 });

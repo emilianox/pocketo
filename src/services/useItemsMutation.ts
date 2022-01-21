@@ -15,6 +15,7 @@ import type {
   ActionFavorite,
   ActionArchive,
   ActionDelete,
+  ActionReadd,
 } from "services/sendActions";
 import {
   createArchiveAction,
@@ -40,12 +41,18 @@ type UseItemsMutationContext = {
   queryKey: QueryKey;
 }[];
 
-const postActions = async (actions: DeepReadonly<Actions>) =>
+// eslint-disable-next-line etc/prefer-interface
+type GetItemToReplaceFunction<ArticleActionType extends ArticleAction> = (
+  oldData: DeepReadonly<ResponseGetPocketApi>,
+  action: ArticleActionType
+) => ResponseGetPocketApi;
+
+const sendPostActions = async (actions: DeepReadonly<Actions>) =>
   await fetch(
     `/api/items/send?actions=${encodeURIComponent(JSON.stringify(actions))}`
   ).then(async (response) => (await response.json()) as ResponseSendPocketApi);
 
-const getIndexItemInPageQuery = (
+const getPageIndexOfPocketArticle = (
   data: DeepReadonly<InfiniteData<ResponseGetPocketApi>>,
   itemId: string
 ): number =>
@@ -56,27 +63,19 @@ const getIndexItemInPageQuery = (
     0
   );
 
-const updaterFunction = <ArticleType>(
+const getNewData = <ArticleActionType extends ArticleAction>(
   oldDatawithPages: InfiniteData<ResponseGetPocketApi> | undefined,
-  action: ArticleType,
-  getNewResponseFunction: (
-    oldData: DeepReadonly<ResponseGetPocketApi>,
-    action: ArticleType
-  ) => ResponseGetPocketApi
+  action: ArticleActionType,
+  getItemToReplaceFunction: GetItemToReplaceFunction<ArticleActionType>
 ): InfiniteData<ResponseGetPocketApi> => {
   if (oldDatawithPages) {
-    const pageIndex = getIndexItemInPageQuery(
+    const pageIndex = getPageIndexOfPocketArticle(
       oldDatawithPages,
-      // eslint-disable-next-line no-warning-comments
-      // FIXME: eslint breaks on generics in fns when is fixed remove the cast
-      (action as unknown as ArticleAction).item_id
+      action.item_id
     );
-    const oldData: ResponseGetPocketApi = oldDatawithPages.pages[pageIndex];
+    const oldData = oldDatawithPages.pages[pageIndex];
 
-    const itemToReplace: ResponseGetPocketApi = getNewResponseFunction(
-      oldData,
-      action
-    );
+    const itemToReplace = getItemToReplaceFunction(oldData, action);
 
     return {
       ...oldDatawithPages,
@@ -89,10 +88,9 @@ const updaterFunction = <ArticleType>(
 
   return {} as InfiniteData<ResponseGetPocketApi>;
 };
-const getResponseGetPocketApiChangeFavorite = (
-  oldData: DeepReadonly<ResponseGetPocketApi>,
-  action: ActionFavorite | ActionUnfavorite
-): ResponseGetPocketApi => {
+const getResponseGetPocketApiChangeFavorite: GetItemToReplaceFunction<
+  ActionFavorite | ActionUnfavorite
+> = (oldData, action) => {
   const newItemEdited: PocketArticle = {
     ...oldData.list[action.item_id],
     favorite: action.action === "favorite" ? "1" : "0",
@@ -108,10 +106,9 @@ const getResponseGetPocketApiChangeFavorite = (
   };
 };
 
-const getResponseGetPocketApiChangeTag = (
-  oldData: DeepReadonly<ResponseGetPocketApi>,
-  action: DeepReadonly<ActionTagsReplace>
-): ResponseGetPocketApi => {
+const getResponseGetPocketApiChangeTag: GetItemToReplaceFunction<
+  ActionTagsReplace
+> = (oldData, action) => {
   const tags = action.tags
     .split(",")
     // eslint-disable-next-line @typescript-eslint/naming-convention, camelcase
@@ -138,10 +135,9 @@ const getResponseGetPocketApiChangeTag = (
   };
 };
 
-const getResponseGetPocketApiRemoveKey = (
-  oldData: DeepReadonly<ResponseGetPocketApi>,
-  action: DeepReadonly<ActionArchive | ActionDelete>
-): ResponseGetPocketApi => ({
+const getResponseGetPocketApiRemoveKey: GetItemToReplaceFunction<
+  ActionArchive | ActionDelete | ActionReadd
+> = (oldData, action) => ({
   ...oldData,
   list: rOmit([action.item_id], oldData.list),
 });
@@ -164,11 +160,7 @@ const manageFavorites = (
       default:
         throw new Error("Unknown action");
     }
-    return updaterFunction(
-      oldData,
-      action,
-      getResponseGetPocketApiChangeFavorite
-    );
+    return getNewData(oldData, action, getResponseGetPocketApiChangeFavorite);
   });
 
 const setQueryDataFromActions = (
@@ -186,15 +178,11 @@ const setQueryDataFromActions = (
     case "readd":
     case "delete":
       return queryClient.setQueryData(queryKey, (oldData) =>
-        updaterFunction(
-          oldData,
-          action as unknown as ActionDelete,
-          getResponseGetPocketApiRemoveKey
-        )
+        getNewData(oldData, action, getResponseGetPocketApiRemoveKey)
       );
     case "tags_replace":
       return queryClient.setQueryData(queryKey, (oldData) =>
-        updaterFunction(oldData, action, getResponseGetPocketApiChangeTag)
+        getNewData(oldData, action, getResponseGetPocketApiChangeTag)
       );
 
     default:
@@ -254,7 +242,7 @@ export default function useItemsMutation() {
     unknown,
     Actions,
     UseItemsMutationContext
-  >(async (actions: DeepReadonly<Actions>) => await postActions(actions), {
+  >(async (actions: DeepReadonly<Actions>) => await sendPostActions(actions), {
     onMutate: async (variables) =>
       await Promise.all(
         variables.map((action) => {
@@ -312,6 +300,7 @@ export default function useItemsMutation() {
       });
     },
   });
+
   /* eslint-disable react-hooks/exhaustive-deps */
 
   const mutationUnarchive: MakeMutation = useCallback((dataItem) => {

@@ -7,8 +7,9 @@ import { Virtuoso } from "react-virtuoso";
 
 import Item from "components/Item";
 import ItemLoaderPage from "components/ItemLoaderPage";
-import Logo from "components/Logo";
-import SearchForm from "components/SearchForm";
+
+import Logo from "@components/Logo";
+import SearchForm from "@components/SearchForm";
 
 import type {
   PocketArticle,
@@ -72,10 +73,10 @@ function ItemsPage() {
     [fetchNextPage]
   );
 
-  const { data: allTags, error: errorTags } = useTagGet();
+  const { data: allTagsResponse, error: errorTags } = useTagGet();
   const suggestionsTags: Tag[] = useMemo(
-    () => allTags?.tags.map((tag) => ({ id: tag, text: tag })) ?? [],
-    [allTags?.tags]
+    () => allTagsResponse?.tags.map((tag) => ({ id: tag, text: tag })) ?? [],
+    [allTagsResponse?.tags]
   );
 
   const itemContent = useCallback(

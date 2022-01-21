@@ -2,10 +2,14 @@
 import React from "react";
 
 import copy from "copy-text-to-clipboard";
+// eslint-disable-next-line @typescript-eslint/no-shadow
+import Image from "next/image";
 import { useHotkeys } from "react-hotkeys-hook";
 
 import ActionButtons from "components/ActionButtons";
-import TagModal from "components/TagModal";
+// import TagModal from "components/TagModal";
+
+import TagModal from "@components/TagModal";
 
 import useNotify from "hooks/useNotify";
 
@@ -113,7 +117,7 @@ function Item({
       )}
       {/* Wrapper */}
       <div
-        className="flex p-2 m-auto w-8/12 hover:bg-black border-b-2 border-gray-800 hover:bg-opacity/10"
+        className="flex p-2 m-auto w-8/12 border-b-2 border-gray-800 hover:bg-neutral hover:bg-opacity/10"
         // eslint-disable-next-line react/jsx-no-bind, react-perf/jsx-no-new-function-as-prop
         onMouseEnter={() => {
           setIsItemHover(true);
@@ -126,17 +130,25 @@ function Item({
         {/* Image */}
         <div className="mr-4 w-1/12 avatar">
           <div className="w-24 h-24">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              alt="post"
-              className="w-24 h-24"
-              height="96"
-              src={
-                dataItem.top_image_url ??
-                "https://via.placeholder.com/96x96.webp/2a2e37/ebecf0?text=No%20Image"
-              }
-              width="96"
-            />
+            {dataItem.top_image_url !== undefined && (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                alt="post"
+                className="w-24 h-24"
+                height="96"
+                src={dataItem.top_image_url}
+                width="96"
+              />
+            )}
+
+            {dataItem.top_image_url === undefined && (
+              <Image
+                alt="No Image"
+                height={96}
+                src="/noImage.webp"
+                width={96}
+              />
+            )}
           </div>
         </div>
         {/* Data */}
@@ -184,9 +196,7 @@ function Item({
           <div className="mt-4">
             <div className="flex justify-between">
               {/* Tags */}
-              {/* eslint-disable-next-line max-len */}
-              {/* eslint-disable-next-line @shopify/jsx-prefer-fragment-wrappers */}
-              <div>
+              <div id="tags">
                 {dataItem.tags &&
                   Object.values(dataItem.tags).map((tag) => (
                     <span className="mr-2 shadow badge badge-lg" key={tag.tag}>
@@ -196,14 +206,14 @@ function Item({
               </div>
               {/* Buttons */}
               <ActionButtons
-                archive={archiveItem}
                 cacheUrl={`https://getpocket.com/read/${dataItem.item_id}`}
-                changeTagsItem={changeTagsItem}
-                copyLinkItem={copyLinkItem}
-                deleteItem={deleteItem}
                 favorite={dataItem.favorite}
+                onArchive={archiveItem}
+                onChangeTagsItem={changeTagsItem}
+                onCopyLinkItem={copyLinkItem}
+                onDeleteItem={deleteItem}
+                onToggleFavorite={toggleFavorite}
                 status={dataItem.status}
-                toggleFavorite={toggleFavorite}
                 url={dataItem.resolved_url}
               />
             </div>

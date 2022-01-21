@@ -11,6 +11,7 @@ export default async function assaas(
   /* eslint-enable @typescript-eslint/no-non-null-assertion */
 
   const response = await fetch(
+    // eslint-disable-next-line max-len
     `https://getpocket.com/v3/get?access_token=${accessToken}&consumer_key=${consumerKey}&taglist=1&forcetaglist=1&since=${Date.now()}`
   );
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment

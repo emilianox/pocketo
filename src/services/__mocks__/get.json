@@ -1,0 +1,150 @@
+{
+  "status": 1,
+  "complete": 1,
+  "list": {
+    "749868502": {
+      "item_id": "749868502",
+      "resolved_id": "749868502",
+      "given_url": "http://user.it.uu.se/~carle/softcraft/notes/PromiscuousPairing.pdf",
+      "given_title": "Microsoft Word - XR4 - Promiscuous Pairing and Beginner's Mind .doc",
+      "favorite": "0",
+      "status": "0",
+      "time_added": "1641216331",
+      "time_updated": "1641216331",
+      "time_read": "0",
+      "time_favorited": "0",
+      "sort_id": 19,
+      "resolved_title": "",
+      "resolved_url": "https://user.it.uu.se/~carle/softcraft/notes/PromiscuousPairing.pdf",
+      "excerpt": "",
+      "is_article": "0",
+      "is_index": "0",
+      "has_video": "0",
+      "has_image": "0",
+      "word_count": "0",
+      "lang": "",
+      "listen_duration_estimate": 0
+    },
+    "1804886220": {
+      "item_id": "1804886220",
+      "resolved_id": "1804886220",
+      "given_url": "https://github.com/siddharthkp/bundlesize",
+      "given_title": "siddharthkp/bundlesize: Keep your bundle size in check",
+      "favorite": "0",
+      "status": "0",
+      "time_added": "1640956496",
+      "time_updated": "1640956502",
+      "time_read": "0",
+      "time_favorited": "0",
+      "sort_id": 22,
+      "resolved_title": "Sponsor siddharthkp/bundlesize",
+      "resolved_url": "https://github.com/siddharthkp/bundlesize",
+      "excerpt": "Or you can use it with npx from NPM 5.2+. If the names of your build files are not predictable, you can use the glob pattern to specify files.",
+      "is_article": "1",
+      "is_index": "1",
+      "has_video": "0",
+      "has_image": "1",
+      "word_count": "511",
+      "lang": "en",
+      "top_image_url": "https://repository-images.githubusercontent.com/95533278/5f158580-974e-11e9-921e-0371b192e5e6",
+      "tags": {
+        "optimization": {
+          "item_id": "1804886220",
+          "tag": "optimization"
+        }
+      },
+      "image": {
+        "item_id": "1804886220",
+        "src": "https://camo.githubusercontent.com/fffe3e9d806369ae945912580944190a48a94141dc108e4d06427fc129bb3545/68747470733a2f2f63646e2e7261776769742e636f6d2f7369646468617274686b702f62756e646c6573697a652f6d61737465722f6172742f6c6f676f2e706e67",
+        "width": "0",
+        "height": "200"
+      },
+      "images": {
+        "1": {
+          "item_id": "1804886220",
+          "image_id": "1",
+          "src": "https://camo.githubusercontent.com/fffe3e9d806369ae945912580944190a48a94141dc108e4d06427fc129bb3545/68747470733a2f2f63646e2e7261776769742e636f6d2f7369646468617274686b702f62756e646c6573697a652f6d61737465722f6172742f6c6f676f2e706e67",
+          "width": "0",
+          "height": "200",
+          "credit": "",
+          "caption": ""
+        },
+        "2": {
+          "item_id": "1804886220",
+          "image_id": "2",
+          "src": "https://camo.githubusercontent.com/325af101286faa573547820f0906ce68c13d49d0a483a25dd9ade1c75fc3100d/68747470733a2f2f7472617669732d63692e6f72672f7369646468617274686b702f62756e646c6573697a652e7376673f6272616e63683d6d6173746572",
+          "width": "0",
+          "height": "0",
+          "credit": "",
+          "caption": ""
+        },
+        "3": {
+          "item_id": "1804886220",
+          "image_id": "3",
+          "src": "https://camo.githubusercontent.com/f59ce9cf59c08ec34c775c6710c15cb3a0b3394182dff372f8c5a94a98bb0cb9/68747470733a2f2f696d672e736869656c64732e696f2f6e706d2f762f62756e646c6573697a652e737667",
+          "width": "0",
+          "height": "0",
+          "credit": "",
+          "caption": ""
+        },
+        "4": {
+          "item_id": "1804886220",
+          "image_id": "4",
+          "src": "https://camo.githubusercontent.com/7ff21660e8f40d28cea109d3ba39f3414b7879c8922303d1562ff003561ef91b/68747470733a2f2f696d672e736869656c64732e696f2f6e706d2f646d2f62756e646c6573697a652e7376673f7374796c653d666c6174",
+          "width": "0",
+          "height": "0",
+          "credit": "",
+          "caption": ""
+        },
+        "5": {
+          "item_id": "1804886220",
+          "image_id": "5",
+          "src": "https://camo.githubusercontent.com/172d76ab2e6658114b0eecc25aeaf3c2b38c5ae3660c456a1b8147bcb5191aa6/68747470733a2f2f63646e2e7261776769742e636f6d2f7369646468617274686b702f62756e646c6573697a652f6d61737465722f6172742f7374617475732e706e67",
+          "width": "0",
+          "height": "0",
+          "credit": "",
+          "caption": ""
+        },
+        "6": {
+          "item_id": "1804886220",
+          "image_id": "6",
+          "src": "https://camo.githubusercontent.com/a48571d5ba61d93dda10cad72a2ce0a7e06043f5acb88a9851d72c5e8abc57f9/68747470733a2f2f692e7974696d672e636f6d2f76692f44613656786447553249672f687164656661756c742e6a70673f7371703d2d6f61796d774558434e4143454c7742534672797134717041776b4941525541414968434741453d2672733d414f6e34434c414166577a51494d766a483054497a6b4168692d3131344449485051",
+          "width": "0",
+          "height": "200",
+          "credit": "",
+          "caption": ""
+        },
+        "7": {
+          "item_id": "1804886220",
+          "image_id": "7",
+          "src": "https://camo.githubusercontent.com/bc5b27747564e79a4bfdeeeb38e7f1b5f886e8e6e0c3afe9b85bd5c8448aeed9/68747470733a2f2f63646e2e7261776769742e636f6d2f7369646468617274686b702f62756e646c6573697a652f6d61737465722f6172742f6368726f6d6564657673756d6d69742e706e67",
+          "width": "0",
+          "height": "200",
+          "credit": "",
+          "caption": ""
+        },
+        "8": {
+          "item_id": "1804886220",
+          "image_id": "8",
+          "src": "https://camo.githubusercontent.com/80deae448241cdcb11b074ede608f70f25e3cc87d8919a55a4bb5cdc9bb2d4fd/68747470733a2f2f6f70656e636f6c6c6563746976652e636f6d2f62756e646c6573697a652f636f6e7472696275746f72732e7376673f77696474683d383930",
+          "width": "0",
+          "height": "0",
+          "credit": "",
+          "caption": ""
+        }
+      },
+      "domain_metadata": {
+        "name": "GitHub",
+        "logo": "https://logo.clearbit.com/github.com?size=800",
+        "greyscale_logo": "https://logo.clearbit.com/github.com?size=800&greyscale=true"
+      },
+      "listen_duration_estimate": 198
+    }
+  },
+  "error": null,
+  "search_meta": {
+    "search_type": "normal"
+  },
+  "since": 1642161466,
+  "total": "2315"
+}

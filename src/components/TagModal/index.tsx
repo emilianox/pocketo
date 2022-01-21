@@ -1,4 +1,3 @@
-/* eslint-disable react-perf/jsx-no-new-function-as-prop */
 /* eslint-disable react/jsx-no-bind */
 import React, { useState, useMemo } from "react";
 
@@ -10,6 +9,8 @@ import TagSelector from "components/TagSelector";
 
 import type { PocketArticle } from "services/pocketApi";
 
+import styles from "./TagModal.module.scss";
+
 import type { Tag } from "react-tag-input";
 import type { DeepReadonly } from "ts-essentials/dist/types";
 
@@ -18,9 +19,9 @@ const tagToListTag = (tags: DeepReadonly<Tag[]>): string[] =>
 
 type TagModalProps = DeepReadonly<{
   selectedItem?: PocketArticle;
+  suggestions: Tag[];
   onSave: (item_id: string, tags: readonly string[]) => void;
   onCancel: () => void;
-  suggestions: Tag[];
 }>;
 
 function TagModal({
@@ -31,6 +32,7 @@ function TagModal({
 }: TagModalProps) {
   const [tags, setTags] = useState<Tag[]>([]);
 
+  // eslint-disable-next-line react-perf/jsx-no-new-function-as-prop
   const onSaveModal = () => {
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     selectedItem && onSave(selectedItem.item_id, tagToListTag(tags));
@@ -60,7 +62,7 @@ function TagModal({
         "modal-open": selectedItem,
       })}
     >
-      <div className="modal-box">
+      <div className={clsx("modal-box", styles.modal_box)}>
         <TagSelector
           setTags={setTags}
           // clash readonly with mutable
@@ -85,6 +87,7 @@ function TagModal({
             </button>
             <button
               className="btn"
+              // eslint-disable-next-line react-perf/jsx-no-new-function-as-prop
               onClick={() => {
                 onCancel();
               }}

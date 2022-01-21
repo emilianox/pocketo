@@ -1,0 +1,8 @@
+/* Example Styles for React Tags */
+.modal_box {
+  overflow: visible;
+  :global(.app) {
+    @apply p-3;
+    text-align: center;
+  }
+}

@@ -76,8 +76,9 @@
     "@typescript-eslint/explicit-module-boundary-types": "off",
     "@typescript-eslint/explicit-function-return-type": "off",
     "lines-around-comment": "off",
-    "etc/no-commented-out-code": "off"
+    "etc/no-commented-out-code": "off",
     // "react/jsx-no-target-blank": "on"
+    "max-len": ["error", { "code": 120, "comments": 135 }]
   },
   "parserOptions": {
     "project": "./tsconfig.json"

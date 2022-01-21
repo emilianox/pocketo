@@ -1,15 +1,10 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/naming-convention */
-/* eslint-disable react/jsx-props-no-spreading */
-/* eslint-disable react/forbid-component-props */
 /* eslint-disable react/jsx-no-bind */
-/* eslint-disable react-perf/jsx-no-new-function-as-prop */
-import { memo, useEffect, useMemo, useState } from "react";
+import { memo, useEffect, useMemo } from "react";
 
 import { FaRegTimesCircle } from "@react-icons/all-files/fa/FaRegTimesCircle";
 import { FaSpinner } from "@react-icons/all-files/fa/FaSpinner";
-// eslint-disable-next-line prettier/prettier
-import {useForm, type SubmitHandler} from "react-hook-form";
+import clsx from "clsx";
+import { useForm, type SubmitHandler } from "react-hook-form";
 import { MentionsInput, Mention } from "react-mentions";
 
 import type {
@@ -18,12 +13,15 @@ import type {
   SearchParametersSearch,
 } from "services/pocketApi";
 
+import styles from "./SearchForm.module.scss";
+
 import type { Tag } from "react-tag-input";
 import type { DeepReadonly } from "ts-essentials/dist/types";
 
 interface SearchParametersAll
   extends Omit<SearchParametersFavorite, "favorite">,
     Omit<SearchParametersSearch, "search"> {
+  // eslint-disable-next-line @typescript-eslint/naming-convention
   favorite: boolean;
   search?: string;
 }
@@ -36,12 +34,16 @@ interface SearchFormProps {
   searchParameters: SearchParameters;
 }
 
-function parseToForm(parameters: SearchParameters): SearchParametersAll {
+function parseToForm(
+  parameters: DeepReadonly<SearchParameters>
+): SearchParametersAll {
+  // eslint-disable-next-line @typescript-eslint/naming-convention
   const favorite =
     "favorite" in parameters ? parameters.favorite === "1" : false;
   const search =
     "search" in parameters ? parameters.search?.replaceAll("#", "(#)") : "";
 
+  // eslint-disable-next-line @typescript-eslint/naming-convention
   return { ...parameters, favorite, search };
 }
 
@@ -73,6 +75,7 @@ export default memo(function SearchForm({
             search: data.search?.replaceAll("(#)", "#").trim(),
           };
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { [toOmit]: remove, ...parameters } = { ...data, ...toChange };
 
     onSubmit(parameters);
@@ -91,6 +94,13 @@ export default memo(function SearchForm({
     [suggestions]
   );
 
+  // eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
+  function onChange(event: { target: { value: string } }, value: string) {
+    // eslint-disable-next-line react-hook-form/no-nested-object-setvalue
+    setValue("search", value);
+  }
+
+  const newLocal = "sort";
   return (
     <form
       className="flex justify-center py-3 w-8/12 form-control"
@@ -102,13 +112,11 @@ export default memo(function SearchForm({
           autoComplete="off"
           // eslint-disable-next-line jsx-a11y/no-autofocus
           autoFocus
-          className="pocketoMixedTags"
+          // eslint-disable-next-line react/forbid-component-props
+          className={clsx("pocketoMixedTags", styles.pocketoMixedTags)}
           disabled={isFavorite}
           name="search"
-          onChange={(event, value) => {
-            // eslint-disable-next-line react-hook-form/no-nested-object-setvalue
-            setValue("search", value);
-          }}
+          onChange={onChange}
           placeholder={"Search using text and '#tag'"}
           singleLine
           value={watch("search")}
@@ -121,12 +129,14 @@ export default memo(function SearchForm({
                 display: string;
               }[]
             }
+            // eslint-disable-next-line react-perf/jsx-no-new-function-as-prop
             displayTransform={(id, display) => `#${display}`}
             markup="(#)__id__"
             trigger="#"
           />
         </MentionsInput>
         <select
+          // eslint-disable-next-line react/jsx-props-no-spreading
           {...register("state")}
           className="rounded-none focus:ring-1 btn-outline select select-bordered select-primary"
         >
@@ -141,12 +151,14 @@ export default memo(function SearchForm({
       <div className=" flex justify-between ml-4">
         <div className="flex items-center space-x-2">
           <div className=" flex items-center space-x-1">
+            {/* eslint-disable-next-line react/forbid-component-props */}
             {isLoading && <FaSpinner className="animate-spin" />}
             <div>{!isLoading && `${totalResults} results.`}</div>
           </div>
           <div className="flex space-x-1">
             <button
               className="space-x-1 badge badge-primary badge-outline"
+              // eslint-disable-next-line react-perf/jsx-no-new-function-as-prop
               onClick={() => {
                 reset({});
               }}
@@ -160,6 +172,7 @@ export default memo(function SearchForm({
         <div className="flex space-x-2">
           <label className="flex items-center cursor-pointer">
             <input
+              // eslint-disable-next-line react/jsx-props-no-spreading
               {...register("domain")}
               className="w-40 input input-sm input-bordered"
               placeholder="webpage.domain"
@@ -168,6 +181,7 @@ export default memo(function SearchForm({
           </label>
           <label className="flex items-center cursor-pointer">
             <input
+              // eslint-disable-next-line react/jsx-props-no-spreading
               {...register("favorite")}
               className="mr-2 toggle toggle-primary"
               type="checkbox"
@@ -175,7 +189,8 @@ export default memo(function SearchForm({
             <span className="label-text">Favorites</span>
           </label>
           <select
-            {...register("sort")}
+            // eslint-disable-next-line react/jsx-props-no-spreading
+            {...register(newLocal)}
             className="pr-8 w-full max-w-max focus:ring-1 select select-sm"
           >
             <option value="newest">Newest</option>
@@ -188,4 +203,3 @@ export default memo(function SearchForm({
     </form>
   );
 });
-

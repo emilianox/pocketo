@@ -2,8 +2,14 @@
 /* eslint-disable @typescript-eslint/prefer-readonly-parameter-types */
 /* eslint-disable @typescript-eslint/explicit-member-accessibility */
 /* eslint-disable fp/no-class */
-// eslint-disable-next-line prettier/prettier
-import Document, {Html, Head, Main, NextScript, type DocumentContext} from "next/document";
+
+import Document, {
+  Html,
+  Head,
+  Main,
+  NextScript,
+  type DocumentContext,
+} from "next/document";
 
 class MyDocument extends Document {
   static async getInitialProps(ctx: DocumentContext) {
@@ -24,4 +30,3 @@ class MyDocument extends Document {
 }
 
 export default MyDocument;
-

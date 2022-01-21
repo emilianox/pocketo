@@ -18,44 +18,45 @@ import type { PocketArticle } from "services/pocketApi";
 import type { DeepReadonly } from "ts-essentials/dist/types";
 
 interface ActionButtonsProps {
-  archive: () => void;
-  deleteItem: () => void;
   favorite: PocketArticle["favorite"];
   status: PocketArticle["status"];
-  changeTagsItem: () => void;
-  toggleFavorite: () => void;
-  copyLinkItem: () => void;
   url: string;
   cacheUrl: string;
+  onArchive: () => void;
+  onDeleteItem: () => void;
+  onChangeTagsItem: () => void;
+  onToggleFavorite: () => void;
+  onCopyLinkItem: () => void;
 }
 
 function ActionButtons({
-  archive,
-  deleteItem,
-  favorite,
-  changeTagsItem,
-  toggleFavorite,
+  favorite = "0",
+  status = "0",
   url,
   cacheUrl,
-  status,
-  copyLinkItem,
+  onArchive: archive,
+  onDeleteItem: deleteItem,
+  onChangeTagsItem: changeTagsItem,
+  onToggleFavorite: toggleFavorite,
+  onCopyLinkItem: copyLinkItem,
 }: DeepReadonly<ActionButtonsProps>): JSX.Element {
   return (
     <div className=" p-2 shadow-lg menu bg-base-100 rounded-box horizontal">
-      <li>
-        <button
-          className=" inline-block mx-2 w-6 h-6 stroke-current"
-          onClick={toggleFavorite}
-          type="button"
-        >
-          {favorite === "0" ? (
-            <MdStarBorder className="hover:text-purple-500" size="1.5em" />
-          ) : (
-            <MdStar className="hover:text-purple-500" size="1.5em" />
-          )}
-        </button>
-      </li>
       <button
+        aria-label="Favorite"
+        className=" inline-block mx-2 w-6 h-6 stroke-current"
+        onClick={toggleFavorite}
+        type="button"
+      >
+        {favorite === "0" ? (
+          <MdStarBorder className="hover:text-purple-500" size="1.5em" />
+        ) : (
+          <MdStar className="hover:text-purple-500" size="1.5em" />
+        )}
+      </button>
+
+      <button
+        aria-label="Archive"
         className="inline-block mx-2 w-6 h-6 stroke-current"
         onClick={archive}
         type="button"
@@ -67,6 +68,7 @@ function ActionButtons({
         )}
       </button>
       <button
+        aria-label="Tags"
         className="inline-block mx-2 w-6 h-6 stroke-current"
         onClick={changeTagsItem}
         type="button"
@@ -74,6 +76,7 @@ function ActionButtons({
         <AiOutlineTags className="hover:text-purple-500" size="1.5em" />
       </button>
       <button
+        aria-label="Copy Link"
         className="inline-block mx-2 w-6 h-6 stroke-current"
         onClick={copyLinkItem}
         type="button"
@@ -81,6 +84,7 @@ function ActionButtons({
         <FiLink className="hover:text-purple-500" size="1.5em" />
       </button>
       <WhatsappShareButton
+        aria-label="Share on Whatsapp"
         className="inline-block mx-2 w-6 h-6 stroke-current"
         resetButtonStyle={false}
         // title={title}
@@ -90,6 +94,7 @@ function ActionButtons({
         <RiWhatsappLine className="hover:text-purple-500" size="1.5em" />
       </WhatsappShareButton>
       <TelegramShareButton
+        aria-label="Share on Telegram"
         className="inline-block mx-2 w-6 h-6 stroke-current"
         resetButtonStyle={false}
         // title={title}
@@ -107,6 +112,7 @@ function ActionButtons({
         <RiDeviceRecoverLine className="hover:text-purple-500" size="1.5em" />
       </a>
       <button
+        aria-label="Remove"
         className="inline-block mx-2 w-6 h-6 stroke-current"
         onClick={deleteItem}
         type="button"
