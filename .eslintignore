@@ -9,3 +9,5 @@ jest.setup.js
 .storybook
 */**/*.test.*
 .next/
+playwright.config.ts
+e2e/*

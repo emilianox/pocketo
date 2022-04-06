@@ -23,13 +23,11 @@
     "titleBar.activeForeground": "#e7e7e7",
     "titleBar.inactiveBackground": "#15041d99",
     "titleBar.inactiveForeground": "#e7e7e799",
-    "editorGroup.border": "#350a4a",
-    "panel.border": "#350a4a",
     "sash.hoverBorder": "#350a4a",
-    "sideBar.border": "#350a4a",
     "statusBarItem.remoteBackground": "#15041d",
     "statusBarItem.remoteForeground": "#e7e7e7"
   },
   "peacock.color": "#15041d",
-  "editor.tabSize": 2
+  "editor.tabSize": 2,
+  "typescript.tsdk": "node_modules/typescript/lib"
 }
