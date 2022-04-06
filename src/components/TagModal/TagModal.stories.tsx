@@ -37,6 +37,6 @@ export default {
 export const Base = Template.bind({});
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 Base.args = {
-  selectedItem: Object.values(Items.list)[0] as PocketArticle,
+  selectedItem: Object.values(Items.list)[1] as PocketArticle,
   suggestions: pocketTagsToTags(Tags.tags),
 };

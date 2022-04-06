@@ -39,8 +39,22 @@ Base.args = {
   searchParameters: {} as SearchParameters,
   suggestions: pocketTagsToTags(Tags.tags),
   totalResults: 0,
+  isLoading: false,
 };
 
-export const WithColor = Template.bind({});
+export const Results = Template.bind({});
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
-WithColor.args = {};
+Results.args = {
+  searchParameters: {} as SearchParameters,
+  suggestions: pocketTagsToTags(Tags.tags),
+  totalResults: 999_999_999,
+  isLoading: false,
+};
+
+export const Loading = Template.bind({});
+// More on args: https://storybook.js.org/docs/react/writing-stories/args
+Loading.args = {
+  searchParameters: {} as SearchParameters,
+  suggestions: pocketTagsToTags(Tags.tags),
+  isLoading: true,
+};
