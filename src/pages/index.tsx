@@ -17,6 +17,7 @@ import type {
   SearchParameters,
 } from "services/pocketApi";
 import useItems from "services/useItemsGet";
+import useItemsMutation from "services/useItemsMutation";
 import useTagGet from "services/useTagGet";
 
 import type { Tag } from "react-tag-input";
@@ -59,8 +60,7 @@ function ItemsPage() {
     const parsedData = data?.pages.reduce<PocketArticle[]>(
       (objectArticlesArray, page) => [
         ...objectArticlesArray,
-        // eslint-disable-next-line fp/no-mutating-methods
-        ...Object.values(page.list).reverse(),
+        ...Object.values(page.list),
       ],
       []
     );
@@ -79,11 +79,35 @@ function ItemsPage() {
     [allTagsResponse?.tags]
   );
 
+  const {
+    mutationArchive,
+    mutationUnarchive,
+    mutationtoggleFavorite,
+    mutationDelete,
+    mutationTagReplace,
+  } = useItemsMutation();
+
   const itemContent = useCallback(
     (index: number, dataItem: DeepReadonly<PocketArticle>): JSX.Element => (
-      <Item dataItem={dataItem} key={index} suggestionsTags={suggestionsTags} />
+      <Item
+        dataItem={dataItem}
+        key={index}
+        mutationArchive={mutationArchive}
+        mutationDelete={mutationDelete}
+        mutationTagReplace={mutationTagReplace}
+        mutationUnarchive={mutationUnarchive}
+        mutationtoggleFavorite={mutationtoggleFavorite}
+        suggestionsTags={suggestionsTags}
+      />
     ),
-    [suggestionsTags]
+    [
+      suggestionsTags,
+      mutationArchive,
+      mutationUnarchive,
+      mutationtoggleFavorite,
+      mutationDelete,
+      mutationTagReplace,
+    ]
   );
 
   const getTotalResults = useCallback((): number => {

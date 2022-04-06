@@ -64,6 +64,9 @@ const getPageIndexOfPocketArticle = (
   );
 
 const getNewData = <ArticleActionType extends ArticleAction>(
+  // eslint-disable-next-line no-warning-comments
+  // FIXME: use deepReadonly
+  // eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
   oldDatawithPages: InfiniteData<ResponseGetPocketApi> | undefined,
   action: ArticleActionType,
   getItemToReplaceFunction: GetItemToReplaceFunction<ArticleActionType>
@@ -145,7 +148,7 @@ const getResponseGetPocketApiRemoveKey: GetItemToReplaceFunction<
 const manageFavorites = (
   queryClient: DeepReadonly<QueryClient>,
   queryKey: QueryKey,
-  action: ActionFavorite | ActionUnfavorite,
+  action: DeepReadonly<ActionFavorite | ActionUnfavorite>,
   notify: (name: string) => void
   // eslint-disable-next-line max-params
 ): InfiniteData<ResponseGetPocketApi> =>
@@ -166,7 +169,7 @@ const manageFavorites = (
 const setQueryDataFromActions = (
   queryClient: DeepReadonly<QueryClient>,
   queryKey: QueryKey,
-  action: ArticleAction,
+  action: DeepReadonly<ArticleAction>,
   notify: (name: string) => void
   // eslint-disable-next-line max-params
 ): InfiniteData<ResponseGetPocketApi> => {
@@ -207,14 +210,14 @@ const getRelatedQueries = (
 const getAllItemsFromPagedQuery = (
   query: DeepReadonly<Query<InfiniteData<ResponseGetPocketApi>>>
 ): Record<string, PocketArticle> =>
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion, unicorn/prefer-object-from-entries
-  query.state.data!.pages.reduce(
+  // eslint-disable-next-line unicorn/prefer-object-from-entries
+  query.state.data?.pages.reduce(
     (current, page) => ({
       ...current,
       ...page.list,
     }),
     {}
-  );
+  ) ?? {};
 
 const getItemQueryKeys = (
   queryClient: DeepReadonly<QueryClient>,

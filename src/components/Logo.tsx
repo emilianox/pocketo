@@ -6,6 +6,7 @@ import React from "react";
 function Logo(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
+      data-testid="svg-logo"
       // eslint-disable-next-line react-perf/jsx-no-new-object-as-prop
       style={{ height: 70, width: "auto" }}
       viewBox="0 0 109 78"

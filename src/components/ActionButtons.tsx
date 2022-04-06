@@ -1,4 +1,3 @@
-/* eslint-disable react/forbid-component-props */
 import React from "react";
 
 import { AiOutlineDelete } from "@react-icons/all-files/ai/AiOutlineDelete";
@@ -11,9 +10,12 @@ import { MdStarBorder } from "@react-icons/all-files/md/MdStarBorder";
 import { RiDeviceRecoverLine } from "@react-icons/all-files/ri/RiDeviceRecoverLine";
 import { RiTelegramLine } from "@react-icons/all-files/ri/RiTelegramLine";
 import { RiWhatsappLine } from "@react-icons/all-files/ri/RiWhatsappLine";
+import clsx from "clsx";
 import { TelegramShareButton, WhatsappShareButton } from "react-share";
 
 import type { PocketArticle } from "services/pocketApi";
+
+import styles from "./ActionButtons.module.scss";
 
 import type { DeepReadonly } from "ts-essentials/dist/types";
 
@@ -41,84 +43,67 @@ function ActionButtons({
   onCopyLinkItem: copyLinkItem,
 }: DeepReadonly<ActionButtonsProps>): JSX.Element {
   return (
-    <div className=" p-2 shadow-lg menu bg-base-100 rounded-box horizontal">
-      <button
-        aria-label="Favorite"
-        className=" inline-block mx-2 w-6 h-6 stroke-current"
-        onClick={toggleFavorite}
-        type="button"
-      >
-        {favorite === "0" ? (
-          <MdStarBorder className="hover:text-purple-500" size="1.5em" />
-        ) : (
-          <MdStar className="hover:text-purple-500" size="1.5em" />
-        )}
-      </button>
-
-      <button
-        aria-label="Archive"
-        className="inline-block mx-2 w-6 h-6 stroke-current"
-        onClick={archive}
-        type="button"
-      >
-        {status === "0" ? (
-          <IoArchiveOutline className="hover:text-purple-500" size="1.5em" />
-        ) : (
-          <IoArchive className="hover:text-purple-500" size="1.5em" />
-        )}
-      </button>
-      <button
-        aria-label="Tags"
-        className="inline-block mx-2 w-6 h-6 stroke-current"
-        onClick={changeTagsItem}
-        type="button"
-      >
-        <AiOutlineTags className="hover:text-purple-500" size="1.5em" />
-      </button>
-      <button
-        aria-label="Copy Link"
-        className="inline-block mx-2 w-6 h-6 stroke-current"
-        onClick={copyLinkItem}
-        type="button"
-      >
-        <FiLink className="hover:text-purple-500" size="1.5em" />
-      </button>
-      <WhatsappShareButton
-        aria-label="Share on Whatsapp"
-        className="inline-block mx-2 w-6 h-6 stroke-current"
-        resetButtonStyle={false}
-        // title={title}
-        separator=":: "
-        url={url}
-      >
-        <RiWhatsappLine className="hover:text-purple-500" size="1.5em" />
-      </WhatsappShareButton>
-      <TelegramShareButton
-        aria-label="Share on Telegram"
-        className="inline-block mx-2 w-6 h-6 stroke-current"
-        resetButtonStyle={false}
-        // title={title}
-        // separator=":: "
-        url={url}
-      >
-        <RiTelegramLine className="hover:text-purple-500" size="1.5em" />
-      </TelegramShareButton>
-      <a
-        className="inline-block mx-2 w-6 h-6 stroke-current"
-        href={cacheUrl}
-        rel="noreferrer"
-        target="_blank"
-      >
-        <RiDeviceRecoverLine className="hover:text-purple-500" size="1.5em" />
-      </a>
-      <button
-        aria-label="Remove"
-        className="inline-block mx-2 w-6 h-6 stroke-current"
-        onClick={deleteItem}
-        type="button"
-      >
-        <AiOutlineDelete className="hover:text-purple-500" size="1.5em" />
-      </button>
+    <div className={clsx("menu horizontal", styles.box)}>
+      <div data-tip="Favorite (f)">
+        <button aria-label="Favorite" onClick={toggleFavorite} type="button">
+          {favorite === "0" ? (
+            <MdStarBorder size="1.5em" />
+          ) : (
+            <MdStar size="1.5em" />
+          )}
+        </button>
+      </div>
+      <div data-tip="Archive (a)">
+        <button aria-label="Archive" onClick={archive} type="button">
+          {status === "0" ? (
+            <IoArchiveOutline size="1.5em" />
+          ) : (
+            <IoArchive size="1.5em" />
+          )}
+        </button>
+      </div>
+      <div data-tip="Tags (t)">
+        <button aria-label="Tags" onClick={changeTagsItem} type="button">
+          <AiOutlineTags size="1.5em" />
+        </button>
+      </div>
+      <div data-tip="Copy Link (l)">
+        <button aria-label="Copy Link" onClick={copyLinkItem} type="button">
+          <FiLink size="1.5em" />
+        </button>
+      </div>
+      <div data-tip="Share in Whatsapp">
+        <WhatsappShareButton
+          aria-label="Share on Whatsapp"
+          resetButtonStyle={false}
+          // title={title}
+          separator=":: "
+          url={url}
+        >
+          <RiWhatsappLine size="1.5em" />
+        </WhatsappShareButton>
+      </div>
+      <div data-tip="Share in Telegram">
+        <TelegramShareButton
+          aria-label="Share on Telegram"
+          resetButtonStyle={false}
+          // title={title}
+          // separator=":: "
+          url={url}
+        >
+          <RiTelegramLine size="1.5em" />
+        </TelegramShareButton>
+      </div>
+      <div data-tip="Open Cache (c)">
+        <a href={cacheUrl} rel="noreferrer" target="_blank">
+          <RiDeviceRecoverLine size="1.5em" />
+        </a>
+      </div>
+      <div data-tip="Remove (r)">
+        <button aria-label="Remove" onClick={deleteItem} type="button">
+          <AiOutlineDelete size="1.5em" />
+        </button>
+      </div>
     </div>
   );
 }

@@ -76,7 +76,6 @@ export default function useItemsGet(
         pageParameter === undefined
           ? { ...searchParameters, offset: 0, count: itemPerRequest }
           : { ...searchParameters, ...pageParameter };
-
       return await getPocketArticles(
         searchParametersEdited,
         onStartNotify,

@@ -2,25 +2,27 @@
 import { useCallback, useState } from "react";
 
 import type { PocketArticle } from "services/pocketApi";
-import useItemsMutation from "services/useItemsMutation";
+import type { MakeMutation } from "services/useItemsMutation";
 
 import type { DeepReadonly } from "ts-essentials/dist/types";
 
 interface UseItemContainerProps {
   dataItem: PocketArticle;
+  mutationArchive: MakeMutation;
+  mutationUnarchive: MakeMutation;
+  mutationtoggleFavorite: MakeMutation;
+  mutationDelete: MakeMutation;
+  mutationTagReplace: (itemId: string, tags: string) => void;
 }
 
 const useItemContainer = ({
   dataItem,
+  mutationArchive,
+  mutationUnarchive,
+  mutationtoggleFavorite,
+  mutationDelete,
+  mutationTagReplace,
 }: DeepReadonly<UseItemContainerProps>) => {
-  const {
-    mutationArchive,
-    mutationUnarchive,
-    mutationtoggleFavorite,
-    mutationDelete,
-    mutationTagReplace,
-  } = useItemsMutation();
-
   const [isItemHover, setIsItemHover] = useState(false);
 
   const [isConfirmDeleteModalOpen, setIsConfirmDeleteModalOpen] =
@@ -75,6 +77,7 @@ const useItemContainer = ({
   return {
     isConfirmDeleteModalOpen,
     selectedItem,
+    isItemHover,
     archiveItem,
     deleteItem,
     toggleFavorite,
@@ -83,7 +86,6 @@ const useItemContainer = ({
     onCancelModalDelete,
     onSaveModalTag,
     onCancelModalTag,
-    isItemHover,
     setIsItemHover,
   };
 };

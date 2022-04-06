@@ -14,6 +14,7 @@ import TagModal from "@components/TagModal";
 import useNotify from "hooks/useNotify";
 
 import type { PocketArticle } from "services/pocketApi";
+import type { MakeMutation } from "services/useItemsMutation";
 
 import useItemContainer from "hooks/containers/useItemContainer";
 
@@ -25,15 +26,26 @@ import type { DeepReadonly } from "ts-essentials/dist/types";
 interface ItemProps {
   dataItem: PocketArticle;
   suggestionsTags: Tag[];
+  mutationArchive: MakeMutation;
+  mutationUnarchive: MakeMutation;
+  mutationtoggleFavorite: MakeMutation;
+  mutationDelete: MakeMutation;
+  mutationTagReplace: (itemId: string, tags: string) => void;
 }
 
 function Item({
   dataItem,
   suggestionsTags,
+  mutationArchive,
+  mutationUnarchive,
+  mutationtoggleFavorite,
+  mutationDelete,
+  mutationTagReplace,
 }: DeepReadonly<ItemProps>): JSX.Element {
   const {
     isConfirmDeleteModalOpen,
     selectedItem,
+    isItemHover,
     archiveItem,
     deleteItem,
     toggleFavorite,
@@ -42,9 +54,15 @@ function Item({
     onCancelModalDelete,
     onSaveModalTag,
     onCancelModalTag,
-    isItemHover,
     setIsItemHover,
-  } = useItemContainer({ dataItem });
+  } = useItemContainer({
+    dataItem,
+    mutationArchive,
+    mutationUnarchive,
+    mutationtoggleFavorite,
+    mutationDelete,
+    mutationTagReplace,
+  });
 
   const { onStartNotify } = useNotify("link copied", {
     variant: "success",
@@ -60,7 +78,7 @@ function Item({
     isItemHover,
   ]);
 
-  useHotkeys("s", toggleFavorite, { enabled: isItemHover }, [
+  useHotkeys("f", toggleFavorite, { enabled: isItemHover }, [
     dataItem,
     isItemHover,
   ]);
@@ -170,7 +188,7 @@ function Item({
             </a>
             <div className="space-x-1">
               {dataItem.favorite === "1" && (
-                <div className="badge badge-accent badge-outline">starred</div>
+                <div className="badge badge-accent badge-outline">favorite</div>
               )}
               {dataItem.status === "1" && (
                 <div className="badge badge-secondary badge-outline">

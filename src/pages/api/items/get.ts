@@ -66,10 +66,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const count = typeof qy.count === "string" ? `&count=${qy.count}` : "10";
   const offset = typeof qy.offset === "string" ? `&offset=${qy.offset}` : "0";
 
-  // console.log(
-  //   `https://getpocket.com/v3/get?${authKeys}${count}${offset}${detailType}${total}${state}${favorite}${tag}${contentType}${sort}${search}${domain}${since}`
-  // );
-
   const response = await fetch(
     `https://getpocket.com/v3/get?${authKeys}${count}${offset}${detailType}${total}${state}${favorite}${tag}${contentType}${sort}${search}${domain}${since}`
   );

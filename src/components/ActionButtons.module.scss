@@ -1,0 +1,13 @@
+.box {
+  @apply overflow-visible p-2 shadow-lg bg-base-100 rounded-box;
+  > div {
+    @apply flex items-center tooltip tooltip-bottom;
+    button,
+    a {
+      @apply mx-2 w-6 h-6 stroke-current;
+      svg {
+        @apply hover:text-purple-500;
+      }
+    }
+  }
+}

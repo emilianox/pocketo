@@ -26,9 +26,9 @@ type TagModalProps = DeepReadonly<{
 
 function TagModal({
   selectedItem,
+  suggestions,
   onSave,
   onCancel,
-  suggestions,
 }: TagModalProps) {
   const [tags, setTags] = useState<Tag[]>([]);
 
