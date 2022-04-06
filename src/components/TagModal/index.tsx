@@ -59,6 +59,7 @@ function TagModal({
   return (
     <div
       className={clsx("modal", {
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         "modal-open": selectedItem,
       })}
     >

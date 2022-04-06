@@ -96,7 +96,6 @@ export default memo(function SearchForm({
 
   // eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
   function onChange(event: { target: { value: string } }, value: string) {
-    // eslint-disable-next-line react-hook-form/no-nested-object-setvalue
     setValue("search", value);
   }
 
@@ -104,6 +103,7 @@ export default memo(function SearchForm({
   return (
     <form
       className="flex justify-center py-3 w-8/12 form-control"
+      // eslint-disable-next-line @typescript-eslint/no-misused-promises
       onSubmit={handleSubmit(onParse)}
     >
       <div className="flex mb-2">

@@ -1,5 +1,4 @@
 /* eslint-disable max-len */
-/* eslint-disable no-tabs */
 /* eslint-disable complexity */
 /* eslint-disable max-statements */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */

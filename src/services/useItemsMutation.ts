@@ -209,8 +209,7 @@ const getRelatedQueries = (
 
 const getAllItemsFromPagedQuery = (
   query: DeepReadonly<Query<InfiniteData<ResponseGetPocketApi>>>
-): Record<string, PocketArticle> =>
-  // eslint-disable-next-line unicorn/prefer-object-from-entries
+): { [key: string]: PocketArticle } =>
   query.state.data?.pages.reduce(
     (current, page) => ({
       ...current,

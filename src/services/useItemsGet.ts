@@ -12,13 +12,14 @@ import type {
 } from "./pocketApi";
 import type { DeepReadonly } from "ts-essentials/dist/types";
 
-interface GetPocketArticles {
-  // eslint-disable-next-line @typescript-eslint/prefer-function-type
-  (
-    searchParameters: DeepReadonly<SearchParameters>,
-    onStartNotify: () => void,
-    onFinishNotify: () => void
-  ): Promise<ResponseGetPocketApi>;
+// eslint-disable-next-line etc/prefer-interface
+type GetPocketArticles = (
+  searchParameters: DeepReadonly<SearchParameters>,
+  onStartNotify: () => void,
+  onFinishNotify: () => void
+) => Promise<ResponseGetPocketApi>;
+interface ObjectString {
+  [key: string]: string;
 }
 
 const getPocketArticles: GetPocketArticles = async (
@@ -26,14 +27,11 @@ const getPocketArticles: GetPocketArticles = async (
   onStartNotify,
   onFinishNotify
 ) => {
-  const parsed = pickBy<Record<string, string>, Record<string, string>>(
-    identity,
-    {
-      ...searchParameters,
-      count: searchParameters.count.toString(),
-      offset: searchParameters.offset.toString(),
-    }
-  );
+  const parsed = pickBy<ObjectString, ObjectString>(identity, {
+    ...searchParameters,
+    count: searchParameters.count.toString(),
+    offset: searchParameters.offset.toString(),
+  });
 
   if (parsed.search) {
     // eslint-disable-next-line fp/no-mutation

@@ -3,13 +3,14 @@
   "extends": [
     "hardcore",
     "hardcore/react",
+    "plugin:@next/next/recommended",
     "hardcore/react-testing-library",
     "hardcore/jest",
     "hardcore/fp",
     "hardcore/ts",
     "plugin:tailwindcss/recommended",
-    "next/core-web-vitals"
-    // "plugin:prettier/recommended"
+    "next/core-web-vitals",
+    "plugin:prettier/recommended"
   ],
   "rules": {
     // override default options

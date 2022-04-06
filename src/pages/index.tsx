@@ -162,6 +162,8 @@ function ItemsPage() {
         <Virtuoso
           components={listComponents}
           data={dataItems}
+          // #FIXME:
+          // eslint-disable-next-line @typescript-eslint/no-misused-promises
           endReached={nextPage}
           itemContent={itemContent}
           overscan={1000}
