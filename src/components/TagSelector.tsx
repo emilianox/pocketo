@@ -1,19 +1,18 @@
-/* eslint-disable react/jsx-no-bind */
-/* eslint-disable fp/no-mutating-methods */
-/* eslint-disable @typescript-eslint/naming-convention */
-/* eslint-disable @typescript-eslint/prefer-readonly-parameter-types */
-/* eslint-disable react-perf/jsx-no-new-function-as-prop */
 import React, { type Dispatch, type SetStateAction } from "react";
 
+import { move } from "ramda";
 import { WithContext as ReactTags, type Tag } from "react-tag-input";
+
+import type { DeepReadonly } from "ts-essentials/dist/types";
 
 const keyCodes = {
   comma: 188,
   enter: 13,
 };
 const delimiters = [keyCodes.comma, keyCodes.enter];
-
-const TagSelector = ({
+// ReactTags not support readonly tags
+// eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
+function TagSelector({
   tags,
   setTags,
   suggestions,
@@ -21,30 +20,32 @@ const TagSelector = ({
   tags: Tag[];
   setTags: Dispatch<SetStateAction<Tag[]>>;
   suggestions: Tag[];
-}) => {
-  const handleDelete = (index_: number) => {
-    setTags(tags.filter((tag, index) => index !== index_));
-  };
+}) {
+  const handleDelete = React.useCallback(
+    (indexToDelete: number) => {
+      setTags(tags.filter((tag, index) => index !== indexToDelete));
+    },
+    [setTags, tags]
+  );
 
-  const handleAddition = (tag: Tag) => {
-    setTags([...tags, tag]);
-  };
+  const handleAddition = React.useCallback(
+    (tag: DeepReadonly<Tag>) => {
+      setTags([...tags, tag]);
+    },
+    [setTags, tags]
+  );
 
-  const handleDrag = (tag: Tag, currentPos: number, newPos: number) => {
-    const newTags = tags.slice();
+  const handleDrag = React.useCallback(
+    (tag: DeepReadonly<Tag>, currentPos: number, newPos: number) => {
+      setTags(move(currentPos, newPos, tags));
+    },
+    [tags, setTags]
+  );
 
-    newTags.splice(currentPos, 1);
-    newTags.splice(newPos, 0, tag);
-
-    // re-render
-    setTags(newTags);
-  };
-
-  // eslint-disable-next-line unicorn/consistent-function-scoping
-  const handleTagClick = (index: number) => {
+  const handleTagClick = React.useCallback((index: number) => {
     // eslint-disable-next-line no-console
     console.log(`The tag at index ${index} was clicked`);
-  };
+  }, []);
 
   return (
     <div className="app">
@@ -61,6 +62,6 @@ const TagSelector = ({
       />
     </div>
   );
-};
+}
 
 export default TagSelector;

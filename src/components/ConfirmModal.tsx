@@ -19,6 +19,7 @@ function ConfirmModal({ isOpen, cta, onConfirm, onCancel }: ConfirmModalProps) {
   return (
     <div
       className={clsx("modal", {
+        // CSS class required for the modal to be visible
         // eslint-disable-next-line @typescript-eslint/naming-convention
         "modal-open": isOpen,
       })}
@@ -28,6 +29,7 @@ function ConfirmModal({ isOpen, cta, onConfirm, onCancel }: ConfirmModalProps) {
 
         <div className="flex justify-between">
           <small className="flex items-end pb-1">
+            {/* Library works this way */}
             {/* eslint-disable-next-line react/forbid-component-props */}
             <FaInfoCircle className="mb-1" size="0.95em" />
             &nbsp;

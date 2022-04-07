@@ -1,16 +1,15 @@
-/* eslint-disable @typescript-eslint/naming-convention */
-import React from "react";
+import React, { useCallback } from "react";
 
 import copy from "copy-text-to-clipboard";
+// ESLINT error?
 // eslint-disable-next-line @typescript-eslint/no-shadow
 import Image from "next/image";
-import { useHotkeys } from "react-hotkeys-hook";
 
 import ActionButtons from "components/ActionButtons";
-// import TagModal from "components/TagModal";
 
 import TagModal from "@components/TagModal";
 
+import useHotKeysApp from "hooks/useHotKeysApp";
 import useNotify from "hooks/useNotify";
 
 import type { PocketArticle } from "services/pocketApi";
@@ -68,52 +67,29 @@ function Item({
     variant: "success",
   });
 
-  const copyLinkItem = React.useCallback(() => {
+  const copyLinkItem = useCallback(() => {
     copy(dataItem.resolved_url);
     onStartNotify();
   }, [dataItem.resolved_url, onStartNotify]);
 
-  useHotkeys("a", archiveItem, { enabled: isItemHover }, [
+  const itemHoverTrue = useCallback(() => {
+    setIsItemHover(true);
+  }, [setIsItemHover]);
+
+  const itemHoverFalse = useCallback(() => {
+    setIsItemHover(false);
+  }, [setIsItemHover]);
+
+  useHotKeysApp({
+    archiveItem,
+    toggleFavorite,
+    deleteItem,
+    copyLinkItem,
+    isItemHover,
+    setIsItemHover,
+    changeTagsItem,
     dataItem,
-    isItemHover,
-  ]);
-
-  useHotkeys("f", toggleFavorite, { enabled: isItemHover }, [
-    dataItem,
-    isItemHover,
-  ]);
-
-  useHotkeys(
-    "t",
-    (event) => {
-      event.preventDefault();
-      changeTagsItem();
-      setIsItemHover(true);
-    },
-    {
-      enabled: isItemHover,
-    },
-    [dataItem, isItemHover]
-  );
-
-  useHotkeys("l", copyLinkItem, { enabled: isItemHover }, [
-    dataItem.resolved_url,
-    isItemHover,
-  ]);
-
-  useHotkeys(
-    "c",
-    () => {
-      window.open(`https://getpocket.com/read/${dataItem.item_id}`, "_blank");
-    },
-    { enabled: isItemHover },
-    [dataItem, isItemHover]
-  );
-
-  useHotkeys("r", deleteItem, { enabled: isItemHover }, [
-    dataItem,
-    isItemHover,
-  ]);
+  });
 
   return (
     <>
@@ -136,19 +112,14 @@ function Item({
       {/* Wrapper */}
       <div
         className="flex p-2 m-auto w-8/12 border-b-2 border-gray-800 hover:bg-neutral hover:bg-opacity/10"
-        // eslint-disable-next-line react/jsx-no-bind, react-perf/jsx-no-new-function-as-prop
-        onMouseEnter={() => {
-          setIsItemHover(true);
-        }}
-        // eslint-disable-next-line react/jsx-no-bind, react-perf/jsx-no-new-function-as-prop
-        onMouseLeave={() => {
-          setIsItemHover(false);
-        }}
+        onMouseEnter={itemHoverTrue}
+        onMouseLeave={itemHoverFalse}
       >
         {/* Image */}
         <div className="mr-4 w-1/12 avatar">
           <div className="w-24 h-24">
             {dataItem.top_image_url !== undefined && (
+              // img is external - no need to use next Image
               // eslint-disable-next-line @next/next/no-img-element
               <img
                 alt="post"

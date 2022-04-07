@@ -27,6 +27,7 @@ function ItemsPage() {
   const router = useRouter();
 
   const [formSearchResult, setFormSearchResult] = useState<SearchParameters>(
+    // needed because of multiple types clash
     {} as SearchParameters
   );
 
@@ -35,13 +36,13 @@ function ItemsPage() {
       return;
     }
 
+    // router has push method
     // eslint-disable-next-line fp/no-mutating-methods
     void router.push({
       pathname: "/",
       query: formSearchResult as unknown as null,
     });
-
-    // console.log("query", query);
+    // if you add router crash
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formSearchResult]);
 
@@ -52,8 +53,9 @@ function ItemsPage() {
 
     // codes using router.query
     setFormSearchResult(router.query as unknown as SearchParameters);
+    // if you add router.query crash
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router.isReady]);
+  }, [router.isReady, setFormSearchResult]);
 
   const { data, error, fetchNextPage, isLoading } = useItems(formSearchResult);
   const dataItems: PocketArticle[] = useMemo(() => {
@@ -125,19 +127,18 @@ function ItemsPage() {
     }
 
     return 0;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data?.pages[0]]);
+  }, [data?.pages]);
 
   const listComponents = useMemo(
     () => ({
+      // required by virtuoso
       // eslint-disable-next-line @typescript-eslint/naming-convention
       EmptyPlaceholder: isLoading ? ItemLoaderPage : undefined,
     }),
     [isLoading]
   );
 
-  // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
-  if (error || errorTags) {
+  if (error !== null || errorTags) {
     return "Error...";
   }
 

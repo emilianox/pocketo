@@ -1,8 +1,5 @@
-/* eslint-disable @typescript-eslint/no-shadow */
-/* eslint-disable @typescript-eslint/prefer-readonly-parameter-types */
-/* eslint-disable @typescript-eslint/explicit-member-accessibility */
-/* eslint-disable fp/no-class */
-
+// import next is not shadowed
+// eslint-disable-next-line @typescript-eslint/no-shadow
 import Document, {
   Html,
   Head,
@@ -11,12 +8,16 @@ import Document, {
   type DocumentContext,
 } from "next/document";
 
+// required by nextjs
+// eslint-disable-next-line fp/no-class
 class MyDocument extends Document {
-  static async getInitialProps(ctx: DocumentContext) {
+  // ctx cant be readonly
+  // eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
+  public static async getInitialProps(ctx: DocumentContext) {
     return await Document.getInitialProps(ctx);
   }
 
-  render() {
+  public render() {
     return (
       <Html data-theme="dark">
         <Head />

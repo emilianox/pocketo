@@ -1,3 +1,4 @@
+// logic need that long
 /* eslint-disable max-statements */
 import { useCallback, useState } from "react";
 
@@ -33,9 +34,11 @@ const useItemContainer = ({
   const archiveItem = useCallback(() => {
     if (dataItem.status === "0") {
       mutationArchive(dataItem);
-      // eslint-disable-next-line sonarjs/elseif-without-else
+      // -eslint-disable-next-line sonarjs/elseif-without-else
     } else if (dataItem.status === "1") {
       mutationUnarchive(dataItem);
+    } else {
+      throw new Error("Invalid status");
     }
   }, [dataItem, mutationArchive, mutationUnarchive]);
 

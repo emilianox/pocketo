@@ -6,6 +6,7 @@ import {
 
 export default function useNotify(
   message: SnackbarMessage,
+  // notistack lib required not readonly
   // eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
   options?: OptionsObject
 ) {

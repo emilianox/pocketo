@@ -99,7 +99,7 @@ interface PocketArticle {
   domain_metadata?: Domainmetadata;
 }
 
-type ListPocketArticle = Record<string, PocketArticle>;
+type ListPocketArticle = { [index: string]: PocketArticle };
 
 interface ResponseGetPocketApi {
   status: number;

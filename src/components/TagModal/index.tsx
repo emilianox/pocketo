@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-no-bind */
 import React, { useState, useMemo } from "react";
 
 import { FaInfoCircle } from "@react-icons/all-files/fa/FaInfoCircle";
@@ -25,18 +24,18 @@ type TagModalProps = DeepReadonly<{
 }>;
 
 function TagModal({
-  selectedItem,
+  selectedItem = undefined,
   suggestions,
   onSave,
   onCancel,
 }: TagModalProps) {
   const [tags, setTags] = useState<Tag[]>([]);
 
-  // eslint-disable-next-line react-perf/jsx-no-new-function-as-prop
-  const onSaveModal = () => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-    selectedItem && onSave(selectedItem.item_id, tagToListTag(tags));
-  };
+  const onSaveModal = React.useCallback(() => {
+    if (selectedItem) {
+      onSave(selectedItem.item_id, tagToListTag(tags));
+    }
+  }, [selectedItem, onSave, tags]);
 
   useHotkeys("ctrl+enter", onSaveModal, { enableOnTags: ["INPUT"] }, [
     selectedItem,
@@ -59,6 +58,7 @@ function TagModal({
   return (
     <div
       className={clsx("modal", {
+        // css required
         // eslint-disable-next-line @typescript-eslint/naming-convention
         "modal-open": selectedItem,
       })}
@@ -73,6 +73,7 @@ function TagModal({
 
         <div className="flex justify-between">
           <small className="flex items-end pb-1">
+            {/* icon lib required */}
             {/* eslint-disable-next-line react/forbid-component-props */}
             <FaInfoCircle className="mb-1" size="0.95em" />
             &nbsp;
@@ -86,14 +87,7 @@ function TagModal({
             >
               Save
             </button>
-            <button
-              className="btn"
-              // eslint-disable-next-line react-perf/jsx-no-new-function-as-prop
-              onClick={() => {
-                onCancel();
-              }}
-              type="button"
-            >
+            <button className="btn" onClick={onCancel} type="button">
               Cancel
             </button>
           </div>
@@ -102,10 +96,5 @@ function TagModal({
     </div>
   );
 }
-
-// eslint-disable-next-line fp/no-mutation
-TagModal.defaultProps = {
-  selectedItem: undefined,
-};
 
 export default React.memo(TagModal);

@@ -41,6 +41,7 @@ type UseItemsMutationContext = {
   queryKey: QueryKey;
 }[];
 
+// CLASH with @typescript-eslint/prefer-function-type
 // eslint-disable-next-line etc/prefer-interface
 type GetItemToReplaceFunction<ArticleActionType extends ArticleAction> = (
   oldData: DeepReadonly<ResponseGetPocketApi>,
@@ -58,16 +59,14 @@ const getPageIndexOfPocketArticle = (
 ): number =>
   data.pages.reduce(
     (previous, current, index) =>
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      current.list[itemId] === undefined ? previous : index,
+      Object.hasOwn(current.list, itemId) ? index : previous,
     0
   );
 
 const getNewData = <ArticleActionType extends ArticleAction>(
-  // eslint-disable-next-line no-warning-comments
-  // FIXME: use deepReadonly
-  // eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
-  oldDatawithPages: InfiniteData<ResponseGetPocketApi> | undefined,
+  oldDatawithPages: DeepReadonly<
+    InfiniteData<ResponseGetPocketApi> | undefined
+  >,
   action: ArticleActionType,
   getItemToReplaceFunction: GetItemToReplaceFunction<ArticleActionType>
 ): InfiniteData<ResponseGetPocketApi> => {
@@ -76,12 +75,12 @@ const getNewData = <ArticleActionType extends ArticleAction>(
       oldDatawithPages,
       action.item_id
     );
-    const oldData = oldDatawithPages.pages[pageIndex];
+    const oldData: ResponseGetPocketApi = oldDatawithPages.pages[pageIndex];
 
     const itemToReplace = getItemToReplaceFunction(oldData, action);
 
     return {
-      ...oldDatawithPages,
+      pageParams: Object.assign([], oldDatawithPages.pageParams),
 
       pages: Object.assign([], oldDatawithPages.pages, {
         [pageIndex]: itemToReplace,

@@ -10,7 +10,7 @@
     "test:e2e": "playwright test",
     "build-profile": "next build --profile",
     "start": "next start -p 9807",
-    "lint": "next lint",
+    "lint": "next lint -debug",
     "type-check": "tsc --project tsconfig.json --pretty --noEmit",
     "tailwind-config-viewer": "tailwind-config-viewer -o",
     "size": "ANALYZE=true npm run build",
@@ -108,7 +108,8 @@
     "webpack": "^5.71.0"
   },
   "overrides": {
-    "eslint-plugin-react-hooks": "4.4.0"
+    "eslint-plugin-react-hooks": "4.4.0",
+    "obj-props": "1.4.0"
   },
   "peerDependencies": {
     "react-dnd": "^14.0.2",
